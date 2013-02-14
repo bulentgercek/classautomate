@@ -43,7 +43,7 @@ abstract class Person
 		 * 
 		 * @param object
 		 */
-		public function getActiveDateTimesByClassroom($Classroom)
+		public function getActiveDateTimesByClassroom(Classroom $Classroom)
 		{
 				return $this->Changes->getFilteredList(array('changeField' => 'status', 'changeValue' => 'active', 'Classroom' => $Classroom, 'Person' => $this));
 		}

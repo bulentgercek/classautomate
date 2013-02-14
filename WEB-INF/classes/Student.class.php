@@ -33,7 +33,7 @@ class Student extends Person
 		 * 
 		 * @return Array
 		 */
-		public function getActiveDateTimesByClassroom($Classroom)
+		public function getActiveDateTimesByClassroom(Classroom $Classroom)
 		{
 				$classroomCode = $Classroom->getInfo('code');
 				return $this->Changes->getFilteredList(array('changeField' => 'classroom', 'changeValue' => $classroomCode, 'Classroom' => $Classroom, 'Person' => $this));
@@ -43,7 +43,7 @@ class Student extends Person
 		 * 
 		 * @return Array
 		 */
-		public function getActiveLectureList($Classroom)
+		public function getActiveLectureList(Classroom $Classroom)
 		{
 				$Fc = FluxCapacitor::classCache();
 
@@ -148,7 +148,7 @@ class Student extends Person
 		 * 
 		 * @return Array
 		 */
-		public function getPaymentAndPeriodChangesByClassroom($Classroom)
+		public function getPaymentAndPeriodChangesByClassroom(Classroom $Classroom)
 		{
 				$paymentAndPeriodChanges = $this->getPaymentAndPeriodChanges();
 
@@ -271,7 +271,7 @@ class Student extends Person
 		 * 
 		 * @return Array
 		 */
-		public function getLectureDetailsByClassroom($Classroom)
+		public function getLectureDetailsByClassroom(Classroom $Classroom)
 		{
 				$Fc = FluxCapacitor::classCache();
 
@@ -283,11 +283,13 @@ class Student extends Person
 				if ($paymenAndPeriodChangesByClassroom != null) {
 						foreach ($paymenAndPeriodChangesByClassroom as $key => $value) {
 								$lectureNo = 0;
+
 								$Fc->setValues(array('classroomCode' => $Classroom->getInfo('code'),
 										'startDateTime' => $value['startDateTime'],
 										'limitDateTime' => $value['endDateTime']));
 
 								$filteredLectures = $Fc->getLecture();
+
 
 								/**
 								 * para akis bilgilerini isle
@@ -336,7 +338,7 @@ class Student extends Person
 		 * 
 		 * @return Array
 		 */
-		public function getCashFlowByClassroom($Classroom)
+		public function getCashFlowByClassroom(Classroom $Classroom)
 		{
 				return Accountant::classCache()->getStudentCashFlowByClassroom($this, $Classroom);
 		}
@@ -345,14 +347,16 @@ class Student extends Person
 		 * 
 		 * @return String
 		 */
-		public function getCashStatus($Classroom, $type = null)
+		public function getCashStatus(Classroom $Classroom, $type = null)
 		{
 				return Accountant::classCache()->getStudentCashStatus($this, $Classroom, $type);
 		}
 		/**
 		 * ogrenciyi istenilen siniftan cikartan metot
+		 * 
+		 * @return void
 		 */
-		public function removeFromClassroom($code)
+		public function removeFromClassroom(Classroom $Classroom)
 		{
 				// ogrencinin sinif bilgisini al
 				$expClassroom = explode(',', $this->getInfo('classroom'));
@@ -374,6 +378,16 @@ class Student extends Person
 				}
 
 				$this->setInfo(array('tc:update' => 'updateClassroom|direct', 'classroom' => $stringClassroom));
+		}
+		/**
+		 * İstenilen tarihten başlayarak, öğrencinin sıradaki ödeme tarihini
+		 * ders günü olarak döndüren metot
+		 * 
+		 * @return Date String
+		 */
+		public function getNextPaymentDateByClassroom(Classroom $Classroom)
+		{
+				return Accountant::classCache()->getStudentNextPaymentDate($this, $Classroom, getDateAsFormatted());
 		}
 		/**
 		 * $_POST formda olup da database'de karsiligi olmayan
