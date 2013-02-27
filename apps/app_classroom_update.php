@@ -24,7 +24,7 @@ $MakeListPrograms = $MakeList->get();
 
 /** Egitmenler listesini hazirla */
 $instructorList = $School->getInstructorList();
-$instructorList = sortArrayWithKey::get($instructorList, "name", 'ASC');
+$instructorList = SortArrayWithKey::get($instructorList, "name", 'ASC');
 
 // hazirlanan array'i kullanarak listeyi istenilen basliklarda uret
 $MakeList = new MakeList('code,name,surname', array('type' => 'select', 'separators' => ' '), $instructorList);

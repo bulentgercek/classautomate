@@ -27,8 +27,10 @@ function alert($value = "classautomate.com ©2011")
 }
 
 /**
- *
  * sayfanin sonunda kodun ne kadar zamanda calistigini donduren class
+ * 
+ * @author Bulent Gercek <bulentgercek@gmail.com>
+ * @package ClassAutoMate
  */
 class PageGenerateTimer
 {
@@ -597,8 +599,11 @@ function arrayDifference($array1, $array2)
 
 /**
  * key'e gore array siralama sinifi
+ * 
+ * @author Bulent Gercek <bulentgercek@gmail.com>
+ * @package ClassAutoMate
  */
-class sortArrayWithKey
+class SortArrayWithKey
 {
 
 		public static $array, $column, $type;

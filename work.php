@@ -19,7 +19,7 @@ $School = School::classCache();
 
 // ORNEK : OGRENCILERI OKU VE SIRALA
 //$studentList = $School->getPeopleList("student");
-//var_dump(sortArrayWithKey::get($studentList, "birthDate", 'DESC'));
+//var_dump(SortArrayWithKey::get($studentList, "birthDate", 'DESC'));
 
 // ORNEK : A+ KAN GRUBUNA SAHİP OGRENCILERI OKU
 //$studentWithBloodType = Db::classCache()->getFromArray($studentList, array("bloodType"=>"A+"));
@@ -53,7 +53,7 @@ $School = School::classCache();
 // ORNEK : TUM SINIFLARI OKU - SIRALA
 //$classroomList = $School->getClassroomList();
 //var_dump($classroomList);
-//var_dump(sortArrayWithKey::get($classroomList, "time", 'DESC'));
+//var_dump(SortArrayWithKey::get($classroomList, "time", 'DESC'));
 
 // ORNEK : İSTENİLEN SINIF İÇİN, VERITABANINDAN, YENİ GUN/SAAT KAYITLARININ SAYISINI OGREN
 //$dayTimeList = $School->getDayTimeList();

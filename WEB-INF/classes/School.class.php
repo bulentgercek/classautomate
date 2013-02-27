@@ -559,7 +559,7 @@ class School
 		{
 				$Db = Db::classCache();
 				$criteria = array('table' => daytime);
-				$this->_dayTimeList = sortArrayWithKey::get($Db->readTableFromDb($criteria, 'noBase'), "time", 'ASC');
+				$this->_dayTimeList = SortArrayWithKey::get($Db->readTableFromDb($criteria, 'noBase'), "time", 'ASC');
 		}
 		/**
 		 * veritabanindan tatilleri oku

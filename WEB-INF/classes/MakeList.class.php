@@ -302,7 +302,7 @@ class MakeList
 						eval('$TableArray = School::classCache()->' . $methodName . '();');
 
 						if (isset($this->_typeArray['sortColumn'])) {
-								$TableArray = sortArrayWithKey::get($TableArray, $this->_typeArray['sortColumn'], 'ASC');
+								$TableArray = SortArrayWithKey::get($TableArray, $this->_typeArray['sortColumn'], 'ASC');
 						}
 				} else {
 						$TableArray = $this->_array;
