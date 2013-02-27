@@ -1,9 +1,9 @@
 <?php
-
 /**
  * classautomate - index
  *
  * @author Bulent Gercek <bulentgercek@gmail.com>
+ * @package ClassAutoMate
  */
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////// GIRIS BOLUMU ///////////////////////////////////////////////
@@ -80,142 +80,146 @@ $formAction = $Tab->getFormAction();
  * ve degerlendirme sonucuna gore REFRESH metasi ile sayfa URL JSON dosyasindaki
  * action tab adresine gonderiliyor
  */
-
 if (getRefresh() == 'true') {
-	setRefresh('false');
-	$refreshUrl = getScriptName() . ".php?tab=" . $formAction;
-	/** 
-	 * PERSON sistemi için pozisyon eklemesi zorunludur, yoksa URL bulunamadı mesajı gider
-	 */
-	if ($formAction == "app_person_add") $refreshUrl .= "&position=" . $_POST["position"];
-	if ($formAction == "app_person_update") $refreshUrl .= "&code=" . $_POST["code"] . "&position=" . $_POST["position"];
-	/** 
-	 * adres alanına veri eklemesi zorunlu tablar burada hazirlaniyor, yoksa URL bulunamadı mesajı gider
-	 */
-	if ($formAction == "app_accountant") $refreshUrl .= "&mainSelect=" . $_POST["mainSelect"];
-	if ($formAction == "app_rollcall") $refreshUrl .= "&classroom=all&dayTime=&date=" . $_POST["date"];
-	if ($formAction == "app_content") $refreshUrl .= '&code=' . $_GET['code'] . '&orderby=' . $_GET['orderby'];
-				
+		setRefresh('false');
+		$refreshUrl = getScriptName() . ".php?tab=" . $formAction;
+		/**
+		 * PERSON sistemi için pozisyon eklemesi zorunludur, yoksa URL bulunamadı mesajı gider
+		 */
+		if ($formAction == "app_person_add")
+				$refreshUrl .= "&position=" . $_POST["position"];
+		if ($formAction == "app_person_update")
+				$refreshUrl .= "&code=" . $_POST["code"] . "&position=" . $_POST["position"];
+		/**
+		 * adres alanına veri eklemesi zorunlu tablar burada hazirlaniyor, yoksa URL bulunamadı mesajı gider
+		 */
+		if ($formAction == "app_accountant")
+				$refreshUrl .= "&mainSelect=" . $_POST["mainSelect"];
+		if ($formAction == "app_rollcall")
+				$refreshUrl .= "&classroom=all&dayTime=&date=" . $_POST["date"];
+		if ($formAction == "app_content")
+				$refreshUrl .= '&code=' . $_GET['code'] . '&orderby=' . $_GET['orderby'];
 
-	echo "<html><meta http-equiv=\"Refresh\" content=\"0;url=" . $refreshUrl . "\">";
 
+		echo "<html><meta http-equiv=\"Refresh\" content=\"0;url=" . $refreshUrl . "\">";
 } else {
-	/**
-	 * siniflarin donem sureleri kontrol ediliyor
-	 * zamani gecen sinif bosaltilip kapatiliyor
-	 */
-	School::classCache()->checkClassroomsLimits();
-	/**
-	 * History objesi yaratiliyor
-	 */
-	$History = History::classCache();
-	/**
-	 * tablar icin gereken smarty degiskenleri tanimlaniyor
-	 */
-	setExtSmartyVars('tabs', $tabs);
-	setExtSmartyVars('currentTab', $currentTab);
-	setExtSmartyVars('activeTab', $Tab->activeTab);
-	if ($currentTab == "app_person_add" || $currentTab == "app_person_update") {
-		setExtSmartyVars('personPosition', $_GET["position"]);
-	}
-	setExtSmartyVars('paneState', $Session->get('paneState'));
-	/**
-	 * tab disindaki smarty template'leri icin array hazirlaniyor
-	 * sayfalar include ediliyor
-	 *
-	 * @var array @pageAreas
-	 */
-	$contentOther = array('main_header', 'main_dailypane', 'main_footer', $currentTab);
-	foreach ($contentOther as $value) {
-		if (substr($value, 0, 3) == 'app') { $value = 'apps/' . $value;
+		/**
+		 * siniflarin donem sureleri kontrol ediliyor
+		 * zamani gecen sinif bosaltilip kapatiliyor
+		 */
+		School::classCache()->checkClassroomsLimits();
+		/**
+		 * History objesi yaratiliyor
+		 */
+		$History = History::classCache();
+		/**
+		 * tablar icin gereken smarty degiskenleri tanimlaniyor
+		 */
+		setExtSmartyVars('tabs', $tabs);
+		setExtSmartyVars('currentTab', $currentTab);
+		setExtSmartyVars('activeTab', $Tab->activeTab);
+		if ($currentTab == "app_person_add" || $currentTab == "app_person_update") {
+				setExtSmartyVars('personPosition', $_GET["position"]);
 		}
-		include $value . '.php';
-	}
-	/**
-	 * sayfa tema yolu belirleniyor
-	 */
-	$theme = $Setting->getTheme();
-	$themePath = 'themes/' . $theme . '/';
-	GlobalVar::set("themePath", $themePath);
-	/**
-	 * giris bolumunun ve sayfanin sonu
-	 * acik database varsa kapatiliyor.
-	 *
-	 */
-	$Db->close();
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////// SMARTY BOLUMU //////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/**
-	 * Smarty.class.php cagiriliyor
-	 *
-	 */
-	require SMARTY_CLASS_FILE;
-	/**
-	 * smarty objesi yaratiliyor
-	 *
-	 */
-	$Smarty = new Smarty;
-	/**
-	 * smarty temel klasorleri belirleniyor
-	 *
-	 */
-	setSmartyFolders($Smarty);
-	/**
-	 * aktif sayfanin template'i cagiriliyor
-	 *
-	 */
-	setSmartyVars($Smarty, $languageJSON, getScriptName());
-	/**
-	 * sayfadaki tablolarin($contentOther) template'leri cagiriliyor
-	 *
-	 */
-	for ($i = 0; $i < count($contentOther); $i++) {
+		setExtSmartyVars('paneState', $Session->get('paneState'));
 		/**
-		 * sayfa tablolarinin smarty degiskenleri
-		 * $pageAreas array'ine gore olusturuluyor
+		 * tab disindaki smarty template'leri icin array hazirlaniyor
+		 * sayfalar include ediliyor
+		 *
+		 * @var array @pageAreas
+		 */
+		$contentOther = array('main_header', 'main_dailypane', 'main_footer', $currentTab);
+		foreach ($contentOther as $value) {
+				if (substr($value, 0, 3) == 'app') {
+						$value = 'apps/' . $value;
+				}
+				include $value . '.php';
+		}
+		/**
+		 * sayfa tema yolu belirleniyor
+		 */
+		$theme = $Setting->getTheme();
+		$themePath = 'themes/' . $theme . '/';
+		GlobalVar::set("themePath", $themePath);
+		/**
+		 * giris bolumunun ve sayfanin sonu
+		 * acik database varsa kapatiliyor.
 		 *
 		 */
-		setSmartyVars($Smarty, $languageJSON, $contentOther[$i]);
+		$Db->close();
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////// SMARTY BOLUMU //////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/**
-		 * sayfa tablolarinin templateleri gosteriliyor
-		 *
-		 * dikkat : alt sayfalar icin smarty include'da degisken adi
-		 * 'page_area' adinin yanina '_area' konularak yazilmali
+		 * Smarty.class.php cagiriliyor
 		 *
 		 */
-		$Smarty->assign($contentOther[$i] . '_area', $contentOther[$i] . '.tpl');
-	}
-	/**
-	 * tab alani smarty'e gonderiliyor
-	 */
-	$Smarty->assign('main_center_area', $currentTab . '.tpl');
-	/**
-	 * diger tablolardan (pageAreas) gonderilen
-	 * degiskenler ve degerleri smarty'e aktariliyor
-	 *
-	 */
-	$extSmartyVars = GlobalVar::get(extSmartyVars);
+		require SMARTY_CLASS_FILE;
+		/**
+		 * smarty objesi yaratiliyor
+		 *
+		 */
+		$Smarty = new Smarty;
+		/**
+		 * smarty temel klasorleri belirleniyor
+		 *
+		 */
+		setSmartyFolders($Smarty);
+		/**
+		 * aktif sayfanin template'i cagiriliyor
+		 *
+		 */
+		setSmartyVars($Smarty, $languageJSON, getScriptName());
+		/**
+		 * sayfadaki tablolarin($contentOther) template'leri cagiriliyor
+		 *
+		 */
+		for ($i = 0; $i < count($contentOther); $i++) {
+				/**
+				 * sayfa tablolarinin smarty degiskenleri
+				 * $pageAreas array'ine gore olusturuluyor
+				 *
+				 */
+				setSmartyVars($Smarty, $languageJSON, $contentOther[$i]);
+				/**
+				 * sayfa tablolarinin templateleri gosteriliyor
+				 *
+				 * dikkat : alt sayfalar icin smarty include'da degisken adi
+				 * 'page_area' adinin yanina '_area' konularak yazilmali
+				 *
+				 */
+				$Smarty->assign($contentOther[$i] . '_area', $contentOther[$i] . '.tpl');
+		}
+		/**
+		 * tab alani smarty'e gonderiliyor
+		 */
+		$Smarty->assign('main_center_area', $currentTab . '.tpl');
+		/**
+		 * diger tablolardan (pageAreas) gonderilen
+		 * degiskenler ve degerleri smarty'e aktariliyor
+		 *
+		 */
+		$extSmartyVars = GlobalVar::get(extSmartyVars);
 
-	if (count($extSmartyVars) > 0) {
-		foreach ($extSmartyVars as $var => $value) {
-			$Smarty->assign($var, $value);
+		if (count($extSmartyVars) > 0) {
+				foreach ($extSmartyVars as $var => $value) {
+						$Smarty->assign($var, $value);
+				}
 		}
-	}
-	/**
-	 * tema degiskenleri smarty'e gonderiliyor
-	 */
-	$Smarty->assign('theme', $theme);
-	$Smarty->assign('themePath', $themePath);
-	/**
-	 * yuklenen tum template'ler gosteriliyor
-	 *
-	 */
-	$Smarty->display(getScriptName() . '.tpl');
-	
-	/**
-	 * sayfanin tamamlanma suresini goster
-	 */
-	PageGenerateTimer::endTime();
+		/**
+		 * tema degiskenleri smarty'e gonderiliyor
+		 */
+		$Smarty->assign('theme', $theme);
+		$Smarty->assign('themePath', $themePath);
+		/**
+		 * yuklenen tum template'ler gosteriliyor
+		 *
+		 */
+		$Smarty->display(getScriptName() . '.tpl');
+
+		/**
+		 * sayfanin tamamlanma suresini goster
+		 */
+		PageGenerateTimer::endTime();
 }
 ?>

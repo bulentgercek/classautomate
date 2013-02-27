@@ -1,12 +1,14 @@
+
 <?php
 
 /**
  * Tum Muhasebe Islemleri
  *
- * @project classautomate.com
  * @author Bulent Gercek <bulentgercek@gmail.com>
+ * @package ClassAutoMate
  */
-class Accountant {
+class Accountant
+{
 
 		/**
 		 *
@@ -33,37 +35,38 @@ class Accountant {
 		 *
 		 * @return void
 		 */
-		private function __construct() {
+		private function __construct()
+		{
 				
 		}
-
 		/**
 		 * Singleton fonksiyonu
 		 *
 		 * @access public
 		 * @return object
 		 */
-		public static function & classCache() {
+		public static function & classCache()
+		{
 				if (!self::$_instance) {
 						self::$_instance = new Accountant();
 				}
 				return self::$_instance;
 		}
-
 		/**
 		 * muhasebe yapılacak donemin tarih araliklarini set eden metot
 		 */
-		public function setTimeLimits($startTimeLimit, $endTimeLimit) {
+		public function setTimeLimits($startTimeLimit, $endTimeLimit)
+		{
 				$this->_startDateTimeLimit = $startTimeLimit;
 				$this->_endDateTimeLimit = $endTimeLimit;
 		}
-
 		/**
 		 * gelir-giderler listesini dondur
 		 * 
 		 * @return array
 		 */
-		public function getIncomeExpenseList($type = null, $Student = null, $Classroom = null) {
+		public function getIncomeExpenseList($type = null, $Student = null, $Classroom = null)
+		{
 				$list = School::classCache()->getIncomeExpenseList();
 				$intend = array();
 
@@ -79,11 +82,11 @@ class Accountant {
 
 				return getFromArray($list, $intend);
 		}
-
 		/**
 		 * bir ogrencinin gelirler toplamini dondur
 		 */
-		public function getStudentIncomesTotal($Student, $Classroom = null) {
+		public function getStudentIncomesTotal($Student, $Classroom = null)
+		{
 				$list = $this->getIncomeExpenseList('+', $Student, $Classroom);
 				$totalValue = 0;
 				if ($list != null) {
@@ -93,13 +96,13 @@ class Accountant {
 				}
 				return $totalValue;
 		}
-
 		/**
 		 * gider veya giderlerin toplamlarını hesapla aylara böl
 		 * 
 		 * @return array
 		 */
-		public function calculateIncExpTotal($type) {
+		public function calculateIncExpTotal($type)
+		{
 				$total = array();
 				$incomeExpenseList = $this->getIncomeExpenseList($type);
 
@@ -139,14 +142,14 @@ class Accountant {
 				}
 				return $total;
 		}
-
 		/**
 		 * gider ve gelir listesini alır ve aylara göre liste çıkarır
 		 * ay listesini seçilmiş olan dile göre ayarlar
 		 * 
 		 * @return array
 		 */
-		public function getProfitList() {
+		public function getProfitList()
+		{
 				$languageJSON = Setting::classCache()->getInterfaceLang();
 
 				$incomesTotal = $this->calculateIncExpTotal('+');
@@ -192,14 +195,14 @@ class Accountant {
 				}
 				return $profitList;
 		}
-
 		/**
 		 * verilen tarih aralıklarına gore 
 		 * ogrenci borc listesini donemlere gore donduren metot
 		 * 
 		 * @return array
 		 */
-		public function getStudentCashFlowByClassroom($Student, $Classroom) {
+		public function getStudentCashFlowByClassroom($Student, $Classroom)
+		{
 				/**
 				 * ogrenci kod numarasi
 				 */
@@ -458,7 +461,6 @@ class Accountant {
 								/**
 								 * ogrencinin kasadaki parasi bitmediyse;
 								 */
-								
 								if ($this->_studentMoneyLeftInCase[$studentCode] > 0) {
 										/**
 										 * kasadaki paradan biriken ders ucretlerini cikart
@@ -496,16 +498,16 @@ class Accountant {
 								return $cashResult;
 						}
 				}
-				
+
 				return $cashResult;
 		}
-
 		/**
 		 * ogrencinin para akisinin guncel, final degerini istenilen kritere($type) gore dondurur
 		 * 
 		 * @return Array
 		 */
-		public function getStudentCashStatus($Student, $Classroom, $type = null) {
+		public function getStudentCashStatus($Student, $Classroom, $type = null)
+		{
 				$cashFlowList = $this->getStudentCashFlowByClassroom($Student, $Classroom);
 				$cashStatus['info'] = $cashFlowList[count($cashFlowList) - 1]['studentDebtInfo'];
 				$cashStatus['value'] = $cashFlowList[count($cashFlowList) - 1]['studentMoneyLeftInCase'];

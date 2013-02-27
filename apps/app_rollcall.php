@@ -4,6 +4,7 @@
  * classautomate - app_rollcall
  * 
  * @author Bulent Gercek <bulentgercek@gmail.com>
+ * @package ClassAutoMate
  */
 $School = School::classCache();
 $Fc = FluxCapacitor::classCache();

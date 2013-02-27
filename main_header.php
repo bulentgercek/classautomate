@@ -3,7 +3,7 @@
  * classautomate - main / header
  * 
  * @author Bulent Gercek <bulentgercek@gmail.com>
- * @
+ * @package ClassAutoMate
  */
 /**
  * baslik tarihi methodu cacheleniyor

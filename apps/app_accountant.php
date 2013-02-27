@@ -3,6 +3,7 @@
  * classautomate - app_accountant
  * 
  * @author Bulent Gercek <bulentgercek@gmail.com>
+ * @package ClassAutoMate
  */
 $School = School::classCache();
 $Db = Db::classCache();

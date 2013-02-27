@@ -17,7 +17,6 @@
  * @var const START_FUNCTION_FILE
  * @var const SMARTY_CLASS_FILE
  */
-
 define('START_FUNCTION_FILE', 'WEB-INF/classes/Start.function.php');
 define('SMARTY_CLASS_FILE', 'WEB-INF/lib/smarty/libs/Smarty.class.php');
 /**

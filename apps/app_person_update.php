@@ -3,6 +3,7 @@
  * classautomate - app_student_update
  * 
  * @author Bulent Gercek <bulentgercek@gmail.com>
+ * @package ClassAutoMate
  */
 /**
  * sorgu alanini goster

@@ -3,10 +3,11 @@
 /**
  * Ders sayilarini hesaplayan sinif
  *
- * @project classautomate.com
  * @author Bulent Gercek <bulentgercek@gmail.com>
+ * @package ClassAutoMate
  */
-class FluxCapacitor {
+class FluxCapacitor
+{
 
 		/**
 		 *
@@ -31,27 +32,28 @@ class FluxCapacitor {
 		 *
 		 * @return void
 		 */
-		private function __construct() {
+		private function __construct()
+		{
 				
 		}
-
 		/**
 		 * Singleton fonksiyonu
 		 *
 		 * @access public
 		 * @return object
 		 */
-		public static function & classCache() {
+		public static function & classCache()
+		{
 				if (!self::$_instance) {
 						self::$_instance = new FluxCapacitor();
 				}
 				return self::$_instance;
 		}
-
 		/**
 		 * Baslangic ve bitis tarihleri veriliyor
 		 */
-		public function setValues($values) {
+		public function setValues($values)
+		{
 				if ($values['startDateTime'] != NULL)
 						$this->_startDateTime = $values['startDateTime'];
 				if ($values['limitDateTime'] != NULL)
@@ -65,47 +67,46 @@ class FluxCapacitor {
 				$this->_lectureList = NULL;
 				$this->_holidayLectureList = NULL;
 		}
-
 		/**
 		 * Baslangic ve bitis tarihleri arasindaki
 		 * hafta sayisini dondurur
 		 * 
 		 * @return string int
 		 */
-		public function getWeekDiff() {
+		public function getWeekDiff()
+		{
 				return getDateTimeDiff($this->_limitDateTime, $this->_startDateTime, 'w');
 		}
-
 		/**
 		 * istenen sinif koduna gore sinif ders sayisini dondur
 		 * 
 		 * @return string int
 		 */
-		public function getDayTimeCount() {
+		public function getDayTimeCount()
+		{
 				$Classroom = School::classCache()->getClassroom($this->_classroomCode);
 				return $Classroom->getDayTimeCount();
 		}
-
 		/**
 		 * istenilen sinifin baslangic tarihini dondurur
 		 * 
 		 * @return string int
 		 */
-		public function getStartDate() {
+		public function getStartDate()
+		{
 				$Classroom = School::classCache()->getClassroom($this->_classroomCode);
 				return $Classroom->getInfo('startDate');
 		}
-
 		/**
 		 * istenilen sinifin baslangic tarihini dondurur
 		 * 
 		 * @return string int
 		 */
-		public function getStartDayTimeKey() {
+		public function getStartDayTimeKey()
+		{
 				$Classroom = School::classCache()->getClassroom($this->_classroomCode);
 				return findKeyValueInArray($Classroom->getDayTimeList(), 'code', $Classroom->getInfo('startDayTime'));
 		}
-
 		/**
 		 * verilen tarih ve saat araliklarina gore
 		 * tatil gunlerini karsilastirarak
@@ -114,7 +115,8 @@ class FluxCapacitor {
 		 * 
 		 * @return array
 		 */
-		public function getHolidayLectureList() {
+		public function getHolidayLectureList()
+		{
 				if ($this->_holidayLectureList == NULL) {
 
 						$holidayList = School::classCache()->getHolidayList();
@@ -214,22 +216,22 @@ class FluxCapacitor {
 				}
 				return $this->_holidayLectureList;
 		}
-
 		/**
 		 * belirlenen tarihler arasindaki 
 		 * ders sayisini donduren metot
 		 * 
 		 * @return string int
 		 */
-		public function getLectureCount() {
+		public function getLectureCount()
+		{
 				return count($this->getLecture());
 		}
-
 		/**
 		 * verilen tarihte ders varsa
 		 * dersin durumunu döndüren metot
 		 */
-		public function getLecture($array = NULL) {
+		public function getLecture($array = NULL)
+		{
 				if ($this->_lectureList == NULL) {
 
 						$Classroom = School::classCache()->getClassroom($this->_classroomCode);
@@ -384,12 +386,12 @@ class FluxCapacitor {
 						return $this->_lectureList;
 				}
 		}
-
 		/**
 		 * verilen tarihler arasina denk gelen
 		 * tatillerin listesini donduren metot
 		 */
-		public function getIntersectedHolidayList() {
+		public function getIntersectedHolidayList()
+		{
 				$holidayList = School::classCache()->getHolidayList();
 
 				if ($holidayList != null) {
@@ -417,5 +419,4 @@ class FluxCapacitor {
 				}
 				return $intersectedHolidayList;
 		}
-
 }

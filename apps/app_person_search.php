@@ -3,6 +3,7 @@
  * classautomate - app_person_search
  * 
  * @author Bulent Gercek <bulentgercek@gmail.com>
+ * @package ClassAutoMate
  */
 $Db = Db::classCache();
 $School = School::classCache();

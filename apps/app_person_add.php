@@ -3,6 +3,7 @@
  * classautomate - app_person_add
  * 
  * @author Bulent Gercek <bulentgercek@gmail.com>
+ * @package ClassAutoMate
  */
 /**
  * sorgu alanini goster
