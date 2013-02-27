@@ -1,0 +1,37 @@
+{
+	"classautomate":{
+		"description":"ClassAutoMate Debugger",
+		
+		"classes":{
+			"PageGenerateTimer":true,
+			"Accountant":true,
+			"ArrayCache":false,
+			"Asistant":false,
+			"Changes":false,
+			"Classroom":false,
+			"Cleaner":false,
+			"Db":false,
+			"DbBase":false,
+			"DbSqlStrings":false,
+			"Execute":false,
+			"GlobalVar":false,
+			"Holiday":false,
+			"History":false,
+			"SendToDb":false,
+			"Instructor":false,
+			"Login":false,
+			"MakeList":false,
+			"PaneControl":false,
+			"Person":false,
+			"Program":false,
+			"Rollcall":false,
+			"Saloon":false,
+			"School":false,
+			"Session":false,
+			"Setting":false,
+			"Student":false,
+			"Start":false,
+			"Tab":false
+		}
+	}
+}

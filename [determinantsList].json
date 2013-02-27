@@ -1,0 +1,23 @@
+{
+	"classautomate":{
+		"description":"ClassAutoMate Kayit Edilecek Degisiklikler Listesi",
+		
+		"tables":{
+			"person":[
+				"status",
+				"classroom",
+				"payment",
+				"paymentPeriod"
+			],
+			"classroom":[
+				"status",
+				"instructor",
+				"instructorPayment",
+				"instructorPaymentPeriod",
+				"asistant",
+				"asistantPayment",
+				"asistantPaymentPeriod"
+			]
+		}
+	}
+}

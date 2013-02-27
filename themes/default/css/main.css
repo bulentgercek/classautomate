@@ -1,0 +1,1249 @@
+/**
+ * site geneli
+ */
+body {
+	margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; text-align:left;
+}
+body,td,th {
+	font-family: Verdana, Helvetica, sans-serif; font-size: 12px; font-weight: normal; color: black;
+}
+/**
+ * ana tablo
+ */
+#mainTable {
+	width:955px;
+	border-collapse:collapse;
+	margin-left:auto; 
+	margin-right:auto;
+}
+#mainTable td {
+	padding:0px;
+	/**border: 1px solid #FF0000;*/
+}
+/**
+ * genel ulasim tablosu
+ */
+#mainGAccessTable {
+	width:100%;
+	height:65px;
+	border-collapse:collapse;
+}
+#mainGAccessTable #listDiv {
+	position: relative; 
+	left: -30px;
+}
+#mainGAccessTable #searchDiv {
+	position: relative; 
+	left: -20px;
+}
+/**
+ * tab tablosu
+ */
+#mainCenterTopTable {
+	width:100%;
+	border-collapse:collapse;
+}
+/**
+ * panel kontrol dugmesi alani
+ */
+#mainCenterTopTable td.paneControl {
+	width:190px;
+}
+/**
+ * tab tablosu
+ */
+#mainTabTable {
+	border-collapse:collapse;
+	padding:0px;
+}
+#mainTabTable td {
+	padding:0px;
+}
+/**
+ * main_header tablolari
+ */
+#mainHeader {
+	text-align:center;
+	width: 100%;
+	border-collapse: collapse;
+}
+#mainHeader tr.top {
+	height: 82px;
+	background-image:url('../images/top_back.gif');
+	border-left: 1px solid #C8C8C8;
+	border-right: 1px solid #C8C8C8;
+	border-bottom: 2px solid #ffb13b;
+}
+#mainHeader tr.forms {
+	height: 60px;
+}
+#mainHeader #peopleListLine {
+	float:left;
+	min-height: 35px;
+	margin-right:20px;
+	margin-bottom:20px;
+}
+/**
+ * centerArea Tablosu
+ */
+#mainCenterAreaTable {
+	border-collapse: collapse;
+	width: 100%;
+}
+/**
+ * centerArea Tablosu Page TD
+ */
+#mainCenterAreaTable td.page {
+	vertical-align:top;
+	background-color:#FFFAEC;
+	border-left: 1px solid #C8C8C8;
+	border-right: 1px solid #C8C8C8;
+	border-bottom: 2px solid #ffb13b;
+}
+/**
+ * centerArea Tablosu Panel TD
+ */
+#mainCenterAreaTable td.paneDivTd {
+	width: 200px;
+	vertical-align:top;
+}
+/**
+ * gunluk isler panosu
+ */
+#mainCenterAreaTable #paneDiv {
+	width:200px;
+	overflow:hidden; 
+	background-color: #FFFFFF;
+}
+/**
+ * 	footer alanı
+ */
+#mainFooter {
+	text-align:center;
+}
+/**
+ * 	accountant
+ */
+#accountantMain {
+    width: 100%;
+    border: 1px;
+}
+#accountantMain #filters {
+	width:200px;
+	float:left;
+	text-align:right;
+	padding-right:15px;
+	margin-bottom: 30px;
+	border-right: 1px dashed #ffb13b;
+}
+#accountantMain #filtersFormLine {
+	min-height: 35px;
+	margin-bottom:20px;
+}
+#accountantMain #filtersHeader {
+	border-bottom: 1px dashed gray;
+	line-height: 150%;
+	margin-left:10px;
+	text-align:right;
+}
+#accountantMain #header {
+	border-bottom: 1px dashed #ffb13b;
+	line-height: 150%;
+	margin-bottom:10px;
+	margin-right:10px;
+	margin-left:10px;
+}
+#accountantMain #headerFormsDisplay {
+	text-align:left;
+	line-height: 200%;
+}
+#accountantMain #headerListsDisplay {
+	text-align:left;
+	line-height: 150%;
+}
+#accountantMain #accountantCenter {
+	margin: 10px;
+	margin-left: 215px;
+	padding-left: 20px;
+	background-color: #FF0000;
+	border-left: 1px dashed #ffb13b;
+}
+#accountantMain #formsDisplay {
+	float: left;
+	min-height: 50px;
+	padding-bottom: 20px;
+	border-bottom: 1px dashed #ffb13b;
+}
+#accountantMain #listsDisplay {
+	float: left;
+	width: 100%;
+	margin-top: 10px;
+}
+#accountantMain #list {
+	margin-right:30px;
+	margin-bottom:50px;
+}
+#accountantMain #formLine {
+	float:left;
+	min-height: 35px;
+	margin-right:20px;
+	margin-bottom:20px;
+}
+#accountantMain #space {
+	position:absolute;
+	margin-top:30px;
+	margin-left:100px;
+}
+#accountantMain #filters label {
+    text-align:right;
+}
+#accountantMain #filters input {
+    min-width:65px;
+    margin-right:0px;
+}
+#accountantMain #filters select {
+    margin-top:5px;
+    margin-bottom:5px;
+}
+#accountantMain #filtersSubmitArea {
+	margin-top:20px;
+	margin-right: -10px;
+}
+#accountantMain #accountantCenter label {
+    min-width:75px;
+    margin-top:8px;
+    float:left;
+    text-align:left;
+}
+#accountantMain #accountantCenter input {
+    min-width:150px;
+}
+#accountantMain #accountantCenter select {
+	min-width: 150px;
+    float:left;
+}
+#accountantMain #studentListLine {
+	float:left;
+	min-height: 35px;
+	margin-right:20px;
+	margin-bottom:20px;
+}
+#accountantMain #personnelListLine {
+	float:left;
+	min-height: 35px;
+	margin-right:20px;
+	margin-bottom:20px;
+}
+#accountantMain #classroomListLine {
+	float:left;
+	min-height: 35px;
+	margin-right:20px;
+	margin-bottom:20px;
+}
+#accountantMain .pop-up {
+	display: none;
+	position: absolute;
+	padding: 20px;
+	background: #e5eaff;
+	color: #000000;
+	border: 1px solid #69c;
+}
+#accountantMain .trigger {
+	font-weight: bold;
+	color: #69C;
+}
+#accountantMain #trigger:hover {
+	font-weight: bold;
+	color: #7f0912;
+}
+#accountantMain #trigger:visited {
+	font-weight: bold;
+	color: #69C;
+}
+#accountantMain #submitArea {
+	margin-top:1px;
+	float:left;
+	text-align:left;
+}
+/**
+ * sinif listesi
+ */
+#contentMain {
+    width: 100%;
+    border: 1px;
+    margin-top:20px;
+}
+#contentMain #form {
+	margin: 20px;
+}
+#contentMain #list, #note {
+	border-top: 1px dashed #ffb13b;
+	margin-left:30px;
+	margin-right:30px;
+	margin-bottom:30px;
+}
+#contentMain #sbyRoomlist {
+	margin-left:30px;
+	margin-right:30px;
+	margin-bottom:30px;
+}
+#contentMain #info {
+	margin-left:30px;
+	margin-right:30px;
+}
+#contentMain #header {
+	text-align:left;
+	line-height: 250%;
+}
+#contentMain #formLine {
+	float:left;
+	min-height: 35px;
+	margin-right:20px;
+	margin-bottom:20px;
+}
+#contentMain #space {
+	position:absolute;
+	margin-top:30px;
+	margin-left:100px;
+}
+#contentMain label {
+	float:left;
+    min-width:85px;
+    margin-top:8px;
+    text-align:left;
+}
+#contentMain #text {
+	float:left;
+    min-width:95px;
+    margin-top:8px;
+    margin-left:10px;
+    margin-right:30px;
+    text-align:left;
+}
+#contentMain #noteAreaContainer {
+    width: 75%;
+    margin:5px 0;
+    padding:3px;
+}
+#contentMain #notes {
+	float:left;
+	max-width:100%;
+	border:1px solid #999999;
+    width:98%;
+    margin:5px 0;
+    padding:1%;
+}
+#contentMain #submitArea {
+	margin-left:15px;
+	float:left;
+	text-align:left;
+}
+#contentMain form#emptyClassroomForm a#submit  {
+	margin-top:10px;
+	margin-left:-15px;
+}
+#contentMain form#freezeClassroomForm a#submit  {
+	margin-top:10px;
+	margin-left:-15px;
+}
+#contentMain form#unFreezeClassroomForm a#submit  {
+	margin-top:10px;
+	margin-left:-15px;
+}
+/**
+ * 	classroom
+ */
+#classroomMain {
+    width: 100%;
+    border: 1px;
+}
+#classroomMain #form {
+	margin: 20px;
+}
+#classroomMain #list {
+	border-top: 1px dashed #ffb13b;
+	margin-left:30px;
+	margin-right:30px;
+	margin-bottom:50px;
+}
+#classroomMain #header {
+	text-align:left;
+	line-height: 250%;
+}
+#classroomMain #formLine {
+	float:left;
+	min-height: 35px;
+	margin-right:20px;
+	margin-bottom:20px;
+}
+#classroomMain #space {
+	position:absolute;
+	margin-top:30px;
+	margin-left:100px;
+}
+#classroomMain label {
+    min-width:95px;
+    margin-top:8px;
+    float:left;
+    text-align:left;
+}
+#classroomMain input {
+    min-width:20px;
+    float:left;
+}
+#classroomMain select {
+    max-width:120px;
+    float:left;
+}
+#classroomMain #endTime #startTime {
+	width: 20px;
+}
+#classroomMain #submitArea {
+	margin-top:1px;
+	float:left;
+	text-align:left;
+}
+/**
+ * 	classroom update
+ */
+#classroomUpdateMain {
+    width: 100%;
+    border: 1px;
+}
+
+#classroomUpdateMain #back {
+	width:145px;
+	float:left;
+	text-align:right;
+	margin-left:10px;
+}
+
+#classroomUpdateMain #form {
+	margin-left: 160px;
+	border-left: 1px dashed #ffb13b;
+	margin-top:20px;
+	margin-bottom:20px;
+}
+	#classroomUpdateMain #formInner {
+		margin-left:15px;
+		margin-right:15px;
+		/**border: 1px solid #00FF00;*/
+	}
+	#classroomUpdateMain #header {
+		text-align:left;
+		margin-left:20px;
+		line-height: 250%;
+	}
+	#classroomUpdateMain #formLine {
+		margin-bottom: 20px;
+		text-align: left;
+		/**border: 1px solid #000000;*/
+		min-height: 40px;
+	}
+	#classroomUpdateMain #warningArea {
+		/**border: 1px solid #FF0000;*/
+	}
+	#classroomUpdateMain #dayTimeArea {
+		padding-bottom: 10px;
+		border-bottom: 1px solid #FF0000;
+	}
+	#classroomUpdateMain label {
+		color:#666699;
+	    min-width:130px;
+	    max-width:130px;
+	    text-align:left;
+	}
+	#classroomUpdateMain input {
+		vertical-align:middle;
+	}
+	#classroomUpdateMain select {
+    	max-width:120px;
+	}
+	#classroomUpdateMain #sliderContainer {
+		float:left;
+	}
+	#classroomUpdateMain #slider {
+    	margin-left:10px; 
+    	margin-top:8px;
+    	width: 150px;
+	}
+	#classroomUpdateMain #payment {
+		float:left;
+	}
+	#classroomUpdateMain #termLimit {
+
+	}
+	#classroomUpdateMain #termLimitTable {
+		border-top: 1px solid #FF0000;
+		border-bottom: 1px solid #FF0000;
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+
+#classroomUpdateMain #space {
+	position:absolute;
+	margin-top:30px;
+	margin-left:100px;
+}
+
+#classroomUpdateMain #endTime #startTime {
+	width: 20px;
+}
+
+#classroomUpdateMain #submitArea {
+	margin-bottom:40px;
+	float:left;
+	text-align:left;
+}
+/**
+ * 	holiday
+ */
+#holidayMain {
+    width: 100%;
+    border: 1px;
+}
+#holidayMain #form {
+	margin: 20px;
+	border-bottom: 1px dashed #ffb13b;
+}
+#holidayMain #list {
+	margin-left:30px;
+	margin-right:30px;
+	margin-bottom:50px;
+}
+#holidayMain #header {
+	text-align:left;
+	line-height: 250%;
+}
+#holidayMain #formLine {
+	float:left;
+	height: 30px;
+	margin-right:20px;
+	margin-bottom:20px;
+}
+#holidayMain #personnel {
+	clear:left;
+	float:left;
+	border: 1px solid #ffb13b;
+	height: 30px;
+	padding:10px;
+	margin-right:20px;
+	margin-bottom:20px;
+}
+#holidayMain #custom, #holidayMain #classroom {
+	clear:left;
+	float:left;
+	border: 1px solid #ffb13b;
+	height: 30px;
+	padding:10px;
+	margin-right:20px;
+	margin-bottom:20px;
+}
+#holidayMain #space {
+	position:absolute;
+	margin-top:30px;
+	margin-left:100px;
+}
+#holidayMain label {
+    min-width:95px;
+    margin-top:8px;
+    float:left;
+    text-align:left;
+}
+#holidayMain input {
+    min-width:100px;
+    float:left;
+}
+#holidayMain #submitArea {
+	margin-top:1px;
+	float:left;
+	text-align:left;
+}
+/**
+ * 	holiday update
+ */
+#holidayUpdateMain {
+    width: 100%;
+    border: 1px;
+}
+#holidayUpdateMain #back {
+	width:145px;
+	float:left;
+	text-align:right;
+	margin-left:10px;
+}
+#holidayUpdateMain #form {
+	margin: 20px;
+	margin-left: 160px;
+	border-left: 1px dashed #ffb13b;
+}
+#holidayUpdateMain #list {
+	border-top: 1px dashed #ffb13b;
+	margin-left:30px;
+	margin-right:30px;
+	margin-bottom:50px;
+}
+#holidayUpdateMain #header {
+	text-align:left;
+	line-height: 250%;
+	margin-left:20px;
+	margin-bottom:20px;
+}
+#holidayUpdateMain #formLine {
+	float:left;
+	min-height: 35px;
+	margin-left:20px;
+	margin-right:20px;
+	margin-bottom:20px;
+}
+#holidayUpdateMain #personnel {
+	clear:left;
+	float:left;
+	border: 1px solid #ffb13b;
+	height: 30px;
+	padding:10px;
+	margin-right:20px;
+	margin-bottom:20px;
+}
+#holidayUpdateMain #custom, #holidayUpdateMain #classroom {
+	clear:left;
+	float:left;
+	border: 1px solid #ffb13b;
+	height: 30px;
+	padding:10px;
+	margin-right:20px;
+	margin-bottom:20px;
+}
+#holidayUpdateMain #space {
+	position:absolute;
+	margin-top:30px;
+	margin-left:100px;
+}
+#holidayUpdateMain label {
+    min-width:95px;
+    margin-top:8px;
+    float:left;
+    text-align:left;
+}
+#holidayUpdateMain input {
+    min-width:100px;
+    float:left;
+}
+#holidayUpdateMain #submitArea {
+	margin-top:1px;
+	float:left;
+	text-align:left;
+}
+/**
+ * kisi arama listesi
+ */
+#personSearch {
+    width: 100%;
+    border: 1px;
+    margin-top:20px;
+}
+#personSearch #form {
+	margin: 20px;
+	border-bottom: 1px dashed #ffb13b;
+}
+#personSearch #list {
+	margin-left:30px;
+	margin-right:30px;
+	margin-bottom:50px;
+}
+#personSearch #header {
+	text-align:left;
+	line-height: 250%;
+}
+/**
+ * 	program
+ */
+#programMain {
+    width: 100%;
+    border: 1px;
+}
+#programMain #form {
+	margin: 20px;
+	border-bottom: 1px dashed #ffb13b;
+}
+#programMain #list {
+	margin-left:30px;
+	margin-right:30px;
+	margin-bottom:50px;
+}
+#programMain #header {
+	text-align:left;
+	line-height: 250%;
+}
+#programMain #formLine {
+	float:left;
+	height: 30px;
+	margin-right:20px;
+	margin-bottom:20px;
+}
+#programMain #space {
+	position:absolute;
+	margin-top:30px;
+	margin-left:100px;
+}
+#programMain label {
+    min-width:95px;
+    margin-top:8px;
+    float:left;
+    text-align:left;
+}
+#programMain input {
+    min-width:100px;
+    float:left;
+}
+#programMain #submitArea {
+	margin-top:1px;
+	float:left;
+	text-align:left;
+}
+/**
+ * 	program update
+ */
+#programUpdateMain {
+    width: 100%;
+    border: 1px;
+}
+#programUpdateMain #back {
+	width:145px;
+	float:left;
+	text-align:right;
+	margin-left:10px;
+}
+#programUpdateMain #form {
+	margin: 20px;
+	margin-left: 160px;
+	border-left: 1px dashed #ffb13b;
+}
+#programUpdateMain #list {
+	border-top: 1px dashed #ffb13b;
+	margin-left:30px;
+	margin-right:30px;
+	margin-bottom:50px;
+}
+#programUpdateMain #header {
+	text-align:left;
+	line-height: 250%;
+	margin-left:20px;
+	margin-bottom:20px;
+}
+#programUpdateMain #formLine {
+	clear:right;
+	min-height: 35px;
+	margin-left:20px;
+	margin-right:20px;
+	margin-bottom:20px;
+}
+#programUpdateMain #space {
+	position:absolute;
+	margin-top:30px;
+	margin-left:100px;
+}
+#programUpdateMain label {
+    min-width:95px;
+    margin-top:8px;
+    float:left;
+    text-align:left;
+}
+#programUpdateMain input {
+    min-width:20px;
+    float:left;
+}
+#programUpdateMain select {
+    max-width:120px;
+    float:left;
+}
+#programUpdateMain #endTime #startTime {
+	width: 20px;
+}
+#programUpdateMain #submitArea {
+	margin-top:1px;
+	float:left;
+	text-align:left;
+	margin-left:20px;
+	margin-bottom:40px;
+}
+/**
+ * 	person add
+ */
+#personAdd {
+    width: 100%;
+    border: 1px;
+}
+#personAdd #photo {
+	float:left;
+	margin:20px;
+}
+#personAdd #form {
+	margin-left: 160px;
+	border-left: 1px dashed #ffb13b;
+	margin-top:20px;
+	margin-bottom:20px;
+}
+	#personAdd #header {
+		text-align:left;
+		margin-left:20px;
+		line-height: 250%;
+	}
+	#personAdd #formLine {
+		min-height:40px;
+		margin-bottom:10px;
+		margin-left:20px;
+		text-align: left;
+	}
+	#personAdd #list {
+		margin-left:20px;
+		text-align:left;
+	}
+	#personAdd label {
+		color:#666699;
+		display:inline-block;
+	    min-width:130px;
+	    max-width:130px;
+	}
+	#personAdd input {
+		vertical-align:middle;
+	}
+	#personAdd textarea {
+	    vertical-align:middle;
+	}
+	#personAdd #submitArea {
+		clear:both;
+		margin-left:20px;
+		text-align:left;
+	}
+/**
+ * yoklama
+ */
+#rollcallMain {
+    width: 100%;
+    border: 1px;
+}
+#rollcallMain #form {
+	margin: 20px;
+}
+#rollcallMain #list {
+	margin-left:30px;
+	margin-right:30px;
+	margin-bottom:50px;
+}
+#rollcallMain #header {
+	text-align:left;
+	line-height: 250%;
+}
+#rollcallMain #formLine {
+	float:left;
+	height: 30px;
+	margin-right:20px;
+	margin-bottom:20px;
+}
+#rollcallMain #noActiveClassroom, #noStudent {
+	clear: both;
+	border:1px solid red;
+	margin-top: 20px;
+	margin-left: 30px;
+	margin-right: 30px;
+	margin-bottom: 50px;
+	padding: 30px;
+	text-align: center;
+}
+#rollcallMain #space {
+	position:absolute;
+	margin-top:30px;
+	margin-left:100px;
+}
+#rollcallMain #weekDayText {
+    min-width:75px;
+    margin-top:8px;
+    float:left;
+    text-align:left;
+}
+#rollcallMain label {
+    min-width:95px;
+    margin-top:8px;
+    float:left;
+    text-align:left;
+}
+#rollcallMain input {
+    min-width:100px;
+    float:left;
+}
+#rollcallMain #submitArea {
+	margin-top:1px;
+	float:left;
+	text-align:left;
+}
+/**
+ * 	saloon
+ */
+#saloonMain {
+    width: 100%;
+    border: 1px;
+}
+#saloonMain #form {
+	margin: 20px;
+	border-bottom: 1px dashed #ffb13b;
+}
+#saloonMain #list {
+	margin-left:30px;
+	margin-right:30px;
+	margin-bottom:50px;
+}
+#saloonMain #header {
+	text-align:left;
+	line-height: 250%;
+}
+#saloonMain #formLine {
+	float:left;
+	height: 30px;
+	margin-right:20px;
+	margin-bottom:20px;
+}
+#saloonMain #space {
+	position:absolute;
+	margin-top:30px;
+	margin-left:100px;
+}
+#saloonMain label {
+    min-width:95px;
+    margin-top:8px;
+    float:left;
+    text-align:left;
+}
+#saloonMain input {
+    min-width:100px;
+    float:left;
+}
+#saloonMain #submitArea {
+	margin-top:1px;
+	float:left;
+	text-align:left;
+}
+/**
+ * 	saloon update
+ */
+#saloonUpdateMain {
+    width: 100%;
+    border: 1px;
+}
+#saloonUpdateMain #back {
+	width:145px;
+	float:left;
+	text-align:right;
+	margin-left:10px;
+}
+#saloonUpdateMain #form {
+	margin: 20px;
+	margin-left: 160px;
+	border-left: 1px dashed #ffb13b;
+}
+#saloonUpdateMain #list {
+	border-top: 1px dashed #ffb13b;
+	margin-left:30px;
+	margin-right:30px;
+	margin-bottom:50px;
+}
+#saloonUpdateMain #header {
+	text-align:left;
+	line-height: 250%;
+	margin-left:20px;
+	margin-bottom:20px;
+}
+#saloonUpdateMain #formLine {
+	clear:right;
+	min-height: 35px;
+	margin-left:20px;
+	margin-right:20px;
+	margin-bottom:20px;
+}
+#saloonUpdateMain #space {
+	position:absolute;
+	margin-top:30px;
+	margin-left:100px;
+}
+#saloonUpdateMain label {
+    min-width:95px;
+    margin-top:8px;
+    float:left;
+    text-align:left;
+}
+#saloonUpdateMain input {
+    min-width:20px;
+    float:left;
+}
+#saloonUpdateMain select {
+    max-width:120px;
+    float:left;
+}
+#saloonUpdateMain textarea {
+	float:left;
+	height:100px;
+	margin-bottom:20px;
+}
+#saloonUpdateMain #endTime #startTime {
+	width: 20px;
+}
+#saloonUpdateMain #submitArea {
+	margin-top:1px;
+	float:left;
+	clear:left;
+	text-align:left;
+	margin-left:20px;
+	margin-bottom:40px;
+}
+
+/**
+ * apps main
+ */
+#appsMainTopTable {
+	width:100%;
+	border-spacing: 10px;
+	border-collapse:separate;
+}
+#appsMainTopTable td, th {
+	border-width: 0px;
+	padding: 20px;
+	border-style: inset;
+	border-color: gray;
+}
+/**
+ * welcome table
+ */
+#welcomeMainTable {
+	width:100%;
+	border-collapse:separate;
+	padding:20px;
+	text-align:left;
+}
+/**
+ * genel dekorasyonlar
+ */
+.header {
+	font-size: 1.15em;
+	font-weight: bold;
+}
+.lowHeader {
+	font-size: 0.9em;
+}
+.size14 {
+	font-size: 105%;
+}
+.bold {
+	font-weight: bold;
+}
+.noDecor {
+	text-decoration: none;
+}
+.black {
+	color: black;
+}
+.red {
+	color: #7f0912;
+}
+.pureRed {
+	color: #F00;
+}
+.brown {
+	color: #d58501;
+}
+.gray {
+	color: #8d8d8d;
+}
+.noDecor:link {
+	text-decoration: none;
+}
+.noDecor:visited {
+	text-decoration: none;
+}
+.noDecor:hover {
+	text-decoration: none;
+}
+.noDecor:active {
+	opacity: 0.5;
+	text-decoration: none;
+}
+.alphaHalf {
+	opacity: 0.5;
+}
+.alphaQuarter {
+	opacity: 0.25;
+}
+#clear {
+	clear:both;
+}
+#clearLeft {
+	clear:left;
+}
+#clearRight {
+	clear:right;
+}
+/**
+ * genel golge
+ */
+.shadow {
+	-moz-box-shadow: 2px 3px 4px 1px #DDD;
+	-webkit-box-shadow: 2px 3px 4px 1px #DDD;
+	box-shadow: 2px 3px 4px 1px #DDD;
+	/* For IE 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#DDDDDD')";
+	/* For IE 5.5 - 7 */
+	filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#DDDDDD')";
+	behavior: url('../js/PIE.htc');
+}
+/**
+ * temel select alani
+ */
+.gSelect {
+	position: relative;
+	padding: 4px 4px 4px 4px;
+}
+/**
+ * temel text input alani
+ */
+.gTextInput {
+	position: relative;
+	margin-left:5px;
+	margin-right:5px;
+	padding: 4px 4px 4px 4px;
+}
+/**
+ * temel hatali text input alani
+ */
+.gTextInputNeedFix {
+	position: relative;
+	padding: 4px 4px 4px 4px;
+	background-color:#FF0000;
+	color:#FFF;
+}
+/**
+ * zorunlu alan
+ */
+.requested:after{
+	color:#F00;
+	content:" *";
+}
+.requestedWarning {
+	color:#F00;
+}
+/**
+ * genel liste hucre kenar bosluklari 	
+ */
+#listTable td {
+	padding: 10px;
+}
+/**
+ * listing (orj : newspaper-b)
+ *
+ * @author R. Christie <seven.rchristie@gmail.com>
+ */
+#listing {
+	margin-top:10px;
+	width: 480px;
+	text-align: left;
+	border-collapse: collapse;
+	border: 1px solid #69c;
+}
+#listing table {
+	border-collapse: collapse;	
+	width:100%;
+}
+#listing th {
+	padding: 15px 10px 10px 10px;
+	font-weight: normal;
+	font-size: 14px;
+	color: #7f0912;
+}
+#listing tbody {
+	background: #e8edff;
+}
+#listing td {
+	padding: 10px;
+	color: #669;
+	border-top: 1px dashed #fff;
+}
+#listing tbody tr:hover td {
+	color: #339;
+	background: #d0dafd;
+}
+/**
+ * listingW100 (orj : newspaper-b)
+ *
+ * @author R. Christie <seven.rchristie@gmail.com>
+ */
+#listingW100 {
+	width: 100%;
+	text-align: left;
+	border: 1px solid #69c;
+}
+#listingW100 table {
+	border-collapse: collapse;	
+	width:100%;
+}
+#listingW100 th {
+	padding: 15px 10px 10px 10px;
+	font-weight: normal;
+	font-size: 14px;
+	color: #7f0912;
+}
+#listingW100 tbody {
+	background: #e8edff;
+}
+#listingW100 td {
+	padding: 10px;
+	color: #669;
+	border-top: 1px dashed #fff;
+}
+#listingW100 tbody tr:hover {
+	color: #339;
+	background: #d0dafd;
+}
+#listingW100 .columnProcess {
+	width:80px;
+}
+/**
+ * listTableStarting (orj : newspaper-b)
+ *
+ * @author R. Christie <seven.rchristie@gmail.com>
+ */
+#listTableStarting {
+	width: 100%;
+	text-align: left;
+	border: 1px solid #F00;
+	border-collapse: collapse;
+}
+#listTableStarting td {
+	padding:10px;
+}
+#listTableStarting table {
+	border-collapse: collapse;	
+	width:100%;
+}
+#listTableStarting thead  {
+	background-color: #FFCC99;
+}
+#listTableStarting th {
+	padding: 15px 10px 10px 10px;
+	font-weight: normal;
+	font-size: 12px;
+	color: #7f0912;
+}
+#listTableStarting tbody {
+	background: #FFE6CC;
+}
+#listTableStarting tbody tr:hover {
+	color: #339;
+	background: #FFD6AD;
+}
+/* css for timepicker */
+.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+.ui-timepicker-div dl { text-align: left; }
+.ui-timepicker-div dl dt { height: 25px; margin-bottom: -25px; }
+.ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
+.ui-timepicker-div td { font-size: 90%; }
+.ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+
+

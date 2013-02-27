@@ -1,0 +1,55 @@
+/**
+ * 	tablesorter - Default tema css
+ */
+table.tablesorter {
+	width: 100%;
+	text-align: left;
+	border: 1px solid #69c;
+	border-collapse: collapse;
+}
+table.tablesorter td {
+	/**border-top: 1px dashed #fff;*/
+	/*border: 1px solid #FF0000;*/
+	color: #669;
+	padding:10px;
+}
+table.tablesorter #red {
+	background: #FFDDAA;
+}
+table.tablesorter #red:hover {
+	background: #FFD5A5;
+}
+table.tablesorter thead  {
+	background-color: #d3d8e0;
+}
+table.tablesorter thead tr .header {
+	background-image: url("../images/bg.gif");
+	background-repeat: no-repeat;
+	background-position: center right;
+	cursor: pointer;
+}
+table.tablesorter thead tr .headerSortUp {
+	background-image: url("../images/asc.gif");
+}
+table.tablesorter thead tr .headerSortDown {
+	background-image: url("../images/desc.gif");
+}
+table.tablesorter thead tr .headerSortDown, thead tr .headerSortUp {
+	background-color: #bbc4d0;
+}
+table.tablesorter th {
+	padding: 15px 10px 10px 10px;
+	font-weight: normal;
+	font-size: 12px;
+	color: #7f0912;
+}
+table.tablesorter tbody {
+	background: #e8edff;
+}
+table.tablesorter tbody tr:hover {
+	color: #339;
+	background: #d0dafd;
+}
+table.tablesorter .columnProcess {
+	width:80px;
+}

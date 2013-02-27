@@ -1,0 +1,78 @@
+/**
+ * site geneli
+ */
+body {
+	margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px; text-align:center;
+}
+body,td,th {
+	font-family: Verdana, Helvetica, sans-serif; font-size: 12px; font-weight: normal; color: black;
+}
+/**
+ * temel select alani
+ */
+.gSelect {
+	position: relative;
+	padding: 4px 4px 4px 4px;
+}
+/**
+ * temel text input alani
+ */
+.gTextInput {
+	position: relative;
+	padding: 4px 4px 4px 4px;
+}
+/**
+ * gizli submit dugmesi
+ */
+.submit {
+    /* background: transparent;*/
+    border: 0;
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+/**
+ * login tablosu
+ */
+#login-table {
+	margin: 10px;
+	width: 350px;
+	text-align: center;
+	border-collapse: collapse;
+	border-bottom: 3px solid #bb0f1c;
+}
+#login-table th {
+	font-size: 13px;
+	font-weight: bold;
+	padding: 8px;
+	background: #eeddbd;
+	border-top: 3px solid #ffb13b;
+	border-bottom: 1px solid #fff;
+	color: #bb0f1c;
+}
+#login-table td {
+	padding: 8px;
+	background: #f4eecf; 
+}
+#login-table #askArea {
+	margin-left:auto;
+	margin-right:auto;
+	position: relative;
+	border-collapse: collapse;
+	color: #669;
+}
+#login-table td.infoArea {
+	border-top: 2px dashed #eeddbd;
+	border-bottom: 2px dashed #eeddbd;
+	color: #bb0f1c;
+}
+#login-table td.username, td.password {
+	text-align:right;
+}
+#login-table td.usernameInput, td.passwordInput {
+	text-align:left;
+}
+.redText {
+	color: #7f0912;
+}
+
