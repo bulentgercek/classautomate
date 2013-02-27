@@ -2,7 +2,7 @@
 	"classautomate": {
 		"language_description": "English",
 		"index": {
-			"title": "Class Automation System - Sanat Kursları Otomasyon ve İşletme Sistemi / Automation and Management System for Art Courses / dans / dance / müzik / music / resim / art / finearts",
+			"title": "ClassAutoMate - Sanat Kursları Otomasyon ve İşletme Sistemi - Automation and Management System for Art Courses",
 			"description": "Sanat Kursları Otomasyon ve İşletme Sistemi - Automation and Management System for Art Courses",
 			"keywords": "dans, dance, art, academy, fine arts, music, müzik, automation, otomasyon, işletme, salsa, modern dans, contemporary, bale, ballet",
 			"css": "index.css",
@@ -33,7 +33,7 @@
 			"Saturday"
 		],
 		"main": {
-			"title": "Class Automation System - Sanat Kursları Otomasyon ve İşletme Sistemi - Automation and Management System for Art Courses - dans - dance - müzik - music - resim - art - finearts",
+			"title": "ClassAutoMate",
 			"css": "main.css",
 			"gplusButton_css": "gplus_button.css",
 			"tab_css": "tab.css",

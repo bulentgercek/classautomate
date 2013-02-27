@@ -2,7 +2,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 {$main_loginMeta}
 	
-<title>{$main_title}</title>
+<title>{$main_header_fullSchoolName} : {$main_title}</title>
 </head>
 <style type="text/css">
 	<!--

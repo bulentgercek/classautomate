@@ -4,7 +4,7 @@
 		
 		"classes":{
 			"PageGenerateTimer":true,
-			"Accountant":true,
+			"Accountant":false,
 			"ArrayCache":false,
 			"Asistant":false,
 			"Changes":false,
