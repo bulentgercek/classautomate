@@ -16,7 +16,13 @@
  *
  * @var const START_FUNCTION_FILE
  * @var const SMARTY_CLASS_FILE
+ * 
+ * $ echo 'Last commit date: $Format:%cd$' > LAST_COMMIT
+ * $ echo "LAST_COMMIT export-subst" >> .gitattributes
+ * $ git add LAST_COMMIT .gitattributes
+ * $ git commit -am 'adding LAST_COMMIT file for archives'
  */
+
 define('START_FUNCTION_FILE', 'WEB-INF/classes/Start.function.php');
 define('SMARTY_CLASS_FILE', 'WEB-INF/lib/smarty/libs/Smarty.class.php');
 /**
