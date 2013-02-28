@@ -29,18 +29,16 @@ if ($_GET['code'] != 'sbyRoom') {
 		/**
 		 * Ogrenci son borc durumu cagiriliyor
 		 */
-		foreach ((array) $studentList as $studentValue) {
-				$Student = $School->getStudent($studentValue['code']);
-				$cashStatus = $Student->getCashStatus($Classroom, 'studentDebt');
-				$studentDebtList[] = array(	'debtInfo' => $cashStatus['info'],
-																		'nextPaymentDate'=>$Student->getNextPaymentDateByClassroom($Classroom),
-																		'remainingDebt' => $cashStatus['value']);
+		foreach ((array) $studentList as $studentKey => $studentValue) {
+				$cashStatus = $School->getStudent($studentValue['code'])->getCashStatus($Classroom, 'studentDebt');
+				$studentDebtList[] = array('debtInfo' => $cashStatus['info'], 'remainingDebt' => $cashStatus['value']);
 		}
 } else {
 		$classroomInfo = array('code' => 'sbyRoom');
 }
 
 setExtSmartyVars("classroomInfo", $classroomInfo);
+
 $studentList = merge2Array($studentList, (array) $studentDebtList);
 setExtSmartyVars("studentList", $studentList);
 

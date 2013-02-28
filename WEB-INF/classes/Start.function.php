@@ -1,10 +1,9 @@
 <?php
 /**
- * Otomatik Sınıf Yükleyen Metot
+ * Start Metodlari
  *
  * @author Bulent Gercek <bulentgercek@gmail.com>
  * @package ClassAutoMate
- * @subpackage StartFunctions
  */
 function __autoload($className)
 {
@@ -19,10 +18,7 @@ function __autoload($className)
 /**
  * javascript ALERT fonksiyonu
  * $value degeri herhangibir string olabiliyor
- * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
+ *
  * @return echo javascript alert
  */
 function alert($value = "classautomate.com ©2011")
@@ -35,7 +31,6 @@ function alert($value = "classautomate.com ©2011")
  * 
  * @author Bulent Gercek <bulentgercek@gmail.com>
  * @package ClassAutoMate
- * @subpackage StartFunctions
  */
 class PageGenerateTimer
 {
@@ -88,10 +83,6 @@ class PageGenerateTimer
 
 /**
  * stdClass obje arrayini normal diziye ceviren metot
- * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
  */
 function stdToArray($stdArray)
 {
@@ -103,10 +94,6 @@ function stdToArray($stdArray)
 }
 /**
  * debugger metodu
- * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
  */
 function debugger($className)
 {
@@ -130,9 +117,6 @@ function debugger($className)
 /**
  * [log].txt dosyasini okuyarak parse eden fonksiyon
  *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
  * @return string sistem versiyon numarasi
  */
 function systemVersion()
@@ -160,9 +144,6 @@ function systemVersion()
 /**
  * text dosyasi okuyan fonksiyon
  *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
  * @param string text dosyasi ismi
  * @return array dosya icerigi
  */
@@ -184,11 +165,7 @@ function readTxtFile($fileName)
 }
 /**
  * tarih fonksiyonu
- * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
+ *
  * @return array
  */
 function mainDate()
@@ -242,10 +219,6 @@ function mainDate()
 /**
  * haftanın günleri için array
  *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @return array
  */
 function daysOfWeek()
@@ -272,10 +245,6 @@ function daysOfWeek()
 /**
  * verilen numaraya gore haftanın gününü
  * seçilen dile göre döndüren metot
- * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
  */
 function getWeekDayAsText($value)
 {
@@ -284,10 +253,6 @@ function getWeekDayAsText($value)
 }
 /**
  * gunun tarihini yıl-ay-gun olarak dondurur
- * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
  */
 function getDateAsFormatted()
 {
@@ -295,10 +260,6 @@ function getDateAsFormatted()
 }
 /**
  * cagirildigi anin zaman bilgisini saat:dakika:saniye formatinda dondurur
- * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
  */
 function getTimeAsFormatted()
 {
@@ -306,10 +267,6 @@ function getTimeAsFormatted()
 }
 /**
  * gunun tarihini yıl-ay-gun saat:dakika:saniye olarak dondurur
- * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
  */
 function getDateTimeAsFormatted()
 {
@@ -317,10 +274,6 @@ function getDateTimeAsFormatted()
 }
 /**
  * tarihe gore yılın kaçıncı haftası oldugunu donduren metot
- * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
  */
 function getWeekNumberOfDate($date = 'now')
 {
@@ -347,10 +300,6 @@ function getWeekNumberOfDate($date = 'now')
  * Output :
  * array { [3]=>"carsamba" [4]=>"persembe" [5]=>"cuma" [6]=>"cumartesi" [0]=>"pazar" [1]=>"pazartesi" [2]=>"sali" }
  *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @return array
  */
 function sortArrayByArray($array, $orderArray, $orderBy = null)
@@ -379,10 +328,6 @@ function sortArrayByArray($array, $orderArray, $orderBy = null)
 /**
  * yeni smarty degiskenleri atamasi icin fonksiyon
  *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @return void
  */
 function setSmartyVars($smartyObject, $xmlObject, $xmlHeader)
@@ -410,10 +355,6 @@ function setSmartyVars($smartyObject, $xmlObject, $xmlHeader)
 /**
  * extra smarty degiskenleri atama fonksiyonu
  *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @return string
  */
 function setExtSmartyVars($var, $value)
@@ -423,10 +364,6 @@ function setExtSmartyVars($var, $value)
 /**
  * smarty'nin temel klasorleri belirleniyor
  *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @return void
  */
 function setSmartyFolders($smartyObject)
@@ -439,10 +376,6 @@ function setSmartyFolders($smartyObject)
 /**
  * uygulamalarin listesini dondur
  *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @return array
  */
 function getAppList()
@@ -478,10 +411,6 @@ function getAppList()
 /**
  * fonksiyonun cagirildigi andaki dosyanin adini verir
  *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @return string
  */
 function getScriptName()
@@ -492,11 +421,7 @@ function getScriptName()
 		return $scriptName = substr($scriptFullName, 0, (strlen($scriptFullName) - 4));
 }
 /**
- * URL adresini döndüren metot
- * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
+ *
  */
 function getFullUrl()
 {
@@ -506,10 +431,6 @@ function getFullUrl()
 /**
  * sayfa tazelemeyi ac/kapat
  *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @return void
  */
 function setRefresh($state)
@@ -520,10 +441,6 @@ function setRefresh($state)
 /**
  * sayfa tazelemenin durumunu dondur
  *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @return boolean
  */
 function getRefresh()
@@ -534,10 +451,6 @@ function getRefresh()
 /**
  * site ziyaretcisinin ip adresini dondurur
  *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @return string
  */
 function getClientIp()
@@ -545,6 +458,7 @@ function getClientIp()
 		/**
 		 * $_SERVER global'inden veriler
 		 * degiskenlere atiliyor
+		 *
 		 */
 		$remoteAddr = $_SERVER['REMOTE_ADDR'];
 		$httpXForwardedFor = $_SERVER['HTTP_X_FORWARDED_FOR'];
@@ -573,10 +487,6 @@ function getClientIp()
  * site ziyaretcisinin lokal saatini verir
  * parametre : %H saat, %M dakika, %S saniyedir
  *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @param string formatted
  * @return string
  */
@@ -593,10 +503,6 @@ function getClientDateTime($format = '%Y-%m-%d / %H:%M:%S')
 /**
  * md5 converter
  *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @return string
  */
 function md5Converter($string)
@@ -606,10 +512,6 @@ function md5Converter($string)
 /**
  * random sayi ureten fonksiyon
  *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @param string
  * @return string
  */
@@ -641,10 +543,6 @@ function genNumber($values = '100000,999999')
  * ayni key sayisindaki 2 listeyi
  * key'lerine gore birlestir
  *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @return array
  * @author andyidol at gmail dot com / PHP.NET
  */
@@ -661,10 +559,6 @@ function merge2Array($arrayList1, $arrayList2)
 /**
  * iki farkli array'i birlestirir
  * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @return array
  */
 function directMerge2Array($arrayList1, $arrayList2)
@@ -676,10 +570,6 @@ function directMerge2Array($arrayList1, $arrayList2)
  * iki farkli array'i birlestirir ve 
  * aynı veriden birden cok kayit varsa temizler
  * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @return array
  */
 function merge2ArrayAndClean($arrayList1, $arrayList2)
@@ -690,10 +580,6 @@ function merge2ArrayAndClean($arrayList1, $arrayList2)
 /**
  * iki array arasindaki farki array olarak donduren metod
  *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @param array $array1, $array2
  * @return array
  */
@@ -716,7 +602,6 @@ function arrayDifference($array1, $array2)
  * 
  * @author Bulent Gercek <bulentgercek@gmail.com>
  * @package ClassAutoMate
- * @subpackage StartFunctions
  */
 class SortArrayWithKey
 {
@@ -754,10 +639,6 @@ class SortArrayWithKey
  * istenilen key'in içerdiği değeri
  * array içerisinde ara
  *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @return boolean
  */
 function findKeyValueInArray($array, $baseKey, $findValue)
@@ -784,10 +665,6 @@ function findKeyValueInArray($array, $baseKey, $findValue)
  * verilen dizi icerisinde arar
  * ve anahtarini dondurur
  *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @return int
  */
 function findStringInArray($needle = null, $haystack_array = null, $skip = 0)
@@ -814,10 +691,6 @@ function findStringInArray($needle = null, $haystack_array = null, $skip = 0)
  * verilen dizi ve dizinin verilen KEY'leri icerisinde arar
  * ve sonucunu dizi olarak dondurur
  * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @return Array
  */
 function getArrayWithSearchInArray($needle, $haystack, $keys)
@@ -840,10 +713,6 @@ function getArrayWithSearchInArray($needle, $haystack, $keys)
 /**
  * arrayden istenilen veriyi oku
  * ve dizi olarak dondur
- * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
  * 
  * @return array
  */
@@ -884,10 +753,6 @@ function getFromArray($readResult, Array $intend)
 /**
  * son tablo kaydina ait numarayi bul ve yeni kayit uret
  *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @return int
  */
 function getNewTableCode(Array $params)
@@ -906,10 +771,6 @@ function getNewTableCode(Array $params)
 }
 /**
  * form isminden tablo ismi cikartan metot
- * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
  */
 function getFirstUpperCaseWord($string)
 {
@@ -920,10 +781,6 @@ function getFirstUpperCaseWord($string)
 /**
  * buyuk harfle baslayan kelimeleri
  * dizi haline getiren metot
- * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
  */
 function splitUpperCaseWords($string)
 {
@@ -932,12 +789,7 @@ function splitUpperCaseWords($string)
 /**
  * cagiran class'i donduren metot
  * 
- * @package ClassAutoMate
- * @subpackage StartFunctions
  * @author hamstar <https://gist.github.com/hamstar>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @return string
  */
 function getCallingClass()
@@ -958,10 +810,6 @@ function getCallingClass()
 /**
  * girilen tarihin haftanın
  * hangi günü olduğunu döndüren metot
- * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
  */
 function getWeekDayOfTheDate($date)
 {
@@ -970,10 +818,6 @@ function getWeekDayOfTheDate($date)
 /**
  * yeni transfer info tekniğine gore ayristirma yapan methot
  * sonucu direkt olarak string olarak gonderir
- * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
  * 
  * @param $definitionCode : tc, tf, tt
  * @param $array : POST veya Normal Array
@@ -994,12 +838,6 @@ function getTransferInfo($definitionCode, $array)
 }
 /**
  * tarihler arasindaki farki bulan metot
- * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
- * @return String
  */
 function getDateTimeDiff($firstValue, $secondValue, $format, $debug = false)
 {
@@ -1052,9 +890,6 @@ function getDateTimeDiff($firstValue, $secondValue, $format, $debug = false)
  * echo date("m/d/Y", $start). " - ".date("m/d/Y", $end). " has ". countDays(0, $start, $end). " Sundays";
  * Outputs something like: 09/28/2010 - 10/19/2010 has 3 Sundays.
  * 
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @author Phil Mccull : philprogramming.blogspot.com
  * @edited Bulent Gercek <bulentgercek@gmail.com>
  */
@@ -1078,29 +913,15 @@ function getWeekDayCount($day, $start, $end)
 /**
  * tarihler arasi istenilen gune gore tarih listesi cikaran metot
  * not : getWeekDayCount() ile birlikte calisir
- * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
- * @return Array
  */
 function getWeekDays($day, $start, $end)
 {
 		$dayNames = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
 		$dateList = array();
-		
+
 		$count = getWeekDayCount($day, $start, $end);
-		/**
-		 * saymaya basladigimiz gun Pazar ise bitis gunu pazara denk geldiginde 
-		 * GLITCH oluyor bir gun eksik cikiyor. Bende baslangic ve bitis pazar olursa
-		 * 1 gun fazladan say dedim;) Bakalim calisacak mi?
-		 */
-		if (getWeekDayOfTheDate($end) == 0 && getWeekDayOfTheDate($end) == 0) {
-				//var_dump($start . ' ve ' . $end .  ' gunlerinin ikisi de Pazara denk geldi arttirdim! ');
-				$count++;
-		}
-				
+		//var_dump($day . " (" . $dayNames[$day] . ")- " . $start . " - " . $end . " WeekDayCount : " . $count);
+
 		if ($count >= 1) {
 				$startDate = new DateTime($start);
 
@@ -1122,10 +943,6 @@ function getWeekDays($day, $start, $end)
  * array uzerinde istenilen anahtardaki 
  * bilgiyi dondurur (explode ve getFromArray icin yaptim)
  * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
  * @return array
  */
 function getArrayKeyValue($array, $key)
@@ -1134,43 +951,25 @@ function getArrayKeyValue($array, $key)
 }
 /**
  * sinifin periodluk ders sayisini hesaplayip donduren metot
- * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
- * @return String
  */
 function getLectureCountByPeriod($Classroom, $period)
 {
 		switch ($period) {
-				case 'weekly': $result = 1;	break;
-				case 'monthly': $result = 4; break;
-				case 'monthly3': $result = 6;	break;
-				case 'monthly6': $result = 24; break;
-				case 'monthly12': $result = 48;	break;
-				case 'yearly': $result = 48; break;
+				case 'weekly': $result = 1;
+						break;
+				case 'monthly': $result = 4;
+						break;
+				case 'monthly3': $result = 6;
+						break;
+				case 'monthly6': $result = 24;
+						break;
+				case 'monthly12': $result = 48;
+						break;
+				case 'yearly': $result = 48;
+						break;
 		}
+
 		return $Classroom->getDayTimeCount() * $result;
-}
-/**
- * array'i istenilen key'den baslayarak yeniden diziyoruz
- * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
- * @return Array
- */
-function arrayRotate($array, $rotateCount = 1)
-{
-	$currentCount = 1;
-	while($currentCount <= $rotateCount) {
-		$final = array_shift($array);
-		array_push($array, $final);
-		$currentCount++;
-	}
-	return $array;
 }
 ?>
 

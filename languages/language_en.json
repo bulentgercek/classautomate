@@ -63,7 +63,6 @@
 			"jqueryChosen_js": "chosen.jquery.js",
 			"jquerySelectBoxes_js": "jquery.selectBoxes.js",
 			"pageGeneratedSeconds" : "Page generation time",
-			"try": "Trying Lecture",
 			"noPaymentAndOut": "No Payment and Out of The Classroom",
 			"minPaymentRestrictWarning": "Minimum Payment Needed Warning",
 			"newTermNegativeBalanceNoPaymentAndOut": "Negative Balance from Previous Payment Term and Out of the Classroom",

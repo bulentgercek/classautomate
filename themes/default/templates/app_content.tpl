@@ -179,7 +179,7 @@
 	                    {foreach from=$studentList key=myid item=item}
 	                    <tr>
 	                    	<td>{$item.name} {$item.surname}</td>
-	                        <td>{$item.remainingDebt}  {$currency} ({$main_{$item.debtInfo}})</td>
+	                        <td>{$item.remainingDebt}  {$currency}</td>
 	                        <td style="width:150px">{$item.nextPaymentDate}</td>
 	                        <td style="width:30px">
 	                            <div class="buttons"><a id="processEdit_{$item.code}" class="button editLeft alphaQuarter" href="main.php?tab=app_person_update&code={$item.code}&position=student">&nbsp;</a></div>                                      
@@ -257,7 +257,7 @@
 	                    {foreach from=$studentList key=myid item=item}
 	                    <tr>
 	                    	<td>{$item.name} {$item.surname}</td>
-	                        <td>{$item.remainingDebt}  {$currency} ({$item.debtInfo})</td>
+	                        <td>{$item.remainingDebt}  {$currency}</td>
 	                        <td style="width:150px">{$item.nextPaymentDate}</td>
 	                        <td style="width:30px">
 	                            <div class="buttons"><a id="processEdit_{$item.code}" class="button editLeft alphaQuarter" href="main.php?tab=app_person_update&code={$item.code}&position=student">&nbsp;</a></div>                                      

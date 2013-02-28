@@ -65,7 +65,7 @@ class Accountant
 		 * 
 		 * @return array
 		 */
-		public function getIncomeExpenseList($type = null, Student $Student = null, Classroom $Classroom = null)
+		public function getIncomeExpenseList($type = null, $Student = null, $Classroom = null)
 		{
 				$list = School::classCache()->getIncomeExpenseList();
 				$intend = array();
@@ -85,7 +85,7 @@ class Accountant
 		/**
 		 * bir ogrencinin gelirler toplamini dondur
 		 */
-		public function getStudentIncomesTotal(Student $Student, Classroom $Classroom = null)
+		public function getStudentIncomesTotal($Student, $Classroom = null)
 		{
 				$list = $this->getIncomeExpenseList('+', $Student, $Classroom);
 				$totalValue = 0;
@@ -201,7 +201,7 @@ class Accountant
 		 * 
 		 * @return array
 		 */
-		public function getStudentCashFlowByClassroom(Student $Student, Classroom $Classroom)
+		public function getStudentCashFlowByClassroom($Student, $Classroom)
 		{
 				/**
 				 * ogrenci kod numarasi
@@ -372,8 +372,7 @@ class Accountant
 																$studentDebtInfo = 'minPaymentRestrictWarning';
 																if (debugger('Accountant'))
 																		var_dump('------------------> Durum : Ders saati dolmadi. Beklenecek.');
-																$isCalculate = false;
-																//return $cashResult;
+																return $cashResult;
 														}
 												}
 										}
@@ -413,8 +412,7 @@ class Accountant
 																		$studentDebtInfo = 'newTermNegativeBalanceMinPaymentRestrictWarning';
 																		if (debugger('Accountant'))
 																				var_dump('------------------> Durum : Diger Donemler / İlk Ders ve Eksi Bakiye-> Ders saati dolmadi. Beklenecek.');
-																		$isCalculate = false;
-																		//return $cashResult;
+																		return $cashResult;
 																}
 														}
 														/**
@@ -449,8 +447,7 @@ class Accountant
 																$studentDebtInfo = 'newTermMinPaymentRestrictWarning';
 																if (debugger('Accountant'))
 																		var_dump('------------------> Durum : Diger Donemler -> Ders saati dolmadi. Beklenecek.');
-																$isCalculate = false;
-																//return $cashResult;
+																return $cashResult;
 														}
 												}
 										}
@@ -509,7 +506,7 @@ class Accountant
 		 * 
 		 * @return Array
 		 */
-		public function getStudentCashStatus(Student $Student, Classroom $Classroom, $type = null)
+		public function getStudentCashStatus($Student, $Classroom, $type = null)
 		{
 				$cashFlowList = $this->getStudentCashFlowByClassroom($Student, $Classroom);
 				$cashStatus['info'] = $cashFlowList[count($cashFlowList) - 1]['studentDebtInfo'];
@@ -533,51 +530,5 @@ class Accountant
 				$result['info'] = $cashStatus['info'];
 
 				return $result;
-		}
-		/**
-		 * İstenilen tarihten başlayarak, öğrencinin sıradaki ödeme tarihini
-		 * ders günü olarak döndüren metot
-		 * 
-		 * @return Date String
-		 */
-		public function getStudentNextPaymentDate(Student $Student, Classroom $Classroom, $startDate = NULL)
-		{
-				$currentDateTimeLectureList = $Student->getLectureDetailsByClassroom($Classroom);
-				$paymentTermLectureNo = $currentDateTimeLectureList[count($currentDateTimeLectureList)-1]['paymentTermLectureNo'];
-				$paymentPeriod = $currentDateTimeLectureList[count($currentDateTimeLectureList)-1]['paymentPeriod'];
-				$paymentTermLectureTotal = getLectureCountByPeriod($Classroom, $paymentPeriod);
-				var_dump($currentDateTimeLectureList);
-				var_dump($paymentTermLectureTotal);
-				
-				if ($paymentTermLectureNo == $paymentTermLectureTotal)
-						$futureLectureCount = 1;
-				if ($paymentTermLectureNo < $paymentTermLectureTotal)
-						$futureLectureCount = ($paymentTermLectureTotal - $paymentTermLectureNo) + 1;
-
-				$futureLectureCount -= $Classroom->getStartDayTimeKey();
-				
-				//if (debugger('Accountant'))
-						var_dump($futureLectureCount . ' ders ilerideki tarihi bulursak o NEXT PAYMENT DATE dir');
-
-				$todaysDayTimeCode  = $currentDateTimeLectureList[count($currentDateTimeLectureList)-1]['dayTimeCode'];
-				$todaysDate  = $currentDateTimeLectureList[count($currentDateTimeLectureList)-1]['date'];
-				$dayTimeList = $Classroom->getDayTimeList();
-				$todayDayTimeCodeKey = findKeyValueInArray($dayTimeList, 'code', $todaysDayTimeCode);
-				$rotatedDayTimeList = arrayRotate($dayTimeList, $todayDayTimeCodeKey);
-
-				$dayNames = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
-				$dateList = array();
-				$todaysTime = getFromArray($dayTimeList, array('code'=>$todaysDayTimeCode));
-				$todaysDateTime = $todaysDate . ' ' . $todaysTime[0]['time'];
-
-				$startDate = new DateTime($todaysDateTime);
-
-				foreach ($rotatedDayTimeList as $value) {
-						if ($value['code'] != $todaysDayTimeCode) {
-								$startDate->modify('next ' . $dayNames[$value['day']]);
-								$dateList[] = $startDate->format("Y-m-d");
-						}
-				}
-				return end($dateList);
 		}
 }
