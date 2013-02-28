@@ -67,7 +67,6 @@ class Classroom
 				if ($key == NULL) {
 						return $this->_info;
 				} else {
-
 						if ($key == "dayTime")
 								return $this->_info["dayTime"];
 						else
@@ -121,9 +120,17 @@ class Classroom
 		/**
 		 * sinifin dayTime listesi
 		 */
-		public function getDayTimeList()
+		public function getDayTimeList($isDeleteOn = false)
 		{
 				$dayTimeList = $this->getInfo('dayTime');
+
+				/**
+				 * eger silinmis dayTime'lari da listelemek istemiyor
+				 * ve dolayisiyla $isDeleteOn = false demis ise;
+				 */
+				if (!$isDeleteOn) {
+						$dayTimeList = getFromArray($dayTimeList, array('status' => 'notUsed||used'));
+				}
 
 				if ($dayTimeList != null) {
 						foreach ($dayTimeList as $key => $row) {
@@ -141,9 +148,16 @@ class Classroom
 		 * 
 		 * @return int
 		 */
-		public function getDayTimeCount()
+		public function getDayTimeCount($isDeleteOn = false)
 		{
-				return count($this->getInfo('dayTime'));
+				$dayTimeList = $this->getInfo('dayTime');
+
+				if (!$isDeleteOn) {
+						$dayTimeList = getFromArray($dayTimeList, array('status' => 'notUsed||used'));
+				} else {
+						$dayTimeList = $dayTimeList;
+				}
+				return count($dayTimeList);
 		}
 		/**
 		 * gun/saat nesnesini dondur
@@ -154,7 +168,7 @@ class Classroom
 		{
 				/** sinif gun/saat bilgilerini icinde barindiran nesne yaratiliyor */
 				if ($dayTimeCode != null) {
-						$dayTimeList = $this->getDayTimeList();
+						$dayTimeList = $this->getDayTimeList(true);
 						$result = findKeyValueInArray($dayTimeList, "code", $dayTimeCode);
 
 						if ($result != -1) {
@@ -196,7 +210,7 @@ class Classroom
 
 				foreach ($studentList as $key => $value) {
 						$Student = School::classCache()->getStudent($value['code']);
-						$Student->removeFromClassroom($this->_code);
+						$Student->removeFromClassroom($this);
 				}
 		}
 		/**
@@ -218,10 +232,11 @@ class Classroom
 
 				$lectureCount = $Fc->getLectureCount() - count($Fc->getHolidayLectureList());
 
-				if ($type == 'holiday')
+				if ($type == 'holiday') {
 						return count($Fc->getHolidayLectureList());
-				else
+				} else {
 						return $lectureCount;
+				}
 		}
 		/**
 		 * sınıfın tatil durumunu dondur
@@ -319,6 +334,17 @@ class Classroom
 		{
 				$studentList = School::classCache()->getPeopleList("student");
 				return getFromArray($studentList, array("classroom" => $this->_code));
+		}
+		/**
+		 * istenilen sinifin baslangic gununun dayTimeList key kodunu dondurur
+		 * 
+		 * @return string int
+		 */
+		public function getStartDayTimeKey()
+		{
+				$startDayTime = $this->getInfo('startDayTime');
+				return findKeyValueInArray($this->getDayTimeList(), 'code', $startDayTime);
+				
 		}
 		/**
 		 * nesne tablo adini dondurur
