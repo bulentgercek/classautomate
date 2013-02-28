@@ -389,6 +389,8 @@ class FluxCapacitor
 		/**
 		 * verilen tarihler arasina denk gelen
 		 * tatillerin listesini donduren metot
+		 * 
+		 * @return Array
 		 */
 		public function getIntersectedHolidayList()
 		{
@@ -418,5 +420,17 @@ class FluxCapacitor
 						}
 				}
 				return $intersectedHolidayList;
+		}
+		
+		/**
+		 * Verilen tarihlerin ve cikan sonucların ötesinde
+		 * geleceğe dair verilen ders sayısı kadar ileriye git
+		 * ve ders/tarih bilgilerini döndür
+		 * 
+		 * @return Array
+		 */
+		public function getNextLectures($lectureCount)
+		{
+				
 		}
 }
