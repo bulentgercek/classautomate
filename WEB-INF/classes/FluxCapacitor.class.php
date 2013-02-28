@@ -230,7 +230,7 @@ class FluxCapacitor
 		 * verilen tarihte ders varsa
 		 * dersin durumunu döndüren metot
 		 */
-		public function getLecture($array = NULL)
+		public function getLecture(Array $array = NULL)
 		{
 				if ($this->_lectureList == NULL) {
 
