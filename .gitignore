@@ -26,3 +26,4 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 /nbproject/private/
+/WEB-INF/lib/smarty/templates_c/
