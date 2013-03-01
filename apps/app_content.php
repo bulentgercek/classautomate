@@ -32,9 +32,22 @@ if ($_GET['code'] != 'sbyRoom') {
 		foreach ((array) $studentList as $studentValue) {
 				$Student = $School->getStudent($studentValue['code']);
 				$cashStatus = $Student->getCashStatus($Classroom, 'studentDebt');
-				$studentDebtList[] = array(	'debtInfo' => $cashStatus['info'],
-																		'nextPaymentDate'=>$Student->getNextPaymentDateByClassroom($Classroom),
-																		'remainingDebt' => $cashStatus['value']);
+				/**
+				 * Diziyi başlatıyoruz, sonrasında öğrencinin borc durumu kontrol ediliyor
+				 * uygun sartlarda ise örneğin halen sınıftan atılmamış ise:)
+				 * devam ediyoruz, aksi takdirde NONE göndereceğiz.
+				 */
+				$intend = array(	'debtInfo' => $cashStatus['info'], 'remainingDebt' => $cashStatus['value']);
+				switch ($cashStatus['info']) {
+						case 'debtInfo_3':
+						case 'debtInfo_5':
+						case 'debtInfo_8':
+								$intend['nextPaymentDate'] = Setting::classCache()->getInterfaceLang()->classautomate->main->none;
+								break;
+						default:
+								$intend['nextPaymentDate'] = $Student->getNextPaymentDateByClassroom($Classroom);
+				}
+				$studentDebtList[] = $intend;
 		}
 } else {
 		$classroomInfo = array('code' => 'sbyRoom');

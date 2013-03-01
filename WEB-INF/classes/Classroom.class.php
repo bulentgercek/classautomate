@@ -183,7 +183,7 @@ class Classroom
 						}
 				} else {
 						$NewDayTime = new DayTime($this->_code);
-						$CurrentDayTime = $this->_DayTime[$NewDayTime->getInfo['code']] = $NewDayTime;
+						$CurrentDayTime = $this->_DayTime[$NewDayTime->getInfo('code')] = $NewDayTime;
 				}
 				return $CurrentDayTime;
 		}

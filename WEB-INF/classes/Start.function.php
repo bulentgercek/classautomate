@@ -1133,6 +1133,27 @@ function getArrayKeyValue($array, $key)
 		return($array[$key]);
 }
 /**
+ * sinifin period carpanini dondur
+ * 
+ * @author Bulent Gercek <bulentgercek@gmail.com>
+ * @package ClassAutoMate
+ * @subpackage StartFunctions
+ * 
+ * @return String
+ */
+function getPeriodMultiplier($period)
+{
+		switch ($period) {
+				case 'weekly': $result = 1;	break;
+				case 'monthly': $result = 4; break;
+				case 'monthly3': $result = 6;	break;
+				case 'monthly6': $result = 24; break;
+				case 'monthly12': $result = 48;	break;
+				case 'yearly': $result = 48; break;
+		}
+		return $result;
+}
+/**
  * sinifin periodluk ders sayisini hesaplayip donduren metot
  * 
  * @author Bulent Gercek <bulentgercek@gmail.com>
@@ -1143,15 +1164,7 @@ function getArrayKeyValue($array, $key)
  */
 function getLectureCountByPeriod($Classroom, $period)
 {
-		switch ($period) {
-				case 'weekly': $result = 1;	break;
-				case 'monthly': $result = 4; break;
-				case 'monthly3': $result = 6;	break;
-				case 'monthly6': $result = 24; break;
-				case 'monthly12': $result = 48;	break;
-				case 'yearly': $result = 48; break;
-		}
-		return $Classroom->getDayTimeCount() * $result;
+		return $Classroom->getDayTimeCount() * getPeriodMultiplier($period);
 }
 /**
  * array'i istenilen key'den baslayarak yeniden diziyoruz

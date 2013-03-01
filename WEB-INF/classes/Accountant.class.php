@@ -248,7 +248,7 @@ class Accountant
 						 * borc bilgisi varsayilan olarak CONTINUE kabul ediliyor
 						 * ve payment degiskeni yaratiliyor (FIXED icin sifirlanacak)
 						 */
-						$studentDebtInfo = 'continue';
+						$studentDebtInfo = 'debtInfo_1'; //continue
 						$payment = $value['payment'];
 
 						/**
@@ -325,7 +325,7 @@ class Accountant
 								 */
 								if ($value['paymentPeriod'] == 'fixed') {
 										if ($value['paymentTermLectureNo'] >= 1) {
-												$studentDebtInfo = 'fixedPaymentWarning';
+												$studentDebtInfo = 'debtInfo_10'; //fixedPaymentWarning
 												if (debugger('Accountant'))
 														var_dump('------------------> Durum : Sabit Ödeme Dönemi Ödeme Uyarısı');
 										}
@@ -344,7 +344,7 @@ class Accountant
 												 * ...ve ogrenci sinifin ilk dersine giriyorsa bu ders DENEME dersi kabul edilecek
 												 */
 												if ($lectureNo == 1) {
-														$studentDebtInfo = 'try';
+														$studentDebtInfo = 'debtInfo_2'; //try
 														$isCalculate = false;
 														if (debugger('Accountant'))
 																var_dump('------------------> Durum : Deneme Dersi (İlk ders)');
@@ -359,7 +359,7 @@ class Accountant
 														 * ...ve ders saati doldu ise ogrenci siniftan cikarilacak;
 														 */
 														if (getDateTimeDiff(getTimeAsFormatted(), $endTime, 'type') > 0) {
-																$studentDebtInfo = 'noPaymentAndOut';
+																$studentDebtInfo = 'debtInfo_3'; //noPaymentAndOut
 																$isCalculate = false;
 																$isOut = true;
 																if (debugger('Accountant'))
@@ -369,7 +369,7 @@ class Accountant
 														 * ...ve ders saati daha dolmadi ise uyari verilecek, ders saati bitimi beklenecek
 														 */
 														else {
-																$studentDebtInfo = 'minPaymentRestrictWarning';
+																$studentDebtInfo = 'debtInfo_4'; //minPaymentRestrictWarning
 																if (debugger('Accountant'))
 																		var_dump('------------------> Durum : Ders saati dolmadi. Beklenecek.');
 																$isCalculate = false;
@@ -400,7 +400,7 @@ class Accountant
 																 * ...ders sonu gelmisse siniftan cikartma islemini onayla
 																 */
 																if (getDateTimeDiff(getTimeAsFormatted(), $endTime, 'type') > 0) {
-																		$studentDebtInfo = 'newTermNegativeBalanceNoPaymentAndOut';
+																		$studentDebtInfo = 'debtInfo_5'; //newTermNegativeBalanceNoPaymentAndOut
 																		$isCalculate = false;
 																		$isOut = true;
 																		if (debugger('Accountant'))
@@ -410,7 +410,7 @@ class Accountant
 																 * ...ders sonu gelmemisse uyari yap, hesapla ve derse girebilsin
 																 */
 																else {
-																		$studentDebtInfo = 'newTermNegativeBalanceMinPaymentRestrictWarning';
+																		$studentDebtInfo = 'debtInfo_6'; //newTermNegativeBalanceMinPaymentRestrictWarning
 																		if (debugger('Accountant'))
 																				var_dump('------------------> Durum : Diger Donemler / İlk Ders ve Eksi Bakiye-> Ders saati dolmadi. Beklenecek.');
 																		$isCalculate = false;
@@ -421,7 +421,7 @@ class Accountant
 														 * ...ve onceki donemden eksi bakiye ile gelmemis ise;
 														 */
 														else {
-																$studentDebtInfo = 'newTermPaymentWarning';
+																$studentDebtInfo = 'debtInfo_7'; //newTermPaymentWarning
 																if (debugger('Accountant'))
 																		var_dump('------------------> Durum : Diger Donemler -> İlk ders odeme gelmedi. Uyari yapildi, hesaplama yapildi. Derse girise izin verildi.');
 														}
@@ -436,7 +436,7 @@ class Accountant
 														 * ...ve ders sonu gelmisse siniftan cikartma islemini onayla
 														 */
 														if (getDateTimeDiff(getTimeAsFormatted(), $endTime, 'type') > 0) {
-																$studentDebtInfo = 'newTermNoPaymentAndOut';
+																$studentDebtInfo = 'debtInfo_8'; //newTermNoPaymentAndOut
 																$isCalculate = false;
 																$isOut = true;
 																if (debugger('Accountant'))
@@ -446,7 +446,7 @@ class Accountant
 														 * ...ve ders sonu gelmemisse uyari yap, hesapla ve derse girebilsin
 														 */
 														else {
-																$studentDebtInfo = 'newTermMinPaymentRestrictWarning';
+																$studentDebtInfo = 'debtInfo_9'; //newTermMinPaymentRestrictWarning
 																if (debugger('Accountant'))
 																		var_dump('------------------> Durum : Diger Donemler -> Ders saati dolmadi. Beklenecek.');
 																$isCalculate = false;
@@ -540,44 +540,54 @@ class Accountant
 		 * 
 		 * @return Date String
 		 */
-		public function getStudentNextPaymentDate(Student $Student, Classroom $Classroom, $startDate = NULL)
+		public function getStudentNextPaymentDate(Student $Student, Classroom $Classroom)
 		{
-				$currentDateTimeLectureList = $Student->getLectureDetailsByClassroom($Classroom);
-				$paymentTermLectureNo = $currentDateTimeLectureList[count($currentDateTimeLectureList)-1]['paymentTermLectureNo'];
-				$paymentPeriod = $currentDateTimeLectureList[count($currentDateTimeLectureList)-1]['paymentPeriod'];
-				$paymentTermLectureTotal = getLectureCountByPeriod($Classroom, $paymentPeriod);
-				var_dump($currentDateTimeLectureList);
-				var_dump($paymentTermLectureTotal);
-				
-				if ($paymentTermLectureNo == $paymentTermLectureTotal)
-						$futureLectureCount = 1;
-				if ($paymentTermLectureNo < $paymentTermLectureTotal)
-						$futureLectureCount = ($paymentTermLectureTotal - $paymentTermLectureNo) + 1;
+				/**
+				 * Flux
+				 */
+				$Fc = FluxCapacitor::classCache();
+				/**
+				 * degiskenler hazirlaniyor
+				 */
+				$lectureList = $Student->getLectureDetailsByClassroom($Classroom);
+				$finalKey = count($lectureList) - 1;
 
-				$futureLectureCount -= $Classroom->getStartDayTimeKey();
-				
-				//if (debugger('Accountant'))
+				$lectureNo = $lectureList[$finalKey]['paymentTermLectureNo'];
+				$paymentPeriod = $lectureList[$finalKey]['paymentPeriod'];
+				$lectureTotal = getLectureCountByPeriod($Classroom, $paymentPeriod);
+				$periodMultiplier = getPeriodMultiplier($paymentPeriod);
+				/**
+				 * eger odeme donemi ders gunu son gunde ise;
+				 */
+				if ($lectureNo == $lectureTotal)
+						$futureLectureCount = 1;
+				/**
+				 * eger odeme donemi ders gunu son ders gunune gelmedi ise;
+				 */
+				if ($lectureNo < $lectureTotal)
+						$futureLectureCount = ($lectureTotal - $lectureNo) + 1;
+
+				if (debugger('Accountant'))
 						var_dump($futureLectureCount . ' ders ilerideki tarihi bulursak o NEXT PAYMENT DATE dir');
 
-				$todaysDayTimeCode  = $currentDateTimeLectureList[count($currentDateTimeLectureList)-1]['dayTimeCode'];
-				$todaysDate  = $currentDateTimeLectureList[count($currentDateTimeLectureList)-1]['date'];
-				$dayTimeList = $Classroom->getDayTimeList();
-				$todayDayTimeCodeKey = findKeyValueInArray($dayTimeList, 'code', $todaysDayTimeCode);
-				$rotatedDayTimeList = arrayRotate($dayTimeList, $todayDayTimeCodeKey);
-
-				$dayNames = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
-				$dateList = array();
-				$todaysTime = getFromArray($dayTimeList, array('code'=>$todaysDayTimeCode));
-				$todaysDateTime = $todaysDate . ' ' . $todaysTime[0]['time'];
-
-				$startDate = new DateTime($todaysDateTime);
-
-				foreach ($rotatedDayTimeList as $value) {
-						if ($value['code'] != $todaysDayTimeCode) {
-								$startDate->modify('next ' . $dayNames[$value['day']]);
-								$dateList[] = $startDate->format("Y-m-d");
-						}
-				}
-				return end($dateList);
+				$startDate = getDateTimeAsFormatted();
+				$DateTime = new DateTime($startDate);
+				$endDate = $DateTime->modify('+' . $periodMultiplier . ' week')->format('Y-m-d H:i:s');
+				/**
+				 * Flux'a zaman dilimlerini tanimliyoruz
+				 */
+				$Fc->setValues( array(  'startDateTime'=>$startDate,
+																'limitDateTime'=>$endDate) );
+				/**
+				 * Flux'dan gerekli diziyi cekiyoruz,
+				 * Bu arada cektiğimiz zaman aralığından tatil varsa,
+				 * Tatil ders sayısı kadar eklemeyi de ihmal etmiyoruz.
+				 */
+				$holidayLectureCount = count($Fc->getHolidayLectureList());
+				$nextPaymentLectureList = $Fc->getLecture(NULL, $futureLectureCount + $holidayLectureCount);
+				$nextPaymentLecture = end($nextPaymentLectureList);
+				$nextPaymentDateTime = $nextPaymentLecture['date'] . ' ' . $Classroom->getDayTime($nextPaymentLecture['dayTimeCode'])->getInfo('time');
+				
+				return $nextPaymentDateTime;
 		}
 }

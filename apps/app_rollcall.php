@@ -159,7 +159,7 @@ foreach ((array)$Classrooms as $topValue) {
 						/**
 						 * ...tatil kaydindaki egitmen sinifin egitmeni midir?
 						 */
-						if ($listValue['infoCode'] == $Instructor->getInfo['code']) {
+						if ($listValue['infoCode'] == $Instructor->getInfo('code')) {
 								$lectureStatus = $listValue['lectureStatus'];
 								/**
 								 * ogretmenin izin gunu yerine baska bir egitmen giriyor mudur?

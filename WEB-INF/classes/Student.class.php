@@ -387,7 +387,7 @@ class Student extends Person
 		 */
 		public function getNextPaymentDateByClassroom(Classroom $Classroom)
 		{
-				return Accountant::classCache()->getStudentNextPaymentDate($this, $Classroom, getDateAsFormatted());
+				return Accountant::classCache()->getStudentNextPaymentDate($this, $Classroom);
 		}
 		/**
 		 * $_POST formda olup da database'de karsiligi olmayan

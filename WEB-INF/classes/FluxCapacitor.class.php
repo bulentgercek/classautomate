@@ -230,7 +230,7 @@ class FluxCapacitor
 		 * verilen tarihte ders varsa
 		 * dersin durumunu döndüren metot
 		 */
-		public function getLecture(Array $array = NULL)
+		public function getLecture(Array $array = NULL, $directLectureLimit = 0)
 		{
 				if ($this->_lectureList == NULL) {
 
@@ -305,38 +305,55 @@ class FluxCapacitor
 						 */
 						if ($maxCount) {
 								foreach ($lectureList as $key => $value) {
-										if ($key > $maxCount)
+										if ($key >= $maxCount)
 												unset($lectureList[$key]);
 								}
 						}
-
 						/**
+						 * ########## SINIFIN İLK DERSİ TARİHLER ARASINDA İSE ONDAN ÖNCEKİ SAATLERİ ÇIKART ##########
 						 * sinifin startDate ve startDateTime'i dikkate alarak duzenle
 						 */
 						$startDayTimeTime = $ClassroomDayTimeList[$this->getStartDayTimeKey()]['time'];
 						$startDate = $Classroom->getInfo('startDate');
 
 						/**
-						 * once cikarilacaklar listesini olustur
+						 * once cikarilacaklar listesini olustur (nonClasses)
 						 */
 						foreach ($ClassroomDayTimeList as $key => $value) {
 								if ($value['time'] < $startDayTimeTime)
-										$removeList[] = $value['code'];
+										$nonClasses[] = $value['code'];
 						}
 						/**
-						 * sonrada listedekileri listeden cikart
+						 * baslama dersi olmayan ilk dersleri
+						 * lecturlist'den cikaralım
 						 */
 						foreach ($lectureList as $key => $value) {
 								$expValue = explode('<+>', $value);
 								if ($expValue[0] == $startDate) {
-										foreach ((array) $removeList as $removeListValue) {
-												if ($removeListValue == $expValue[1])
+										foreach ((array) $nonClasses as $nonClassesValue) {
+												if ($nonClassesValue == $expValue[1])
 														unset($lectureList[$key]);
 										}
 								}
 						}
+						/**
+						 * unset sonrasi duzenleme
+						 */
 						$lectureList = array_values($lectureList);
-
+						/**
+						 * cikarilacaklar listesine limit otesindeki dersleri de ekleyelim
+						 * once limit belirlenmis mi ona bir bakalim
+						 */
+						if ($directLectureLimit) {
+								foreach ($lectureList as $key => $value) {
+										if ($key >= $directLectureLimit)
+												unset($lectureList[$key]);
+								}
+						}
+						/**
+						 * unset sonrasi yeniden duzenleme
+						 */
+						$lectureList = array_values($lectureList);
 						/**
 						 * tatil olan derslerin listesini al
 						 * ve son olarak ders listesine STATUS hanesi olarak isle
@@ -420,17 +437,5 @@ class FluxCapacitor
 						}
 				}
 				return $intersectedHolidayList;
-		}
-		
-		/**
-		 * Verilen tarihlerin ve cikan sonucların ötesinde
-		 * geleceğe dair verilen ders sayısı kadar ileriye git
-		 * ve ders/tarih bilgilerini döndür
-		 * 
-		 * @return Array
-		 */
-		public function getNextLectures($lectureCount)
-		{
-				
 		}
 }
