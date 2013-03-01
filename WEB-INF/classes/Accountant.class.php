@@ -550,44 +550,50 @@ class Accountant
 				 * degiskenler hazirlaniyor
 				 */
 				$lectureList = $Student->getLectureDetailsByClassroom($Classroom);
-				$finalKey = count($lectureList) - 1;
+				/**
+				 * en azindan bir ders yapilmis olmasi gerekiyor
+				 */
+				if ($lectureList) {
+						$finalKey = count($lectureList) - 1;
 
-				$lectureNo = $lectureList[$finalKey]['paymentTermLectureNo'];
-				$paymentPeriod = $lectureList[$finalKey]['paymentPeriod'];
-				$lectureTotal = getLectureCountByPeriod($Classroom, $paymentPeriod);
-				$periodMultiplier = getPeriodMultiplier($paymentPeriod);
-				/**
-				 * eger odeme donemi ders gunu son gunde ise;
-				 */
-				if ($lectureNo == $lectureTotal)
-						$futureLectureCount = 1;
-				/**
-				 * eger odeme donemi ders gunu son ders gunune gelmedi ise;
-				 */
-				if ($lectureNo < $lectureTotal)
-						$futureLectureCount = ($lectureTotal - $lectureNo) + 1;
+						$lectureNo = $lectureList[$finalKey]['paymentTermLectureNo'];
+						$paymentPeriod = $lectureList[$finalKey]['paymentPeriod'];
+						$lectureTotal = getLectureCountByPeriod($Classroom, $paymentPeriod);
+						$periodMultiplier = getPeriodMultiplier($paymentPeriod);
+						/**
+						 * eger odeme donemi ders gunu son gunde ise;
+						 */
+						if ($lectureNo == $lectureTotal)
+								$futureLectureCount = 1;
+						/**
+						 * eger odeme donemi ders gunu son ders gunune gelmedi ise;
+						 */
+						if ($lectureNo < $lectureTotal)
+								$futureLectureCount = ($lectureTotal - $lectureNo) + 1;
 
-				if (debugger('Accountant'))
-						var_dump($futureLectureCount . ' ders ilerideki tarihi bulursak o NEXT PAYMENT DATE dir');
+						if (debugger('Accountant'))
+								var_dump($futureLectureCount . ' ders ilerideki tarihi bulursak o NEXT PAYMENT DATE dir');
 
-				$startDate = getDateTimeAsFormatted();
-				$DateTime = new DateTime($startDate);
-				$endDate = $DateTime->modify('+' . $periodMultiplier . ' week')->format('Y-m-d H:i:s');
-				/**
-				 * Flux'a zaman dilimlerini tanimliyoruz
-				 */
-				$Fc->setValues( array(  'startDateTime'=>$startDate,
-																'limitDateTime'=>$endDate) );
-				/**
-				 * Flux'dan gerekli diziyi cekiyoruz,
-				 * Bu arada cektiğimiz zaman aralığından tatil varsa,
-				 * Tatil ders sayısı kadar eklemeyi de ihmal etmiyoruz.
-				 */
-				$holidayLectureCount = count($Fc->getHolidayLectureList());
-				$nextPaymentLectureList = $Fc->getLecture(NULL, $futureLectureCount + $holidayLectureCount);
-				$nextPaymentLecture = end($nextPaymentLectureList);
-				$nextPaymentDateTime = $nextPaymentLecture['date'] . ' ' . $Classroom->getDayTime($nextPaymentLecture['dayTimeCode'])->getInfo('time');
-				
+						$startDate = getDateTimeAsFormatted();
+						$DateTime = new DateTime($startDate);
+						$endDate = $DateTime->modify('+' . $periodMultiplier . ' week')->format('Y-m-d H:i:s');
+						/**
+						 * Flux'a zaman dilimlerini tanimliyoruz
+						 */
+						$Fc->setValues( array(  'startDateTime'=>$startDate,
+																		'limitDateTime'=>$endDate) );
+						/**
+						 * Flux'dan gerekli diziyi cekiyoruz,
+						 * Bu arada cektiğimiz zaman aralığından tatil varsa,
+						 * Tatil ders sayısı kadar eklemeyi de ihmal etmiyoruz.
+						 */
+						$holidayLectureCount = count($Fc->getHolidayLectureList());
+						$nextPaymentLectureList = $Fc->getLecture(NULL, $futureLectureCount + $holidayLectureCount);
+						$nextPaymentLecture = end($nextPaymentLectureList);
+						$nextPaymentDateTime = $nextPaymentLecture['date'] . ' ' . $Classroom->getDayTime($nextPaymentLecture['dayTimeCode'])->getInfo('time');
+				} else {
+						$nextPaymentDateTime = Setting::classCache()->getInterfaceLang()->classautomate->main->none;
+				}
 				return $nextPaymentDateTime;
 		}
 }
