@@ -1090,7 +1090,13 @@ function getWeekDays($day, $start, $end)
 		$dayNames = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
 		$dateList = array();
 		
+		/**
+		 * gelen gun dikkate alinarak,
+		 * baslangic tarihinden, bitis tarihine kadar
+		 * o gunden kac tane oldugu sayiliyor
+		 */
 		$count = getWeekDayCount($day, $start, $end);
+		//var_dump('Day : ' . $dayNames[$day] . ' Start : ' . $start . ' End : ' . $end  . ' / Count : ' . $count);
 		/**
 		 * saymaya basladigimiz gun Pazar ise bitis gunu pazara denk geldiginde 
 		 * GLITCH oluyor bir gun eksik cikiyor. Bende baslangic ve bitis pazar olursa
@@ -1100,20 +1106,38 @@ function getWeekDays($day, $start, $end)
 				//var_dump($start . ' ve ' . $end .  ' gunlerinin ikisi de Pazara denk geldi arttirdim! ');
 				$count++;
 		}
-				
+		
 		if ($count >= 1) {
 				$startDate = new DateTime($start);
-
+				$endDate = new DateTime($end);
+				/**
+				 * baslangic gunu, gelen gune esit ise
+				 * en basta o gunu listeye eklemek zorundayiz
+				 */
 				if (getWeekDayOfTheDate($start) == $day) {
 						$dateList[] = $startDate->format("Y-m-d");
 						$startNum = 1;
 				} else {
 						$startNum = 0;
 				}
-
+				/**
+				 * startNum'un amaci diziye bir tarih eklendi mi eklenmedi mi 
+				 * onu for dongusune bildirmek
+				 * eklendiyse bastan baslamamis oluyoruz donguye
+				 * boylece diziye eklenen ilk tarihte silinmemiş oluyor
+				 */
 				for ($i = $startNum; $i < $count; $i++) {
 						$startDate->modify('next ' . $dayNames[$day]);
 						$dateList[] = $startDate->format("Y-m-d");
+				}
+				/**
+				 * baslangic gunu gelen gun ise diziye ekliyorsak
+				 * bitis gunu eklenmemis ise, gelen gun mu kontrol ederek eklememiz gerekiyor
+				 */
+				if (getWeekDayOfTheDate($end) == $day) {
+						if ($dateList[count($dateList)-1] != $endDate->format("Y-m-d")) {
+								$dateList[] = $endDate->format("Y-m-d");
+						}
 				}
 		}
 		return $dateList;

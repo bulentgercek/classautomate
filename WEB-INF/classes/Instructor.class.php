@@ -46,6 +46,15 @@ class Instructor extends Person
 				return $result;
 		}
 		/**
+		 * egitmenin odeme listesini periyodlara gore secilen sinifa gore dondurur
+		 * 
+		 * @return Array
+		 */
+		public function getPaymentsByClassroom(Classroom $Classroom)
+		{
+				return Accountant::classCache()->getInstructorPayments($this, $Classroom);
+		}
+		/**
 		 * $_POST formda olup da database'de karsiligi olmayan
 		 * degiskenlere gereken veriyi donduren uygulayici metot
 		 *

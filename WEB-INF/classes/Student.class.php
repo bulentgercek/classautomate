@@ -290,7 +290,6 @@ class Student extends Person
 
 								$filteredLectures = $Fc->getLecture();
 
-
 								/**
 								 * para akis bilgilerini isle
 								 * odeme donemine gore diziyi hazirla

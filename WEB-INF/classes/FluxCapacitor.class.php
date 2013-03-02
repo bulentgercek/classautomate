@@ -223,11 +223,11 @@ class FluxCapacitor
 						$lectureListSorter = array();
 						$weekDayListSorter = array();
 						$maxCount = false;
+						$isListIncludesStartDayTime = false;
 
 						foreach ((array)$ClassroomDayTimeList as $ClassroomDayTimeListValue) {
 
 								$weekDayList = getWeekDays($ClassroomDayTimeListValue['day'], $this->_startDateTime, $this->_limitDateTime);
-
 								$isTimeOk = true;
 
 								foreach ($weekDayList as $weekDayListKey => $weekDayListValue) {
@@ -288,12 +288,11 @@ class FluxCapacitor
 								}
 						}
 						/**
-						 * ########## SINIFIN İLK DERSİ TARİHLER ARASINDA İSE ONDAN ÖNCEKİ SAATLERİ ÇIKART ##########
+						 * ########## SINIFIN İLK DERSİ TARİHLER ARASINDA İSE BAŞLANGIÇ GÜNÜ SAATİNDEN ÖNCEKİ SAATLERİ ÇIKART ##########
 						 * sinifin startDate ve startDateTime'i dikkate alarak duzenle
 						 */
 						$startDayTimeTime = $ClassroomDayTimeList[$this->getStartDayTimeKey()]['time'];
 						$startDate = $Classroom->getInfo('startDate');
-
 						/**
 						 * once cikarilacaklar listesini olustur (nonClasses)
 						 */
@@ -309,7 +308,53 @@ class FluxCapacitor
 								$expValue = explode('<+>', $value);
 								if ($expValue[0] == $startDate) {
 										foreach ((array) $nonClasses as $nonClassesValue) {
-												if ($nonClassesValue == $expValue[1])
+												if ($nonClassesValue == $expValue[1]) {
+														unset($lectureList[$key]);
+												}
+										}
+								}
+						}
+						/**
+						 * unset sonrasi duzenleme
+						 */
+						$lectureList = array_values($lectureList);
+						/**
+						 * ########## VERİLEN ZAMANIN ÖNCESİNDEKİ DERSLERİ ÇIKART ##########
+						 */
+						/**
+						 * verilen baslangic tarih 
+						 * ve saatinden onceki dersleri
+						 * lecturlist'den cikaralım
+						 */
+						foreach ($lectureList as $key => $value) {
+								$expValue = explode('<+>', $value);
+								$convValue = $expValue[0] . ' ' . $Classroom->getDayTime($expValue[1])->getInfo('time');
+								if (getDateTimeDiff($this->_startDateTime, $convValue, 'type') == 1) {
+										unset($lectureList[$key]);
+								}
+						}
+						/**
+						 * ########## SINIFIN SON DERSİ TARİHLER ARASINDA İSE BİTİŞ SAATİNDEN SONRAKİ SAATLERİ ÇIKART ##########
+						 */
+						$expLimitDateTime = explode(' ', $this->_limitDateTime);
+						$endTime = $expLimitDateTime[1];
+						$endDate = $expLimitDateTime[0];
+						/**
+						 * once cikarilacaklar listesini olustur (nonClasses)
+						 */
+						foreach ((array)$ClassroomDayTimeList as $key => $value) {
+								if ($value['time'] > $endTime)
+										$nonTimeClasses[] = $value['code'];
+						}
+						/**
+						 * bitis saatinden sonra olan dersleri
+						 * lecturlist'den cikaralım
+						 */
+						foreach ($lectureList as $key => $value) {
+								$expValue = explode('<+>', $value);
+								if ($expValue[0] == $endDate) {
+										foreach ((array) $nonTimeClasses as $nonTimeClassesValue) {
+												if ($nonTimeClassesValue == $expValue[1])
 														unset($lectureList[$key]);
 										}
 								}

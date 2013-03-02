@@ -29,6 +29,10 @@ class Accountant
 		 * ogrencilerin kalan paralari bu degiskende saklanacak
 		 */
 		private $_studentMoneyLeftInCase;
+		/**
+		 * ogrencilerin para akislari bu degiskende saklanacak
+		 */
+		private $_studentCashFlow;
 
 		/**
 		 * Classın construct methodu yoktur
@@ -207,6 +211,7 @@ class Accountant
 				 * ogrenci kod numarasi
 				 */
 				$studentCode = $Student->getInfo('code');
+				$classroomCode = $Classroom->getInfo('code');
 				$cashResult = array();
 				/**
 				 * debug
@@ -226,7 +231,7 @@ class Accountant
 						if (debugger('Accountant'))
 								var_dump('studentIncomesTotal : ' . $this->_studentMoneyLeftInCase[$studentCode]);
 				} else {
-						
+						return $this->_studentCashFlow[$studentCode][$classroomCode];
 				}
 
 				foreach ($studentLectureDetailsByClassroom as $key => $value) {
@@ -326,8 +331,6 @@ class Accountant
 								if ($value['paymentPeriod'] == 'fixed') {
 										if ($value['paymentTermLectureNo'] >= 1) {
 												$studentDebtInfo = 'debtInfo_10'; //fixedPaymentWarning
-												if (debugger('Accountant'))
-														var_dump('------------------> Durum : Sabit Ödeme Dönemi Ödeme Uyarısı');
 										}
 								}
 								/**
@@ -338,23 +341,17 @@ class Accountant
 										 * Ogrencinin siniftaki ilk donemi ise;
 										 */
 										if ($lectureNo == $value['paymentTermLectureNo']) {
-												if (debugger('Accountant'))
-														var_dump('------------------> Durum : Ilk donem');
 												/**
 												 * ...ve ogrenci sinifin ilk dersine giriyorsa bu ders DENEME dersi kabul edilecek
 												 */
 												if ($lectureNo == 1) {
 														$studentDebtInfo = 'debtInfo_2'; //try
 														$isCalculate = false;
-														if (debugger('Accountant'))
-																var_dump('------------------> Durum : Deneme Dersi (İlk ders)');
 												}
 												/**
 												 * ...ve ogrenci sinifinin ilk dersinde degil ise;
 												 */
 												else {
-														if (debugger('Accountant'))
-																var_dump('------------------> Durum : İlk Ders Değil!');
 														/**
 														 * ...ve ders saati doldu ise ogrenci siniftan cikarilacak;
 														 */
@@ -362,18 +359,13 @@ class Accountant
 																$studentDebtInfo = 'debtInfo_3'; //noPaymentAndOut
 																$isCalculate = false;
 																$isOut = true;
-																if (debugger('Accountant'))
-																		var_dump('------------------> Durum : Ders sonuna odeme gelmedi. Siniftan cikarildi.');
 														}
 														/**
 														 * ...ve ders saati daha dolmadi ise uyari verilecek, ders saati bitimi beklenecek
 														 */
 														else {
 																$studentDebtInfo = 'debtInfo_4'; //minPaymentRestrictWarning
-																if (debugger('Accountant'))
-																		var_dump('------------------> Durum : Ders saati dolmadi. Beklenecek.');
 																$isCalculate = false;
-																//return $cashResult;
 														}
 												}
 										}
@@ -381,21 +373,14 @@ class Accountant
 										 * ogrencinin sinifta ilk donemi degil ise;
 										 */
 										else {
-												if (debugger('Accountant'))
-														var_dump('------------------> Durum : Diğer Donemler');
-
 												/**
 												 * ...ve ogrenci yeni doneminde ve ilk dersi ise; 
 												 */
 												if ($value['paymentTermLectureNo'] == 1) {
-														if (debugger('Accountant'))
-																var_dump('------------------> Durum : Diger Donemler -> İlk Ders');
 														/**
 														 * ...ve onceki doneminden eksi bakiye ile geldi ise;
 														 */
 														if ($this->_studentMoneyLeftInCase < 0) {
-																if (debugger('Accountant'))
-																		var_dump('------------------> Durum : Diger Donemler -> İlk Ders ve Eksi Bakiye');
 																/**
 																 * ...ders sonu gelmisse siniftan cikartma islemini onayla
 																 */
@@ -403,18 +388,13 @@ class Accountant
 																		$studentDebtInfo = 'debtInfo_5'; //newTermNegativeBalanceNoPaymentAndOut
 																		$isCalculate = false;
 																		$isOut = true;
-																		if (debugger('Accountant'))
-																				var_dump('------------------> Durum : Diger Donemler / İlk Ders ve Eksi Bakiye -> Ders sonuna odeme gelmedi. Siniftan cikarildi.');
 																}
 																/**
 																 * ...ders sonu gelmemisse uyari yap, hesapla ve derse girebilsin
 																 */
 																else {
 																		$studentDebtInfo = 'debtInfo_6'; //newTermNegativeBalanceMinPaymentRestrictWarning
-																		if (debugger('Accountant'))
-																				var_dump('------------------> Durum : Diger Donemler / İlk Ders ve Eksi Bakiye-> Ders saati dolmadi. Beklenecek.');
 																		$isCalculate = false;
-																		//return $cashResult;
 																}
 														}
 														/**
@@ -422,16 +402,12 @@ class Accountant
 														 */
 														else {
 																$studentDebtInfo = 'debtInfo_7'; //newTermPaymentWarning
-																if (debugger('Accountant'))
-																		var_dump('------------------> Durum : Diger Donemler -> İlk ders odeme gelmedi. Uyari yapildi, hesaplama yapildi. Derse girise izin verildi.');
 														}
 												}
 												/**
 												 * ogrenci yeni doneminde ve ilk dersinde degil ise (diger dersler); 
 												 */
 												else {
-														if (debugger('Accountant'))
-																var_dump('------------------> Durum : Diger Donemler -> Diger Dersler');
 														/**
 														 * ...ve ders sonu gelmisse siniftan cikartma islemini onayla
 														 */
@@ -439,18 +415,13 @@ class Accountant
 																$studentDebtInfo = 'debtInfo_8'; //newTermNoPaymentAndOut
 																$isCalculate = false;
 																$isOut = true;
-																if (debugger('Accountant'))
-																		var_dump('------------------> Durum : Diger Donemler -> Ders sonuna odeme gelmedi. Siniftan cikarildi.');
 														}
 														/**
 														 * ...ve ders sonu gelmemisse uyari yap, hesapla ve derse girebilsin
 														 */
 														else {
 																$studentDebtInfo = 'debtInfo_9'; //newTermMinPaymentRestrictWarning
-																if (debugger('Accountant'))
-																		var_dump('------------------> Durum : Diger Donemler -> Ders saati dolmadi. Beklenecek.');
 																$isCalculate = false;
-																//return $cashResult;
 														}
 												}
 										}
@@ -486,9 +457,13 @@ class Accountant
 								'studentDebtInfo' => $studentDebtInfo,
 								'paymentPeriod' => $value['paymentPeriod'],
 								'payment' => $value['payment'],
-								'minPayment' => $oneLecturePrice,
+								'lecturePrice' => $oneLecturePrice,
 								'studentMoneyLeftInCase' => $this->_studentMoneyLeftInCase[$studentCode]);
-
+						/**
+						 * diziyi ana degiskene yedekle
+						 */
+						$this->_studentCashFlow[$studentCode][$classroomCode] = $cashResult;
+						
 						if (debugger('Accountant'))
 								var_dump($cashResult[count($cashResult) - 1]);
 
@@ -501,7 +476,6 @@ class Accountant
 								return $cashResult;
 						}
 				}
-
 				return $cashResult;
 		}
 		/**
@@ -550,7 +524,6 @@ class Accountant
 				 * degiskenler hazirlaniyor
 				 */
 				$lectureList = $Student->getLectureDetailsByClassroom($Classroom);
-
 				/**
 				 * en azindan bir ders yapilmis olmasi gerekiyor
 				 */
@@ -591,6 +564,7 @@ class Accountant
 						 */
 						$holidayLectureCount = count($Fc->getHolidayLectureList());
 						$nextPaymentLectureList = $Fc->getLecture(NULL, $futureLectureCount + $holidayLectureCount);
+
 						$nextPaymentLecture = end($nextPaymentLectureList);
 						$nextPaymentDateTime = $nextPaymentLecture['date'] . ' ' . $Classroom->getDayTime($nextPaymentLecture['dayTimeCode'])->getInfo('time');
 				} else {
@@ -599,11 +573,105 @@ class Accountant
 				return $nextPaymentDateTime;
 		}
 		/**
-		 * egitmen odeme periodlarini belirleyen metot
+		 * egitmen odeme periodlarini ve kazanılan parayı ders dizisi olarak işleyen metot
+		 * 
+		 * @return Array
 		 */
 		public function getInstructorPaymentPeriods(Instructor $Instructor, Classroom $Classroom)
 		{
+				/**
+				 * genel diziler ve veriler okunuyor, hazirlaniyor
+				 */
 				$lectureList = $Classroom->getActiveLectureList();
-				var_dump($lectureList);
+				$period = strtolower(getFirstUpperCaseWord($Classroom->getInfo('instructorPaymentPeriod')));
+				$periodMultiplier = getPeriodMultiplier($period);
+				$periodLectureCount = getLectureCountByPeriod($Classroom, $period);
+				/**
+				 * degiskenler tanimlaniyor
+				 */
+				$lectureNo = 0;
+				$periodCount = 1;
+				/**
+				 * period ders listesi hazirlaniyor
+				 */
+				foreach ($lectureList as $key => $value) {
+						/**
+						 * ders tatil degil ise;
+						 */
+						if ($lectureList[$key]['lectureStatus'] != 'off') {
+								/**
+								 * odeme donemi sonu geldi mi?
+								 */
+								if ($lectureNo == $periodLectureCount) {
+										/**
+										 * degerleri sifirla ve yeni odeme donemini baslat
+										 */
+										$lectureNo = 0; $periodCount++;
+								}
+								/**
+								 * eger ilk gunse period o gun baslamis
+								 */
+								$lectureList[$key]['lectureNo'] = ++$lectureNo; 
+								$lectureList[$key]['periodNo'] = $periodCount;
+								/**
+								 * activeLectureList'den gelen ders durumu 
+								 * gereksiz oldugundan diziden cikariliyor
+								 */
+								unset($lectureList[$key]['lectureStatus']);
+						} 
+						/**
+						 * ders tatil ise;
+						 */
+						else {
+								unset($lectureList[$key]);
+						}
+				}
+				/**
+				 * sinifin ogrencilerinin ders odemeleri toplanarak period ders listesine islenecek
+				 */
+				//echo $Instructor->getInfo('name') . ' ' . $Instructor->getInfo('surname') . ' isimli egitmenin ' . $Classroom->getInfo('name') . ' sınıfında bulundugu ders period listesi : ';
+				//var_dump($lectureList);
+				$studentList = $Classroom->getStudentList();
+				foreach ($studentList as $key => $value) {
+						$Student = School::classCache()->getStudent($value['code']);
+						$studentCashFlow = $this->getStudentCashFlowByClassroom($Student, $Classroom);
+						//echo $Student->getInfo('name') . ' ' . $Student->getInfo('surname') . ' isimli ogrencinin para akisi : ';
+						//var_dump($studentCashFlow);
+						/**
+						 * Dersler tek tek geciliyor derslerden gelen para toplanarak ana diziye ekleniyor
+						 */
+						$periodEarnedTotal = 0;
+						foreach ($lectureList as $key => $value) {
+								$currentLectureFlow = getFromArray($studentCashFlow, array('date'=>$value['date'], 'dayTime'=>$value['dayTimeCode']));
+								$lectureList[$key]['earnedMoney'] += $currentLectureFlow[0]['lecturePrice'];
+								$periodEarnedTotal += $lectureList[$key]['earnedMoney'];
+
+								if ($lectureList[$key]['lectureNo'] == $periodLectureCount) {
+										$lectureList[$key]['earnedMoneyByPeriod'] = $periodEarnedTotal;
+								} else {
+										$lectureList[$key]['earnedMoneyTotal'] = $periodEarnedTotal;
+								}
+						}
+				}
+				return $lectureList;
+		}
+		/**
+		 * getInstructorPaymentPeriods metodundan gelen diziyi kullanarak
+		 * periodlara bolen sadelestirilmis odeme dizisi hazırlayan metot
+		 * 
+		 * @return Array
+		 */
+		public function getInstructorPayments(Instructor $Instructor, Classroom $Classroom)
+		{
+				$instructorLecturesWithPayments = Accountant::classCache()->getInstructorPaymentPeriods($Instructor, $Classroom);
+				foreach ($instructorLecturesWithPayments as $value) {
+						if (isset($value['earnedMoneyByPeriod'])) {
+								$periodPaymentDate = $Classroom->getDayTime($value['dayTimeCode'])->getInfo('endTime');
+								$periodPaymentList[] = array(		'periodNo'=>$value['periodNo'],
+																								'periodPayment'=>$value['earnedMoneyByPeriod'],
+																								'periodPaymentDate'=>$value['date'] . ' ' . $periodPaymentDate);
+						}
+				}
+				return $periodPaymentList;
 		}
 }

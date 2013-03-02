@@ -287,7 +287,6 @@ class Classroom
 										'limitDateTime' => $value['endDateTime']));
 
 								$filteredLectures = $Fc->getLecture();
-
 								/**
 								 * sinif numaralarını temizle
 								 * (active olmayan numaraları atladigimizdan
