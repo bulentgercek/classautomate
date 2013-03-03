@@ -33,7 +33,7 @@ class DbBase
 		 * @var array
 		 */
 		private static $_localMainDb = array('host' => 'localhost', 'username' => 'root', 'password' => '', 'name' => 'classautomate');
-		private static $_serverMainDb = array('host' => '10.0.13.82', 'username' => 'classautomate', 'password' => 'Bigmate77', 'name' => 'classautomate');
+		private static $_serverMainDb = array('host' => 'localhost', 'username' => 'cleswach_master', 'password' => 'Bigmate77', 'name' => 'cleswach_classautomate');
 
 		/**
 		 *

@@ -289,7 +289,7 @@ class Student extends Person
 										'limitDateTime' => $value['endDateTime']));
 
 								$filteredLectures = $Fc->getLecture();
-
+								//var_dump($Fc);
 								/**
 								 * para akis bilgilerini isle
 								 * odeme donemine gore diziyi hazirla

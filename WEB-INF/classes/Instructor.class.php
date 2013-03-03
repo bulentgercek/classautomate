@@ -52,7 +52,7 @@ class Instructor extends Person
 		 */
 		public function getPaymentsByClassroom(Classroom $Classroom)
 		{
-				return Accountant::classCache()->getInstructorPayments($this, $Classroom);
+				return Accountant::classCache()->getInstructorPayments($Classroom);
 		}
 		/**
 		 * $_POST formda olup da database'de karsiligi olmayan

@@ -219,7 +219,7 @@ class Accountant
 				if (debugger('Accountant'))
 						echo '<br><b>' . $Student->getInfo('code') . ' Nolu ögrencinin ' . $Classroom->getInfo('code') . ' nolu sınıfa ait odeme/odeme donemi bilgileri (Aktif Oldugu Dönemler)</b> : ';
 				$studentLectureDetailsByClassroom = $Student->getLectureDetailsByClassroom($Classroom);
-
+				
 				if (debugger('Accountant'))
 						var_dump($studentLectureDetailsByClassroom);
 
@@ -577,7 +577,7 @@ class Accountant
 		 * 
 		 * @return Array
 		 */
-		public function getInstructorPaymentPeriods(Instructor $Instructor, Classroom $Classroom)
+		public function getInstructorPaymentPeriods(Classroom $Classroom)
 		{
 				/**
 				 * genel diziler ve veriler okunuyor, hazirlaniyor
@@ -629,14 +629,10 @@ class Accountant
 				/**
 				 * sinifin ogrencilerinin ders odemeleri toplanarak period ders listesine islenecek
 				 */
-				//echo $Instructor->getInfo('name') . ' ' . $Instructor->getInfo('surname') . ' isimli egitmenin ' . $Classroom->getInfo('name') . ' sınıfında bulundugu ders period listesi : ';
-				//var_dump($lectureList);
 				$studentList = $Classroom->getStudentList();
 				foreach ($studentList as $key => $value) {
 						$Student = School::classCache()->getStudent($value['code']);
 						$studentCashFlow = $this->getStudentCashFlowByClassroom($Student, $Classroom);
-						//echo $Student->getInfo('name') . ' ' . $Student->getInfo('surname') . ' isimli ogrencinin para akisi : ';
-						//var_dump($studentCashFlow);
 						/**
 						 * Dersler tek tek geciliyor derslerden gelen para toplanarak ana diziye ekleniyor
 						 */
@@ -661,9 +657,15 @@ class Accountant
 		 * 
 		 * @return Array
 		 */
-		public function getInstructorPayments(Instructor $Instructor, Classroom $Classroom)
+		public function getInstructorPayments(Classroom $Classroom)
 		{
-				$instructorLecturesWithPayments = Accountant::classCache()->getInstructorPaymentPeriods($Instructor, $Classroom);
+				/**
+				 * egitmenin derslere gore ayrilmis periyodik gelir listesi
+				 */
+				$instructorLecturesWithPayments = Accountant::classCache()->getInstructorPaymentPeriods($Classroom);
+				/**
+				 * derslere gore ayrilmis liste sadelestiriliyor
+				 */
 				foreach ($instructorLecturesWithPayments as $value) {
 						if (isset($value['earnedMoneyByPeriod'])) {
 								$periodPaymentDate = $Classroom->getDayTime($value['dayTimeCode'])->getInfo('endTime');
@@ -673,5 +675,13 @@ class Accountant
 						}
 				}
 				return $periodPaymentList;
+		}
+		/**
+		 * egitmenin siradaki odeme tarihini ve kasada biriken
+		 * gelir tutarini donduren metot
+		 */
+		public function getInstuctorNextPaymentDate(Instructor $Instructor, Classroom $Classroom)
+		{
+				
 		}
 }
