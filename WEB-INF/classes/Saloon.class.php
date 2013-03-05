@@ -126,7 +126,7 @@ class Saloon
 										return "notUsed";
 								}
 								if ($senderMethod == "update") {
-										$statusResult = $this->getInfo('status');
+										return $this->getInfo('status');
 								}
 								if ($senderMethod == "delete") {
 										return "deleted";

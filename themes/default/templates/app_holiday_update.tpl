@@ -57,19 +57,23 @@
         });
  
          $('#subject').change(function(){
-           var value = $(this).val();
-           if (value == 'personnel') {
-               $('#custom').hide('slow');
-               $('#classroom').hide('slow');
-               $('#personnel').show('slow');
+           var value = $(this).val().split('|')[0];
+           if (value == 'official') {
+								$('#custom').hide('slow');
+								$('#classroom').hide('slow');
+								$('#personnel').hide('slow');
+           } else if (value == 'personnel') {
+								$('#custom').hide('slow');
+								$('#classroom').hide('slow');
+								$('#personnel').show('slow');
            } else if (value == 'custom') {
-               $('#personnel').hide('slow');
-               $('#classroom').hide('slow');
-               $('#custom').show('slow');
+								$('#personnel').hide('slow');
+								$('#classroom').hide('slow');
+								$('#custom').show('slow');
            } else if (value == 'classroom') {
-               $('#personnel').hide('slow');
-               $('#custom').hide('slow');
-               $('#classroom').show('slow');
+								$('#personnel').hide('slow');
+								$('#custom').hide('slow');
+								$('#classroom').show('slow');
            }
         });
         
@@ -112,10 +116,11 @@
         $('#updateHolidayForm #startTime').val('{$holidayList["startTime"]}');
         $('#updateHolidayForm #endTime').val('{$holidayList["endTime"]}');
         
-        
-        
         if (holidayType == 'official') {
             $('#updateHolidayForm #subject').val('official|{$holidayList["subject"]}');
+						$('#classroom').hide();
+						$('#personnel').hide();
+						$('#custom').hide();
         }
         
         if (holidayType == 'personnel') {
@@ -236,7 +241,7 @@
                 </div>                
             </div>
             
-            <div id="classroom">
+						<div id="classroom">
                 <div id="formLine">
                     <label for="holidayClassroom">{$app_holiday_update_holidayClassroom}</label>
                     <select name="holidayClassroom" id="holidayClassroom" tabindex="{$tabStart++}" class="gSelect">

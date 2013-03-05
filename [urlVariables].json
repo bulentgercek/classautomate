@@ -128,7 +128,7 @@
 					"code"
 				],
 				"post":{
-					"tc:programUpdate":"program->update"
+					"tc:updateProgram":"program->update"
 				},
 				"action":{
 					"updateProgramForm":"app_program"
