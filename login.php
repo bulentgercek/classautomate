@@ -14,6 +14,7 @@ setExtSmartyVars('login_ask', 'inline');
  * giris yazisi
  */
 $resultText = $languageJSON->classautomate->login->makeLogin;
+var_dump($_SESSION);
 /**
  * daha once giris yapilmaya calisilmis mi?
  */

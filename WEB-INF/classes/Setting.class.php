@@ -85,7 +85,7 @@ class Setting
 						 */
 						$this->settingUser = $this->readUser();
 
-						/** kullanıcı bilgileri debug ediliyor */
+						/** kullanıcı bilgileri debvaug ediliyor */
 						if (debugger("Setting")) {
 								echo 'DEBUG : ' . getCallingClass() . '->Setting->readUser() : ';
 								var_dump($this->settingUser);

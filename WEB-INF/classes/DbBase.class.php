@@ -33,8 +33,10 @@ class DbBase
 		 * @var array
 		 */
 		private static $_serverPrefix = 'cleswach_';
+		private static $_intraIp = '192.168.1.2';
 		private static $_localMainDb = array('host' => 'localhost', 'username' => 'root', 'password' => '', 'name' => 'classautomate');
 		private static $_serverMainDb = array('host' => 'localhost', 'username' => 'master', 'password' => 'Bigmate77', 'name' => 'classautomate');
+		private static $_intraMainDb = array('host' => '192.168.1.2', 'username' => 'root', 'password' => 'Bigmate77', 'name' => 'classautomate');
 
 		/**
 		 *
@@ -109,6 +111,7 @@ class DbBase
 				 * @var array
 				 */
 				$this->_mainDb = ($_SERVER['SERVER_NAME'] == 'localhost' ? self::$_localMainDb : self::$_serverMainDb);
+				$this->_mainDb = ($_SERVER['SERVER_NAME'] == self::$_intraIp ? self::$_intraMainDb : $this->_mainDb);
 				/**
 				 * istenilen database acilmaya calisiliyor.
 				 * eger istenilen veritabani hali hazirda acik ise
@@ -211,7 +214,7 @@ class DbBase
 						 * DbControl'un $_mainDb static array degiskeninden aliyoruz (db name disinda)
 						 *
 						 */
-						if ($_SERVER['SERVER_NAME'] == 'localhost') {
+						if ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == self::$_intraIp) {
 								for ($h = 1; $h < count($dbHeaders); $h++) {
 										$schoolDb[$dbHeaders[$h]] = $this->_mainDb[$dbHeaders[$h]];
 								}
@@ -235,10 +238,11 @@ class DbBase
 		 */
 		private function _setDbLink($host, $username, $password, $dbName)
 		{
-				if ($_SERVER['SERVER_NAME'] != 'localhost') {
+				if ($_SERVER['SERVER_NAME'] != 'localhost' && $_SERVER['SERVER_NAME'] != self::$_intraIp) {
 						$username = self::$_serverPrefix . $username;
 						$dbName = self::$_serverPrefix . $dbName;
 				}
+
 				$this->mysqli = new mysqli($host, $username, $password, $dbName);
 				$this->mysqli->set_charset('utf8');
 		}

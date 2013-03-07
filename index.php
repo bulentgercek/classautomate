@@ -19,9 +19,11 @@
  */
 define('START_FUNCTION_FILE', 'WEB-INF/classes/Start.function.php');
 define('SMARTY_CLASS_FILE', 'WEB-INF/lib/smarty/libs/Smarty.class.php');
+define('KINT_THE_DEBUGGER', 'WEB-INF/lib/kint/Kint.class.php');
 /**
  * baslangic icin temel/kritik fonksiyonlar START_FUNCTION_FILE ile cagiriliyor
  */
+require KINT_THE_DEBUGGER;
 require START_FUNCTION_FILE;
 /**
  * session yaratiliyor

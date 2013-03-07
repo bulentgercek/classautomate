@@ -3,9 +3,9 @@
 		"description":"ClassAutoMate Log Dosyasi",
 		
 		"versions":{
-			"0.3.1 ALPHA":{
-				"date":"05-04-2012 / ...", 
-				"time":"17:50",
+			"0.3.4 ALPHA":{
+				"date":"07-03-2013", 
+				"time":"22:30",
 				"Design":[
 					"Ogrenci Kayit, Ogrenci Duzenleme, Sinif (Hizli) Yaratma, Sinif (Hizli) Duzenleme, Program Yaratma, Program Duzenleme, Salon Yaratma, Salon Duzenleme uygulamalari aktif hale gecirildi.",
 					"Temizlikçi, Sekreter ve Asistan girişi, düzenlemesi UYGULAMALAR'a eklendi."
@@ -18,53 +18,6 @@
 					"Classroom tablosuna termCountLimit(tinyText) ve termDateLimit(tinyText) eklendi. Böylece, Classroom sayfasinda Haftalik Ders secimi birden fazla gunu seçilebiliyor ve her gun icin farkli saat girilebiliyor. Kur girişi de yapılabilmiş oluyor.",
 					"Yoklama üzerinde çalışılmaya başlandı.",
 					"Yoklama duzenlemeleri kapsaminda, anlasildigi uzere gonderilen verinin icine veri tipinin nasil isleneceğini soylememiz gerekiyor. Bu tipler Mixed, Direct ve Post olarak belirlendi. Bu nedenle de Formla giden formName degiskeni ortadan kaldirildi. Onun yerine tum bilgiye genel tanim koyan transferInfo geldi. transferInfo | karakteri ile ayrilacak olan iki veri tasiyacak. transferName|transferType."
-				]
-			},
-			"0.3.0 ALPHA":{
-				"date":"26-07-2011 / 10.10.2011", 
-				"time":"03:42",
-				"Design":[
-					"YAZILIM DA DEVRIM BASLIYOR! 'Procedurel' olarak yazilmis tum yazilimi 'Object Oriented' yapiya donusturmeye karar verildi. Tum kodlarin tekrardan yazilmasina baslandi.",
-					"Veritabaninda Personel ve Ogrenci tablolari birlestirildi. Tablonun adi PERSON oldu.",
-					"'Settings' konsept olarak AYARLAR degil de UYGULAMALAR oldugundan adi 'apps' olarak degistirildi. Bunun disinda, askConnection(), setSql($sql), selectSql($intend), getRows($format = 'fieldbase'), getRowCount(), getColumns(), getColumncount() metotlari eklendi.",
-					"Yeni alt yapi ile yenilenmis hali ile Login (KULLANICI GIRISI) sayfasi kontrolu, ekran uyari yazilari ozellikleri dahil edilerek tamamlandi ve kullanicinin siteye girisi calisir hale getirilmis oldu.",
-					"Settings/Ayarlar ismi Applications/Uygulamalar olarak degistirildi.",
-					"Gunluk Isler Panosu acilir kapanir hale getirildi. Kapandiginda ortadaki alani genisletiyor. Boylece orta alanin icerigi sayfayi kaplamis ve genislemis oluyor.",
-					"Form kontrolu sistemi hazirlandi.",
-					"Ogrenci kaydı çalışır hale getirildi. Artik ogrenci birden fazla sinifa kayit olabiliyor ve kayit oldugu her sinifin ucret girisi ve odeme araligi ayri olarak belirlenebiliyor."
-				],
-				"Programming":[
-					"SMARTY projeye dahil edildi. Artık HTML sayfaları ile PHP kodları ayrılmış oldu.",
-					"DB Class yaratıldı. Db::connect($dbName) özelligi eklendi. Artık istenilen veritabanına bağlanılabiliyor. ",
-					"Setting Class'ı yaratıldı. Setting::getLanguage($langStorage) ile 'browser' veya 'db' seçenklerinden birisi ile dil ayarı okunarak Setting::set_language ile cagiriliyor. Arkasindan Setting::read_language_xml($lang_code) ile dil XML dosyasi cagiriliyor.",
-					"Session Class'ı hazır. setTimeZone($offsetValue), getTimeZone(), set_timer($limit) ve destroy() metodları eklendi. Ayrica set($name, $value) ile $_SESSION degiskenleri yaratilabiliyor ve get($name) ile de cagirilabiliyor.",
-					"Start.function.php isminde tüm sitede gerekecek önemli metodların yeraldığı bir döküman yaratıldı. İçerisine alert($value = 'classautomate.com ©2011') ve setSmartyVars($smarty_object, $xml_object, $xml_header), setPageAreas($pages), setExtSmartyVars($var, $value), getScriptName(), get_client_ip() ve getClientDatetime($format = '%Y-%m-%d / %H:%M:%S') metodları eklendi.",
-					"index.php OOP ile oluşturuldu. Login tablosu hazırlandı. Smarty bağlantıları : index.php -> index.tpl | login.php -> table_login.tpl",
-					"Language dokumanlari PHP'den XML'e cevrildi. Bundan sonra Index ve alt sayfalarin dil bilgileri tek bir XML icinden okunacak.",
-					"CSS dosyasi elden gecirildi. Tum CSS siniflarinin formati ortak hale getirildi. ( renk+Tip+Kalinlik+Buyukluk )",
-					"Login Class'i yaratildi. check($loginUsername, $loginPassword), setLoginHistory(), setSessionVars(), getIp(), getDateTime() metodlari da icine eklendi.",
-					"'classautomate' ana veritabani yeniden duzenlendi. Artik database tablo adi icindeki kolonlarin isminde tekrar ettirilmeyecek.",
-					"Login sayfasi kontrolu, ekran uyari yazilari, hosgeldiniz login tablosu ozellikleri tamamlandi ve kullanicinin siteye girisi bitirilmis oldu.",
-					"Sifre artik MD5 olarak kodlaniyor ve okunuyor. Kullanici ilerde resetlediginde gonderilecek 6 basamakli sayi ureten gen_number($values = '100000,999999') metodu Start.function'a eklendi.",
-					"ArrayCache class'i yazildi. Boylece cagirilan herhangi bir method sonucu uretilen array cache'e ekleniyor. Tekrar veritabani okunmadan array dondurulmus oluyor. Bir cesit kendi memcache'imi yazmis oldum:)",
-					"ArrayCache class'i Abstract layout class'i ile extend ediliyor ve singleton'a donusturuldu.",
-					"Tum degisken isimleri ve method isimleri yazilim adabina uyduruldu. (Private degisken ve methodlarin basina da _ (alt cizgi) yerlestirildi.)",
-					"GlobalVar class'i yaratildi. Global degisken problemi ortadan kalkmis oldu.",
-					"CommonDb abstract static class'i yaratildi. Bu class okul icinde yapilan tum database metodlarini barindiracak. Diger hicbir class icerisinde database islemi yapilmayacak.",
-					"Uzun okumalardan sonra Person ve Classroom classlarinin kodlamasina baslandi.",
-					"MakeList class'i eklendi. SELECT list yaratabiliyor. (Type sistemi ile separator ve kisaltma opsiyonlari ayarlari array olarak gonderilebiliyor)",
-					"merge2List fonksiyonu yaratildi. Boylece ayni miktarda key sayisina sahip 2 liste birlestirilebiliyor.",
-					"XML kullanimi projeden cikarildi. Onun yerine JSON (JavaScript Object Notation) projeye adapte edildi.",
-					"Artik tablar da, dil ayari da her kullanicinin kendi bilgisi ile saklaniyor. (classautomate/school_users)",
-					"Tablar tamamen tamamlandi. Active tab hazir. Herseyi kontrol eden bir adet JSON dosyasi [url_variables].json ile GET ve POST lar kontrol ediliyor. POST sonucunda class->method->method parametresi->POST formu icin ACTION sayfasi olarak 4 basamakli tanimlama yapilabiliyor. Boylece post formunun islendikten sonra acilacak sayfa da JSON'da tanimlanmis oldu.",
-					"Footer ve Daily Pane duzenlendi. Javascript kontrolleri ile dinamik bir sayfa haline geldi.",
-					"Orta alan koordinasyonu tamamlandi. Sistem hazir. Sayfalari olusturmaya baslanabilir.",
-					"Öğrenci eklemesi tamamlandı.",
-					"EXECUTE class'i oluşturuldu. Bu class JSON'dan gelen POST FORMU > VERİTABANI bağlantısı için gereken komutu işliyor ve çalıştırıyor.",
-					"HISTORY sistem hazirlandi. Yazma islemi tamamlandi. LAST PROCESS alanina veri gonderen method HISTORY class'i icine yerlestirildi.",
-					"10 Numara ekleme! REFRESH (start.functions) ozelligi projeye konuldu. Boylece form gonderisinden sonra islem sirasinda sayfanin istenen URL JSON dosyasindaki ACTION'a gonderilmesi saglandi. Form bilgisi boylece hafizadan temizlenmis oldu.",
-					"FormValidator.js, JQUERY JS Framework projeye dahil edildi!.",
-					"ListControl ve TableControl javascript classlari hazirlandi."
 				]
 			}
 		},
