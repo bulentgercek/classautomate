@@ -866,7 +866,7 @@ function getFromArray($readResult, Array $intend)
 		// intend'i debug et
 		if (debugger("Start")) {
 				echo "DEBUG : getFromArray() - Intend : ";
-				var_dump($intend);
+				d($intend);
 		}
 
 		// gonderilen array'in icerik sayisi kadar dongu yarat
@@ -1023,8 +1023,8 @@ function getDateTimeDiff($firstValue, $secondValue, $format, $debug = false)
 		$Difference = $FirstDate->diff($SecondDate);
 
 		if ($debug) {
-				var_dump('getDateTimeDiff(' . $firstValue . ', ' . $secondValue . ', ' . $format);
-				var_dump($Difference);
+				d('getDateTimeDiff(' . $firstValue . ', ' . $secondValue . ', ' . $format);
+				d($Difference);
 		}
 
 		if ($format == 'y')
@@ -1110,14 +1110,14 @@ function getWeekDays($day, $start, $end)
 		 * o gunden kac tane oldugu sayiliyor
 		 */
 		$count = getWeekDayCount($day, $start, $end);
-		//var_dump('Day : ' . $dayNames[$day] . ' Start : ' . $start . ' End : ' . $end  . ' / Count : ' . $count);
+		//d('Day : ' . $dayNames[$day] . ' Start : ' . $start . ' End : ' . $end  . ' / Count : ' . $count);
 		/**
 		 * saymaya basladigimiz gun Pazar ise bitis gunu pazara denk geldiginde 
 		 * GLITCH oluyor bir gun eksik cikiyor. Bende baslangic ve bitis pazar olursa
 		 * 1 gun fazladan say dedim;) Bakalim calisacak mi?
 		 */
 		if (getWeekDayOfTheDate($end) == 0 && getWeekDayOfTheDate($end) == 0) {
-				//var_dump($start . ' ve ' . $end .  ' gunlerinin ikisi de Pazara denk geldi arttirdim! ');
+				//d($start . ' ve ' . $end .  ' gunlerinin ikisi de Pazara denk geldi arttirdim! ');
 				$count++;
 		}
 
@@ -1228,5 +1228,15 @@ function arrayRotate($array, $rotateCount = 1)
 				$currentCount++;
 		}
 		return $array;
+}
+/**
+ * Çağıran fonksiyon nedir?
+ * 
+ * @return string
+ */
+function getCallingFunction()
+{
+		$callers = debug_backtrace();
+		return $callers[2]['function'];
 }
 ?>

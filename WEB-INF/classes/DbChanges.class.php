@@ -98,7 +98,7 @@ class DbChanges
 				if (debugger("Changes")) {
 						echo "<br><b>--------------------- CHANGES ---------------------</b><br><br>";
 						echo "DEBUG : " . getCallingClass() . "->Changes->setChanges() - dbChanges :";
-						var_dump($this->_dbChanges);
+						d($this->_dbChanges);
 				}
 
 				// degisikleri bul
@@ -106,7 +106,7 @@ class DbChanges
 
 				if (debugger("Changes")) {
 						echo "DEBUG : " . getCallingClass() . "->Changes->setChanges() - neededChangesFound :";
-						var_dump($this->_neededDbChangesFound);
+						d($this->_neededDbChangesFound);
 				}
 
 				if (count($this->_neededDbChangesFound) > 0) {
@@ -159,7 +159,7 @@ class DbChanges
 				if ($this->_masterChange) {
 						if (debugger("Changes")) {
 								echo "DEBUG : " . getCallingClass() . "->Changes->_setDbArrays()->masterChange : ";
-								var_dump($this->_masterChange);
+								d($this->_masterChange);
 						}
 						$changesDateTime = $this->_masterChange['dateTime'];
 
@@ -212,7 +212,7 @@ class DbChanges
 				 */
 				if (debugger("Changes")) {
 						echo "DEBUG : " . getCallingClass() . "->Changes->_setDbArrays() - Final Db Array : ";
-						var_dump($array);
+						d($array);
 				} else {
 						$Db->insertSql(array('table' => $this->_dbTable, 'columns' => $columns, "values" => $arrayValues));
 				}

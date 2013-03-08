@@ -77,7 +77,7 @@ class Setting
 						/** okul setting bilgileri debug ediliyor */
 						if (debugger("Setting")) {
 								echo 'DEBUG : ' . getCallingClass() . '->Setting->readSchool() : ';
-								var_dump($this->settingSchool);
+								d($this->settingSchool);
 						}
 						/**
 						 * okul db setting tablosunu okunmamis ise;
@@ -88,7 +88,7 @@ class Setting
 						/** kullanıcı bilgileri debvaug ediliyor */
 						if (debugger("Setting")) {
 								echo 'DEBUG : ' . getCallingClass() . '->Setting->readUser() : ';
-								var_dump($this->settingUser);
+								d($this->settingUser);
 						}
 				}
 		}
@@ -164,20 +164,20 @@ class Setting
 				/** dil bilgisinin alinmasi debug ediliyor */
 				if (debugger("Setting")) {
 						echo 'DEBUG : ' . getCallingClass() . '->Setting->getLanguage() : ';
-						var_dump($langStorage);
+						d($langStorage);
 				}
 				if ($langStorage == 'db') {
 
 						/** db dili debug ediliyor */
 						if (debugger("Setting"))
-								var_dump($this->settingUser['language']);
+								d($this->settingUser['language']);
 
 						return $this->settingUser['language'];
 				} else if ($langStorage == 'browser') {
 
 						/** browser dili debug ediliyor */
 						if (debugger("Setting"))
-								var_dump(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
+								d(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
 
 						return substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
 				}

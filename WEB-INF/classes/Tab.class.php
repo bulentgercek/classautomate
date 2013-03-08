@@ -190,12 +190,12 @@ class Tab
 										if (debugger("Tab"))
 												echo "DEBUG : " . getCallingClass() . "->Tab->checkVars() : \$getVars (Olmasi gereken Json tab 'get' verileri)";
 										if (debugger("Tab"))
-												var_dump($getVars);
+												d($getVars);
 
 										if (debugger("Tab"))
 												echo "DEBUG : " . getCallingClass() . "->Tab->checkVars() : \$_GET (GET ile gelen veriler)";
 										if (debugger("Tab"))
-												var_dump($_GET);
+												d($_GET);
 
 										foreach ($getVars as $var) {
 												if (!array_key_exists($var, $_GET)) {
@@ -240,12 +240,12 @@ class Tab
 										if (debugger("Tab"))
 												echo "DEBUG : " . getCallingClass() . "->Tab->checkVars() : \$postVars (Olmasi gereken Json tab 'post' verileri)";
 										if (debugger("Tab"))
-												var_dump($postVars);
+												d($postVars);
 
 										if (debugger("Tab"))
 												echo "DEBUG : " . getCallingClass() . "->Tab->checkVars() : \$_POST (POST ile gelen veriler)";
 										if (debugger("Tab"))
-												var_dump($_POST);
+												d($_POST);
 
 										foreach ($postVars as $key => $value) {
 												/**
@@ -274,7 +274,7 @@ class Tab
 										if (debugger("Tab"))
 												echo "DEBUG : " . getCallingClass() . "->Tab->checkVars() : \$actionVars (Json tab 'action' verileri)";
 										if (debugger("Tab"))
-												var_dump($actionVars);
+												d($actionVars);
 
 										foreach ($actionVars as $key => $value) {
 												if (debugger("Tab"))

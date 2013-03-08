@@ -52,7 +52,7 @@ class Changes
 		 */
 		public function getFilteredList($array)
 		{
-				//var_dump('CHANGEFIELD : ' . $array['changeField']);
+				//d('CHANGEFIELD : ' . $array['changeField']);
 				$filterWithValue = false;
 
 				// Oncelikle temel kolonlari belirle ve ona gore bir eleme yap
@@ -111,7 +111,7 @@ class Changes
 
 										// dizi haline getirilen veri degerlerini donguye al
 										foreach ($expDbChangeField as $expDbChangeFieldKey => $expDbChangeFieldValue) {
-												//var_dump($expDbChangeFieldValue . ' ?= ' . $array['changeValue']);
+												//d($expDbChangeFieldValue . ' ?= ' . $array['changeValue']);
 												// veri degeri sorguda istenilen degere esit mi? (active == used ?)
 												if ($expDbChangeFieldValue == $array['changeValue']) {
 
@@ -126,10 +126,10 @@ class Changes
 																$expCurrents = explode('<+>', $value[currents]);
 																// sadece siniflar kismini (currents[0]) parcala ve dizi yap
 																$currentClassrooms = explode(',', $expCurrents[0]);
-																//var_dump($expCurrents);
+																//d($expCurrents);
 																// sorguda belirlenen sinif kodu person'in siniflarinda bulunuyor mu?
 																$classroomKey = array_search($classroomCode, $currentClassrooms);
-																//var_dump('sorguda belirlenen sinif kodu personin siniflarindaki kodu : ' . $classroomKey);
+																//d('sorguda belirlenen sinif kodu personin siniflarindaki kodu : ' . $classroomKey);
 
 																if (strlen($classroomKey) != 0) {
 																		// bulunuyor ise; 

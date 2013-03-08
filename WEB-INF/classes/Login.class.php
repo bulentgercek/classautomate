@@ -144,9 +144,14 @@ class Login implements LoginLayout
 		{
 				if ($this->_formUsername != '') {
 						$Db = Db::classCache();
-						$Db->setSql("INSERT INTO `classautomate`.`login_history` (`dateTime`, `dbName`, `username`, `clientIp`, `result`)" .
-								"VALUES ('" . $this->_login[logDateTime] . "', '" . $this->_login[dbName] .
-								"', '" . $this->_login[username] . "', '" . $this->_login[ip] . "', '" . $this->_login[fullLogResult] . "')");
+						$Db->connect('classautomate');
+						$intend = array(
+								'table'=>'login_history',
+								'columns'=>"`dateTime`,`dbName`,`username`,`clientIp`,`result`",
+								'values'=>"'" . $this->_login['logDateTime'] . "', '" . $this->_login[dbName] .
+								"', '" . $this->_login[username] . "', '" . $this->_login[ip] . "', '" . $this->_login[fullLogResult] . "'"
+						);
+						$Db->insertSql($intend);
 				}
 		}
 		/**

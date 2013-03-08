@@ -67,8 +67,8 @@ class Execute
 		{
 				if (debugger("Execute")) {
 						echo 'DEBUG : ' . getCallingClass() . '->Execute->setQueue : ';
-						var_dump($jobObject);
-						var_dump($job);
+						d($jobObject);
+						d($job);
 				}
 				$this->_queue[] = array(
 						'jobObject'=>$jobObject, 'jobTc'=>$jobTc, 'jobTt'=>$jobTt, 'jobFormName'=>$jobFormName, 'job'=>$job, 'masterChange'=>$masterChange
@@ -83,7 +83,7 @@ class Execute
 						foreach ($this->_queue as $queueKey=>$queueJob) {
 								if (debugger("Execute")) {
 										echo 'DEBUG : Execute->applyQueue : Job No = ' . ++$count . ' / ' . count($this->_queue);
-										var_dump($queueJob);
+										d($queueJob);
 								}
 								/**
 								 * masterChange verilmiş mi?

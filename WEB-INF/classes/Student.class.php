@@ -168,7 +168,7 @@ class Student extends Person
 				if (debugger('Student'))
 						echo '<br>->Tum veriler : ';
 				if (debugger('Student'))
-						var_dump($paymentAndPeriodChanges);
+						d($paymentAndPeriodChanges);
 				if (debugger('Student'))
 						echo '<br>->Istenilen veriler : ';
 				$classroomCode = $Classroom->getInfo('code');
@@ -181,7 +181,7 @@ class Student extends Person
 						$newStart = false;
 						$codeKey = (string) array_search($classroomCode, explode(',', $value['classroom']));
 						if (debugger('Student'))
-								var_dump($key);
+								d($key);
 						/**
 						 * istenilen sinif ogrencinin odeme/odeme methodu degisiklikleri listesinde var mi?
 						 */
@@ -190,9 +190,9 @@ class Student extends Person
 								$currentPaymentPeriodValue = getArrayKeyValue(explode(',', $value['paymentPeriod']), $codeKey);
 
 								if (debugger('Student'))
-										var_dump('Previous : ' . $previousPaymentValue . ' - ' . $previousPaymentPeriodValue);
+										d('Previous : ' . $previousPaymentValue . ' - ' . $previousPaymentPeriodValue);
 								if (debugger('Student'))
-										var_dump('Current : ' . $currentPaymentValue . ' - ' . $currentPaymentPeriodValue);
+										d('Current : ' . $currentPaymentValue . ' - ' . $currentPaymentPeriodValue);
 
 								/**
 								 * verilerde (odeme veya odeme methodu) degislik var mi? Yeni kayit mi?

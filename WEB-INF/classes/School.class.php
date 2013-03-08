@@ -728,7 +728,7 @@ class School
 		 */
 		public function showObjects($obj)
 		{
-				return var_dump($this->$obj);
+				return d($this->$obj);
 		}
 		/**
 		 * array check disardan kontrol metodu

@@ -33,10 +33,11 @@ class DbBase
 		 * @var array
 		 */
 		private static $_serverPrefix = 'cleswach_';
+		private static $_mainDbName = 'classautomate';
 		private static $_intraIp = '192.168.1.2';
-		private static $_localMainDb = array('host' => 'localhost', 'username' => 'root', 'password' => '', 'name' => 'classautomate');
-		private static $_serverMainDb = array('host' => 'localhost', 'username' => 'master', 'password' => 'Bigmate77', 'name' => 'classautomate');
-		private static $_intraMainDb = array('host' => '192.168.1.2', 'username' => 'root', 'password' => 'Bigmate77', 'name' => 'classautomate');
+		private static $_localMysql = array('host' => 'localhost', 'username' => 'root', 'password' => '');
+		private static $_serverMysql = array('host' => 'localhost', 'username' => 'master', 'password' => 'Bigmate77');
+		private static $_intraMysql = array('host' => '192.168.1.2', 'username' => 'root', 'password' => 'Bigmate77');
 
 		/**
 		 *
@@ -44,7 +45,7 @@ class DbBase
 		 *
 		 * @var array
 		 */
-		private $_mainDb;
+		private $_dbSettings;
 
 		/**
 		 *
@@ -110,8 +111,17 @@ class DbBase
 				 *
 				 * @var array
 				 */
-				$this->_mainDb = ($_SERVER['SERVER_NAME'] == 'localhost' ? self::$_localMainDb : self::$_serverMainDb);
-				$this->_mainDb = ($_SERVER['SERVER_NAME'] == self::$_intraIp ? self::$_intraMainDb : $this->_mainDb);
+				$this->_dbSettings = ($_SERVER['SERVER_NAME'] == 'localhost' ? self::$_localMysql : self::$_serverMysql);
+				$this->_dbSettings = ($_SERVER['SERVER_NAME'] == self::$_intraIp ? self::$_intraMysql : $this->_dbSettings);
+				$this->_dbSettings['name'] = $dbName;
+				/**
+				 * ayrica server'da isek;
+				 * username ve database adı için prefix kullanmamız gerekiyor
+				 */
+				if ($_SERVER['SERVER_NAME'] != 'localhost' && $_SERVER['SERVER_NAME'] != self::$_intraIp) {
+						$this->_dbSettings['username'] = self::$_serverPrefix . $this->_dbSettings['username'];
+						$this->_dbSettings['name'] = self::$_serverPrefix . $dbName;
+				}
 				/**
 				 * istenilen database acilmaya calisiliyor.
 				 * eger istenilen veritabani hali hazirda acik ise
@@ -134,37 +144,11 @@ class DbBase
 						 */
 						$this->_currentDbName = $dbName;
 						/**
-						 * acilmasi istenen ana veritabani mi?
-						 *
-						 */
-						if ($dbName == 'classautomate') {
-								/**
-								 * ana veritabani icin gerekli bilgiler
-								 *
-								 */
-								$currentHost = $this->_mainDb['host'];
-								$currentUsername = $this->_mainDb['username'];
-								$currentPassword = $this->_mainDb['password'];
-						} else {
-								/**
-								 * okulun veritabani acilacak
-								 * okulun veritabani bilgilerini okuyalim
-								 *
-								 */
-								$schoolDb = $this->getSchoolDb($dbName);
-								/**
-								 * ana veritabanindan okunan okul veritabani icin gerekli bilgiler
-								 *
-								 */
-								$currentHost = $schoolDb['host'];
-								$currentUsername = $schoolDb['username'];
-								$currentPassword = $schoolDb['password'];
-						}
-						/**
 						 * hazirlanan bilgilere gore DBNAME ile gonderilen veritabanina baglaniyor
 						 *
 						 */
-						$this->_setDbLink($currentHost, $currentUsername, $currentPassword, $this->_currentDbName);
+						$this->mysqli = new mysqli($this->_dbSettings['host'], $this->_dbSettings['username'], $this->_dbSettings['password'], $this->_dbSettings['name']);
+						$this->mysqli->set_charset('utf8');
 						/**
 						 * Acik olan database baglantisi dbName'e gore kapatiliyor
 						 *
@@ -172,79 +156,6 @@ class DbBase
 						if (debugger("DbBase"))
 								echo 'DEBUG : ' . getCallingClass() . '->DbBase->connect(' . $this->_currentDbName . ')<br>';
 				}
-		}
-		/**
-		 *
-		 * ana veritabani ile baglanti kurularak
-		 * ilgili okulun veritabani baglanti bilgileri aliniyor
-		 * bilgiler return ediliyor
-		 *
-		 * @return array
-		 */
-		public function getSchoolDb($dbName)
-		{
-				/**
-				 * Local veya Server'da olup olmadigina bakilip, ona gore CLASSAUTOMATE ana veritabanina baglanti icin gerekli bilgiler ataniyor.
-				 *
-				 */
-				$this->_setDbLink($this->_mainDb['host'], $this->_mainDb['username'], $this->_mainDb['password'], $this->_mainDb['name']);
-				/**
-				 * ana veritabanindan 'school_main' tablosundan
-				 * ilgili okulun veritabani baglanti bilgileri okunuyor
-				 *
-				 */
-				$this->selectSql(array('table' => 'school_main', 'where' => "name = '" . $dbName . "'"));
-				/**
-				 * classautomate/school_main icinde yer alan
-				 * okulun veritabani baglanti bilgileri $row'a aliniyor
-				 *
-				 */
-				$schoolDbArray = $this->getRows();
-				/**
-				 * Eslenecek basliklari arrayler haline getiriyoruz
-				 *
-				 */
-				$dbHeaders = array('name', 'username', 'password', 'host');
-				/**
-				 * Esleme yapiliyor
-				 */
-				for ($i = 0; $i < $this->getRowCount(); $i++) {
-						/**
-						 * Eger lokalde calisiyorsak database bilgilerini
-						 * DbControl'un $_mainDb static array degiskeninden aliyoruz (db name disinda)
-						 *
-						 */
-						if ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == self::$_intraIp) {
-								for ($h = 1; $h < count($dbHeaders); $h++) {
-										$schoolDb[$dbHeaders[$h]] = $this->_mainDb[$dbHeaders[$h]];
-								}
-						} else {
-								for ($h = 0; $h < count($dbHeaders); $h++) {
-										$schoolDb[$dbHeaders[$h]] = $schoolDbArray[$dbHeaders[$h]];
-								}
-						}
-				}
-				return $schoolDb;
-		}
-		/**
-		 *
-		 * verilen dbName'e gore database connect yapiliyor
-		 *
-		 * @param $host
-		 * @param $username
-		 * @param $password
-		 * @param $dbName
-		 * @return void
-		 */
-		private function _setDbLink($host, $username, $password, $dbName)
-		{
-				if ($_SERVER['SERVER_NAME'] != 'localhost' && $_SERVER['SERVER_NAME'] != self::$_intraIp) {
-						$username = self::$_serverPrefix . $username;
-						$dbName = self::$_serverPrefix . $dbName;
-				}
-
-				$this->mysqli = new mysqli($host, $username, $password, $dbName);
-				$this->mysqli->set_charset('utf8');
 		}
 		/**
 		 *
@@ -413,7 +324,7 @@ class DbBase
 		public function setSql($sql)
 		{
 				if (debugger("DbSqlStrings"))
-						var_dump($sql);
+						d($sql);
 				$this->sqlResult = $this->mysqli->query($sql);
 		}
 		/**
@@ -485,7 +396,7 @@ class DbBase
 						}
 
 						if (debugger("DbBase")) {
-								var_dump($this->sqlArray);
+								d($this->sqlArray);
 						}
 						return $this->sqlArray;
 				}

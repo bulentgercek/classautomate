@@ -60,11 +60,6 @@ $urlVarsJSON = $Setting->getUrlVariables();
  * session zamanlayicisi calistiriliyor
  *
  */
-Kint::dump( $_SESSION );
-var_dump($Setting->getTimer());
-
-exit;
-
 $Session->setSessionTimer($Setting->getTimer());
 /**
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

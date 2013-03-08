@@ -228,7 +228,7 @@ class Accountant
 				$studentLectureDetailsByClassroom = $Student->getLectureDetailsByClassroom($Classroom);
 
 				if (debugger('Accountant'))
-						var_dump($studentLectureDetailsByClassroom);
+						d($studentLectureDetailsByClassroom);
 
 				/**
 				 * ogrencinin kasaya giren toplam odemelerini hazirla
@@ -236,7 +236,7 @@ class Accountant
 				if (!isset($this->_studentMoneyLeftInCase[$studentCode])) {
 						$this->_studentMoneyLeftInCase[$studentCode] = $this->getStudentIncomesTotal($Student, $Classroom);
 						if (debugger('Accountant'))
-								var_dump('studentIncomesTotal : ' . $this->_studentMoneyLeftInCase[$studentCode]);
+								d('studentIncomesTotal : ' . $this->_studentMoneyLeftInCase[$studentCode]);
 				} else {
 						return $this->_studentCashFlow[$studentCode][$classroomCode];
 				}
@@ -287,7 +287,7 @@ class Accountant
 
 
 						if (debugger('Accountant'))
-								var_dump('paymentTermLectureNo : ' . $value['paymentTermLectureNo'] . '/' . $lectureCountByPeriod);
+								d('paymentTermLectureNo : ' . $value['paymentTermLectureNo'] . '/' . $lectureCountByPeriod);
 						/**
 						 * ogrencinin bir ders icin ne kadar odemesi gerektigi hesaplaniyor
 						 * eger fixed ise;
@@ -324,7 +324,7 @@ class Accountant
 								$totalLectureDebtByTerm = $payment;
 						}
 						if (debugger('Accountant'))
-								var_dump('totalLectureDebtByTerm : ' . $totalLectureDebtByTerm . ' / ' . $payment);
+								d('totalLectureDebtByTerm : ' . $totalLectureDebtByTerm . ' / ' . $payment);
 
 						///////////// DURUMA GORE ODEME ISLEMLERI ////////////////////////////////////
 						/**
@@ -450,7 +450,7 @@ class Accountant
 								}
 
 								if (debugger('Accountant'))
-										var_dump('studentMoneyLeftInCase : ' . $this->_studentMoneyLeftInCase[$studentCode]);
+										d('studentMoneyLeftInCase : ' . $this->_studentMoneyLeftInCase[$studentCode]);
 						}
 						/**
 						 * donemlik borc bilgilerini diziye ekle
@@ -472,14 +472,14 @@ class Accountant
 						$this->_studentCashFlow[$studentCode][$classroomCode] = $cashResult;
 						
 						if (debugger('Accountant'))
-								var_dump($cashResult[count($cashResult) - 1]);
+								d($cashResult[count($cashResult) - 1]);
 
 						/**
 						 * ogrencinin siniftan cikartma islemi onaylanmissa uygula
 						 */
 						if ($isOut) {
 								if (debugger('Accountant'))
-										var_dump('Ogrenci siniftan cikariliyor : ' . $Student->getInfo('code') . ' / ' . $Student->getInfo('name') . ' ' . $Student->getInfo('surname'));
+										d('Ogrenci siniftan cikariliyor : ' . $Student->getInfo('code') . ' / ' . $Student->getInfo('name') . ' ' . $Student->getInfo('surname'));
 								return $cashResult;
 						}
 				}
@@ -553,7 +553,7 @@ class Accountant
 								$futureLectureCount = ($lectureTotal - $lectureNo) + 1;
 
 						if (debugger('Accountant'))
-								var_dump($futureLectureCount . ' ders ilerideki tarihi bulursak o NEXT PAYMENT DATE dir');
+								d($futureLectureCount . ' ders ilerideki tarihi bulursak o NEXT PAYMENT DATE dir');
 
 						$startDate = getDateTimeAsFormatted();
 						$DateTime = new DateTime($startDate);
@@ -729,7 +729,7 @@ class Accountant
 								$futureLectureCount = ($lectureTotal - $lectureNo) + 1;
 
 						if (debugger('Accountant'))
-								var_dump($futureLectureCount . ' ders ilerideki tarihi bulursak o NEXT PAYMENT DATE dir');
+								d($futureLectureCount . ' ders ilerideki tarihi bulursak o NEXT PAYMENT DATE dir');
 								
 						$startDate = getDateTimeAsFormatted();
 						$DateTime = new DateTime($startDate);

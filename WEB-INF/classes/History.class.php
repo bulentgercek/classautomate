@@ -92,7 +92,7 @@ class History
 				 */
 				if (debugger("History")) {
 						echo 'DEBUG : ' . getCallingClass() . '->History->add($historyIntend) : ';
-						var_dump($historyIntend);
+						d($historyIntend);
 				}
 				/**
 				 * eklenecek array nesnesini döndür

@@ -51,7 +51,7 @@ class SendToDb
 				$addCriteria = ( array('table' => $tableName, 'columns' => $columns, "values" => $values, "tableCode" => $tableCode, "columnsBackup" => $columnsBackup, "valuesBackup" => $valuesBackup, "historyValueType" => 'add') );
 				if (debugger("SendToDb")) {
 						echo "DEBUG : " . getCallingClass() . "->SendToDb->add() - addCriteria : ";
-						var_dump($addCriteria);
+						d($addCriteria);
 				}
 
 				/**
@@ -133,7 +133,7 @@ class SendToDb
 
 				if (debugger("SendToDb")) {
 						echo "DEBUG : " . getCallingClass() . "->SendToDb->update() - commonDbValues : ";
-						var_dump($commonDbValues);
+						d($commonDbValues);
 				}
 
 				/**
@@ -144,7 +144,7 @@ class SendToDb
 				$arrayDifference = arrayDifference($updateNewValues, $commonDbValues[0]);
 				if (debugger("SendToDb")) {
 						echo "DEBUG : " . getCallingClass() . "->SendToDb->update() - arrayDifference : ";
-						var_dump($arrayDifference);
+						d($arrayDifference);
 				}
 
 				if ($arrayDifference != NULL) {
@@ -177,7 +177,7 @@ class SendToDb
 						 */
 						if (debugger("SendToDb")) {
 								echo "DEBUG : " . getCallingClass() . "->SendToDb->update() - updateCriteria : ";
-								var_dump($updateCriteria);
+								d($updateCriteria);
 						}
 
 						/**
@@ -263,7 +263,7 @@ class SendToDb
 
 				if (debugger("SendToDb")) {
 						echo "DEBUG : " . getCallingClass() . "->SendToDb->delete() - commonDbValues : ";
-						var_dump($commonDbValues);
+						d($commonDbValues);
 				}
 
 				/**
@@ -286,7 +286,7 @@ class SendToDb
 				$deleteCriteria = ( array('table' => $tableName, "where" => $where, "tableCode" => $tableCode, "columnsBackup" => $columnsBackup, "valuesBackup" => $valuesBackup, "historyValueType" => 'delete'));
 				if (debugger("SendToDb")) {
 						echo "DEBUG : " . getCallingClass() . "->SendToDb->delete() - deleteCriteria : ";
-						var_dump($deleteCriteria);
+						d($deleteCriteria);
 				}
 				/**
 				 * current verisini hazirla
@@ -337,7 +337,7 @@ class SendToDb
 
 				if (debugger("SendToDb")) {
 						echo "DEBUG : " . getCallingClass() . "->SendToDb->arrayImplement() - infoArray : ";
-						var_dump($infoArray);
+						d($infoArray);
 				}
 				/**
 				 * form verilerini formImplement metodu destegi ile
@@ -347,7 +347,7 @@ class SendToDb
 
 				if (debugger("SendToDb")) {
 						echo "DEBUG : " . getCallingClass() . "->SendToDb->arrayImplement() - dbTableColumns : ";
-						var_dump($dbTableColumns);
+						d($dbTableColumns);
 				}
 
 				foreach ($dbTableColumns as $dbColumn) {
@@ -361,7 +361,7 @@ class SendToDb
 
 				if (debugger("SendToDb")) {
 						echo "DEBUG : " . getCallingClass() . "->SendToDb->arrayImplement() - valuesArray : ";
-						var_dump($valuesArray);
+						d($valuesArray);
 				}
 
 				return $valuesArray;
@@ -400,7 +400,7 @@ class SendToDb
 
 				if (debugger("SendToDb")) {
 						echo "DEBUG : " . getCallingClass() . "->SendToDb->getCurrents() - currents : ";
-						var_dump($currents);
+						d($currents);
 				}
 
 				return $currents;

@@ -256,7 +256,7 @@ class MakeList
 						if (debugger("MakeList"))
 								echo 'Library : Array' . $type . '<br>';
 						if (debugger("MakeList"))
-								var_dump($this->_array);
+								d($this->_array);
 						// eger alternatif array tanimlanmis ise TABLE bilgisini bos gonder
 						$listFormatArray['table'] = NULL;
 						$listFormatArray['values'] = $formatString;
