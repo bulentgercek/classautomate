@@ -5,7 +5,7 @@
 			"title": "ClassAutoMate - Sanat Kursları Otomasyon ve İşletme Sistemi - Automation and Management System for Art Courses",
 			"description": "Sanat Kursları Otomasyon ve İşletme Sistemi - Automation and Management System for Art Courses",
 			"keywords": "dans, dance, art, academy, fine arts, music, müzik, automation, otomasyon, işletme, salsa, modern dans, contemporary, bale, ballet",
-			"css": "main.css",
+			"css": "index.css",
 			"gplusButton_css": "gplus_button.css",
 			"tab_css": "tab.css",
 			"jquery_js": "jquery.js",

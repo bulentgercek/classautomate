@@ -31,7 +31,8 @@
 			"Setting":false,
 			"Student":false,
 			"Start":false,
-			"Tab":false
+			"Tab":false,
+			"General":true
 		}
 	}
 }

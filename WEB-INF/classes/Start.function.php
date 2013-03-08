@@ -110,6 +110,12 @@ function stdToArray($stdArray)
  */
 function debugger($className)
 {
+		/** 
+		 * Debugger sadece classautotest veritabanına bağlanıldığında çalışacaktır
+		 */
+		if (Session::classCache()->get('dbName') == 'classautotest') 
+				$isDebuggerCanWork = true; else $isDebuggerCanWork = false;
+				
 		if (GlobalVar::get("debuggerArray") == NULL) {
 				$debuggerFileStr = '[debugger].json';
 				$debuggerFileJson = file_get_contents($debuggerFileStr);
@@ -118,13 +124,19 @@ function debugger($className)
 				foreach ($debuggerFile->classautomate->classes as $key => $value) {
 						$debuggerArray[$key] = $value;
 				}
-
 				GlobalVar::set("debuggerArray", $debuggerArray);
 		}
 
 		foreach (GlobalVar::get("debuggerArray") as $key => $value) {
-				if ($key == $className)
-						return $value;
+				if ($key == $className) {
+						/**
+						 * Genel olarak tüm kullanıcılarda PageGenerateTimer debug'ı görünür durumdadır
+						 * Görünür bırakmamın amacı kullanıcıya sayfanın hazırlanma zamanını sorabilmektir
+						 */
+						if ($isDebuggerCanWork || $key == 'PageGenerateTimer') {
+								return $value;
+						}
+				}
 		}
 }
 /**

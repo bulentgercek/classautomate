@@ -7,6 +7,8 @@
 			"keywords": "dans, dance, art, academy, fine arts, music, müzik, automation, otomasyon, işletme, salsa, modern dans, contemporary, bale, ballet",
 			"css": "index.css",
 			"gplusButton_css": "gplus_button.css",
+			"tab_css": "tab.css",
+			"jquery_js": "jquery.js",
 			"jqueryValidator_js": "jquery.validator.js"
 		},
 		"month": [

@@ -221,8 +221,8 @@ class Db extends DbBase
 		 */
 		public function emptySchool()
 		{
-				$tables = array('changes', 'classroom', 'daytime', 'history', 'holiday_subjects', 'incexp',
-						'incexp_types', 'person', 'program', 'rollcall', 'saloon');
+				$tables = array('changes', 'classroom', 'daytime', 'history', 'incexp',
+						'person', 'program', 'rollcall', 'saloon');
 
 				foreach ($tables as $tableName) {
 						$this->truncateTable(array('table' => $tableName));
