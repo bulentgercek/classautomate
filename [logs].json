@@ -7,12 +7,24 @@
 				"date":"08-03-2013", 
 				"time":"22:30",
 				"languages":{
-						"tr":[
-								"ClassAutoMate ilk Alpha versiyonu ile karşınızda!"
-						],
-						"en":[
-								"This is Alpha version of the Classautomate!"
-						]
+						"tr":{
+								"updates":[
+										"ClassAutoMate ilk Alpha versiyonu ile karşınızda!"
+								],
+								"bugs":[
+										"Yoklama sisteminde, yoklaması yapılmakta olan ders listesi seçili iken, tarih değiştirilir ve değiştirilen tarihte de ilgili ders bulunmamakta ise; (ki aynı gün aynı sınıfın başka dersleri varolmalıdır) 'Bu tarihte hiçbir aktif sınıf yoktur!' uyarısı vermektedir. Aslen, Günün Tüm Sınıfları'nı göstermesi gerekmektedir. Tarih yeniden seçilirse, sayfa tazeleniyor ve düzeliyor.(#16)",
+										"Öğrenci sınıfa dahil olduktan sonra, sınıfa dahil olduğu günden önceki tarihlerde de yoklamada görünüyor. (#9) ",
+										"Sınıftan çıkarılanlar girdikleri derslerden (yoklamadan) kayboluyorlar.(#8)"
+								]
+						},
+						"en":{
+								"updates":[
+										"This is Alpha version of the Classautomate!"
+								],
+								"bugs":[
+										"Known bugs..."
+								]
+						}
 				},
 				"users":{
 						"bulent":"ClassAutomate BG'yi selamlar!",

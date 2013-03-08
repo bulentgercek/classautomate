@@ -279,11 +279,11 @@
                 $('#filtersForm').append('<input type="hidden" name="mainSelect" value="' + mainSelectValue + '" />');
                 if (subTypeSelectionValue != 'all') {
                     $('#filtersForm').append('<input type="hidden" name="subTypeSelection" value="' + subTypeSelectionValue + '" />');
-                    if (mainSelectValue != 'profit') {
-                        $('#filtersForm').append('<input type="hidden" name="startDate" value="' + startDateValue + '" />');
-                        $('#filtersForm').append('<input type="hidden" name="endDate" value="' + endDateValue + '" />');
-                    }
                 }
+								if (mainSelectValue != 'profit') {
+										$('#filtersForm').append('<input type="hidden" name="startDate" value="' + startDateValue + '" />');
+										$('#filtersForm').append('<input type="hidden" name="endDate" value="' + endDateValue + '" />');
+								}
             }
         }
         
@@ -292,6 +292,8 @@
             
             if (isset($.url().param('subTypeSelection'))) {
                 $('#subTypeSelection option[value=' + $.url().param('subTypeSelection') + ']').attr('selected', 'selected');
+						}
+						if (isset($.url().param('startDate')) || isset($.url().param('endDate'))) {
                 $('#startDate').val($.url().param('startDate'));
                 $('#endDate').val($.url().param('endDate'));
             }

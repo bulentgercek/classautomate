@@ -269,7 +269,7 @@
 	    {/if}
     {else}
     	
-    	{if $studentList|@count > 0}
+    	{if $studentList|@count > 0 && $isClassroomExist}
 	    	<div id="clear"></div>
 	    	
 	    	<!-- Secilen sinifa gore yoklama listesi -->
@@ -313,12 +313,13 @@
 		 {else}
 	    	<div id="clear"></div>
 	    	
-	    	<div id="noStudent" class="red">{$app_rollcall_noStudent}</div>
+				{if $isClassroomExist}
+						<div id="noStudent" class="red">{$app_rollcall_noStudent}</div>
+				{/if}
 		 {/if}
     {/if}
-    {if $activeClassroomCount < 1}
+    {if $activeClassroomCount < 1 || !$isClassroomExist}
     	<div id="clear"></div>
-    	
     	<div id="noActiveClassroom" class="red">{$app_rollcall_noActiveClassroom}</div>
     {/if}
 </div>

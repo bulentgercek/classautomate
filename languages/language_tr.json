@@ -183,10 +183,11 @@
 		},
 		"app_welcome": {
 			"title": "Hoşgeldiniz",
-			"body": "Okul otomasyon sistemine hoşgeldiniz. İyi günler dileriz.",
+			"body": "Okul otomasyon sistemine hoşgeldiniz. İyi çalışmalar.",
 			"updateTitle": "Güncellemeler",
 			"updateDateTime": "Güncelleme Tarihi ve Saati",
 			"updateNotes": "Güncelleme Notları",
+			"updateBugs": "Bilinen Kusurlar",
 			"updateUserNotes": "Kullanıcıya Notlar"
 		},
 		"app_person_search": {

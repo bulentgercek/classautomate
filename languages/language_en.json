@@ -187,6 +187,7 @@
 			"updateTitle": "Updates",
 			"updateDateTime": "Update Date and Time",
 			"updateNotes": "Update Notes",
+			"updateBugs": "Known Bugs",
 			"updateUserNotes": "User Notes"
 		},
 		"app_person_search": {

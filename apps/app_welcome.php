@@ -22,7 +22,7 @@ $username = $Session->get('username');
 foreach ($logsJson->classautomate->versions as $key => $value) {
 		$logs[] = array(
 				'no'=>$key, 'date'=>$value->date, 'time'=>$value->time, 
-				'updates'=>$value->languages->$language, 'users'=>$value->users->$username
+				'updates'=>$value->languages->$language->updates, 'bugs'=>$value->languages->$language->bugs, 'users'=>$value->users->$username
 		);
 }
 setExtSmartyVars('logs', $logs[0]);

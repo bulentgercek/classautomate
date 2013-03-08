@@ -156,7 +156,7 @@ class Execute
 				 * transfer tipi DIRECT ise sayfa tazelemesi aktif hale getiriliyor
 				 */
 				if (!debugger("SendToDb")) {
-						if (getTransferInfo('tt', $_POST) == 'direct')
+						if (getTransferInfo('tt', $_POST) == 'direct' || getTransferInfo('tt', $_POST) == 'post')
 								setRefresh('true');
 				}
 
