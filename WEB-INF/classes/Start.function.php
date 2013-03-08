@@ -137,7 +137,6 @@ function debugger($className)
  */
 function systemVersion()
 {
-		$gotSystemVersion = false;
 		$versions = array();
 		/*
 		 * sistem versiyonu icin [LOGS].TXT dosyasi taramasi yapiliyor
@@ -145,14 +144,11 @@ function systemVersion()
 		 * ilk bulunan VERSIONS array'i bilgisi en son versiyon kabul ediliyor ve $SYSTEM_VERSION degiskenine atiliyor.
 		 *
 		 */
-		$logFileStr = '[logs].json';
-		$logJson = file_get_contents($logFileStr);
-		$logFile = json_decode($logJson);
+		$logFile = Setting::classCache()->getLogs();
 
 		foreach ($logFile->classautomate->versions as $key => $value) {
 				$versions[] = $key;
 		}
-
 		$systemVersion = $versions[0];
 
 		return $systemVersion;

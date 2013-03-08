@@ -181,7 +181,11 @@
 		},
 		"app_welcome": {
 			"title": "Welcome",
-			"body": "Welcome to the school automation system. /Use the tabs above to proceed. The right to change the program settings, use the above link to APPLICATIONS./Good work."
+			"body": "Welcome to the art courses automation system. Have a good day.",
+			"updateTitle": "Updates",
+			"updateDateTime": "Update Date and Time",
+			"updateNotes": "Update Notes",
+			"updateUserNotes": "User Notes"
 		},
 		"app_person_search": {
 			"title": "Person Search List",

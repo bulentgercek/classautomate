@@ -58,7 +58,10 @@ class Setting
 		 * @var array 
 		 */
 		private $_determinantsList;
-
+		/**
+		 * loglar
+		 */
+		private $_logs;
 		/**
 		 * construct metodu new yapilamaz
 		 */
@@ -202,22 +205,7 @@ class Setting
 				$languageJson = file_get_contents($langFileStr);
 				$this->interfaceLang = json_decode($languageJson);
 		}
-		/**
-		 * url degiskenleri arrayini dondur
-		 *
-		 * @return array
-		 */
-		public function getUrlVariables()
-		{
-				if ($this->urlVariables == NULL) {
 
-						$this->setUrlVariables();
-						return $this->urlVariables;
-				} else {
-
-						return $this->urlVariables;
-				}
-		}
 		/**
 		 * url degiskenlerini oku
 		 *
@@ -228,6 +216,20 @@ class Setting
 				$urlVarsFileStr = '[urlVariables].json';
 				$urlVarsJson = file_get_contents($urlVarsFileStr);
 				$this->urlVariables = json_decode($urlVarsJson);
+		}
+		/**
+		 * url degiskenleri arrayini dondur
+		 *
+		 * @return array
+		 */
+		public function getUrlVariables()
+		{
+				if ($this->urlVariables == NULL) {
+						$this->setUrlVariables();
+						return $this->urlVariables;
+				} else {
+						return $this->urlVariables;
+				}
 		}
 		/**
 		 * takip edilecek degisiklikleri xml'den oku
@@ -248,13 +250,36 @@ class Setting
 		public function getDeterminantsList()
 		{
 				if ($this->_determinantsList == NULL) {
-
 						$this->setDeterminantsList();
 						return $this->_determinantsList;
 				} else {
-
 						return $this->_determinantsList;
 				}
+		}
+		/**
+		 * Welcome sayfasında çıkacak olan LOG bilgileri JSON dosyasını oku
+		 * 
+		 * @return void
+		 */
+		public function setLogs()
+		{
+				$logsfileStr = '[logs].json';
+				$logsJson = file_get_contents($logsfileStr);
+				$this->_logs = json_decode($logsJson);
+		}
+		/**
+		 * Welcome sayfasında çıkacak olan LOG bilgileri JSON dosyasını döndür
+		 * 
+		 * @return JSON
+		 */
+		public function getLogs()
+		{
+				if ($this->_logs == NULL) {
+						$this->setLogs();
+						return $this->_logs;
+				} else {
+						return $this->_logs;
+				}				
 		}
 		/**
 		 * timer

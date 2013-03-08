@@ -4,33 +4,21 @@
 		
 		"versions":{
 			"0.3.4 ALPHA":{
-				"date":"07-03-2013", 
+				"date":"08-03-2013", 
 				"time":"22:30",
-				"Design":[
-					"Ogrenci Kayit, Ogrenci Duzenleme, Sinif (Hizli) Yaratma, Sinif (Hizli) Duzenleme, Program Yaratma, Program Duzenleme, Salon Yaratma, Salon Duzenleme uygulamalari aktif hale gecirildi.",
-					"Temizlikçi, Sekreter ve Asistan girişi, düzenlemesi UYGULAMALAR'a eklendi."
-				],
-				"Programming":[
-					"Modal özelliği olan jquery.alerts, textarea ve input alanlarını otomatik içeriğe göre büyütüp, küçültebilmeyi sağlayan jquery.autoGrowInput ve jquery.autoGrowTextArea ve saat bilgisini rahatça alabildiğimiz jquery.ui.timepicker plugin'leri projeye dahil edildi.",
-					"notUsed, used, active ve deleted secenekleri ve islemleri tum sisteme eklendi. Rollcall ile active seçeneği çalışır hale gelecek.",
-					"Veritabanını rahatlatmaya yardimci olması amacı ile notUsed olan bir secenek silindiğinde kalici olarak siliniyor.",
-					"Classroom tablosu time,endTime kolonları text tipine donusturuldu.",
-					"Classroom tablosuna termCountLimit(tinyText) ve termDateLimit(tinyText) eklendi. Böylece, Classroom sayfasinda Haftalik Ders secimi birden fazla gunu seçilebiliyor ve her gun icin farkli saat girilebiliyor. Kur girişi de yapılabilmiş oluyor.",
-					"Yoklama üzerinde çalışılmaya başlandı.",
-					"Yoklama duzenlemeleri kapsaminda, anlasildigi uzere gonderilen verinin icine veri tipinin nasil isleneceğini soylememiz gerekiyor. Bu tipler Mixed, Direct ve Post olarak belirlendi. Bu nedenle de Formla giden formName degiskeni ortadan kaldirildi. Onun yerine tum bilgiye genel tanim koyan transferInfo geldi. transferInfo | karakteri ile ayrilacak olan iki veri tasiyacak. transferName|transferType."
-				]
+				"languages":{
+						"tr":[
+								"ClassAutoMate ilk Alpha versiyonu ile karşınızda!"
+						],
+						"en":[
+								"This is Alpha version of the Classautomate!"
+						]
+				},
+				"users":{
+						"bulent":"ClassAutomate BG'yi selamlar!",
+						"busalsa_emre":"Emre'ciğim, ClassAutoMate'in ilk kullanıcısı sen oldun. Yıllar sonra böyle bir vesile ile tekrar beraberiz:)"
+				}
 			}
-		},
-		
-		"notes":[
-			"notUsed, used, active, deleted secenekleri duruma gore degiseceginden uygulama durumlarina program parcalari eklenmesi gerekiyor. (Sinifa bir ogrenci konuldugunda 'active'e donusmeli)",
-			"Sinif liste ekraninin basliginda eskisi gibi sinif bilgileri gosterilecek. Saatleri ornek 10:30 to (dan) 13:30 - Sure : 3 Saat yazan bolumdeki saat kolay okuma icin kirmizi ile gosterilsin",
-			"Ogrencinin baslangic tarihi YOKLAMA listesinde belirlenecek. Ogrencinin sinif listesine dahil edildikten sonraki ilk gununde yoklama listesinde sadece ilk gunde cikacak bir liste kutusu olacak. Baslangic:SIMDI/SONRA. Simdi secenegi secilirse Kontrol kutucugu ENABLE edilecek. Aksi taktirde DISABLE kalacak. SONRA secilirse sonraki derste de bu BASLANGIC secenegi cikacak.",
-			"Personelin HOLIDAY durumu HOLIDAY veritabanin tablosundan kontrol edilecek. Izinli oldugun gunler icin yedegi varsa yedegi derste hoca olarak gorunecek. Bunun icin ya ACTIVITY CHECKER'a bir ozellik konulacak ya da baska bir tatil kontrol fonksiyonu yaratilacak.",
-			"Odemesi alinip geri odeme gerektiren durumlarda GIDER tablosunda geri odemeyi gostermeliyiz. (3 aylik odeme alan ve 3 ay bitmeden kapanan sinif ornegi)",
-			"Ogrenci kaydi sayfasinda Kimlik No girisi ile kisinin uyrugu sorulmali. Varsa (ki olmasi gerekiyormus) Ikamet teskeresi numarasi kayit edilmeli. Ekstra olarak, 'Sagligiyla ilgili ibraname kaydi yapildi' check secenegi olmali.",
-			"Sinif Listesi çeşitli filtrelemeler ile (Salon, Eğitmen vs.) excel çıktısı verebilmeli.",
-			"Formlar Tab'i yaratilabilir. Kullanicinin tarama yapip koyabilecegi formlari girebilecegi bir kisim olarak kullanilabilir."
-		]
+		}
 	}
 }

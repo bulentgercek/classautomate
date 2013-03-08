@@ -183,7 +183,11 @@
 		},
 		"app_welcome": {
 			"title": "Hoşgeldiniz",
-			"body": "Okul otomasyon sistemine hoşgeldiniz. /İşlem yapmak için yukarıda bulunan tabları kullanınız. Program ayarlarını değiştirmek için ise sağ yukarıdaki AYARLAR linkini kullanınız. /İyi çalışmalar."
+			"body": "Okul otomasyon sistemine hoşgeldiniz. İyi günler dileriz.",
+			"updateTitle": "Güncellemeler",
+			"updateDateTime": "Güncelleme Tarihi ve Saati",
+			"updateNotes": "Güncelleme Notları",
+			"updateUserNotes": "Kullanıcıya Notlar"
 		},
 		"app_person_search": {
 			"title": "Kişi Arama Listesi",
