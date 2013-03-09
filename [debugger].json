@@ -12,7 +12,7 @@
 			"Cleaner":false,
 			"Db":false,
 			"DbBase":false,
-			"DbSqlStrings":false,
+			"DbSqlStrings":true,
 			"Execute":false,
 			"GlobalVar":false,
 			"Holiday":false,
