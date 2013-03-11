@@ -574,6 +574,10 @@ function getClientIp()
  * düzenleyici metot. Buradaki amaç istediğimde getClientDateTime'ı aradan çıkarabilmektir.
  * Böylece Php'nin DateTime nesnesini istediğimde devreye sokabileceğim.
  * Çünkü, new DateTime() dediğimde şimdiki tarihi ve timeZone'u dizi halinde döndürüyor;)
+ * 
+ * @author Bulent Gercek <bulentgercek@gmail.com>
+ * @package ClassAutoMate
+ * @subpackage StartFunctions
  */
 function getDateTime($format = '%Y-%m-%d / %H:%M:%S')
 {

@@ -779,7 +779,7 @@ class Accountant
 				));
 				
 				$instructorTotalExpenses = 0;
-				foreach ($instructorExpenseList as $value) {
+				foreach ((array)$instructorExpenseList as $value) {
 						$instructorTotalExpenses += $value['amount'];
 				}
 				/**

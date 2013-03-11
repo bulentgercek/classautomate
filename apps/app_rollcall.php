@@ -82,19 +82,14 @@ foreach ((array)$Classrooms as $key => $value) {
 						 * Flux'a sinifimizi tanimliyoruz
 						 */
 						$Fc->setValues( array('classroomCode'=>$Classroom->getInfo('code')) );
-
-						/* @var $dayTimeKey sinifin baslangic ders kodunun sinif dizisindeki pozisyonu */
-						$dayTimeKey = $Fc->getStartDayTimeKey();
-						
-						/* @var $dayTimeTime sinifin ilk baslangic (aktif edildigi) saati */
-						$dayTimeTime = $classroomDayTimeList[$dayTimeKey]['time'];
-
+						/* @var $startDateTime sinifin baslangic ders ve saati */
+						$startDateTime = $Classroom->getStartDateTime();
 						/**
 						 * Flux'a zaman dilimlerini tanimliyoruz
 						 */
-						$Fc->setValues( array(  'startDateTime'=>$Classroom->getInfo('startDate') . ' ' . $dayTimeTime,
-																		'limitDateTime'=>$date . '23:59:59') );
-
+						$Fc->setValues(array(
+							'startDateTime'=>$startDateTime, 'limitDateTime'=>$date . ' 23:59:59'
+						));
 						/**
 						 * Flux'dan secilen tarihe ait ders bilgilerini cekiyoruz
 						 */

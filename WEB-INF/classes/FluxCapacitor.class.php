@@ -76,16 +76,6 @@ class FluxCapacitor
 				return $Classroom->getInfo('startDate');
 		}
 		/**
-		 * istenilen sinifin baslangic tarihini dondurur
-		 * 
-		 * @return string int
-		 */
-		public function getStartDayTimeKey()
-		{
-				$Classroom = School::classCache()->getClassroom($this->_classroomCode);
-				return findKeyValueInArray($Classroom->getDayTimeList(), 'code', $Classroom->getInfo('startDayTime'));
-		}
-		/**
 		 * verilen tarih ve saat araliklarina gore
 		 * tatil gunlerini karsilastirarak
 		 * denk gelen tatil gunlerini ve ders saatleri
@@ -116,7 +106,7 @@ class FluxCapacitor
 												$hEndTime = $expEndDateTime[1];
 												$hType = $holidayValue['type'];
 												$hInfo = $holidayValue['info'];
-
+												
 												$expStartDateTime = explode(' ', $this->_startDateTime);
 												$expLimitDateTime = explode(' ', $this->_limitDateTime);
 
@@ -291,13 +281,13 @@ class FluxCapacitor
 						 * ########## SINIFIN İLK DERSİ TARİHLER ARASINDA İSE BAŞLANGIÇ GÜNÜ SAATİNDEN ÖNCEKİ SAATLERİ ÇIKART ##########
 						 * sinifin startDate ve startDateTime'i dikkate alarak duzenle
 						 */
-						$startDayTimeTime = $ClassroomDayTimeList[$this->getStartDayTimeKey()]['time'];
-						$startDate = $Classroom->getInfo('startDate');
+						$startDate = $Classroom->getStartDateTime('date');
+						$startTime = $Classroom->getStartDateTime('time');
 						/**
 						 * once cikarilacaklar listesini olustur (nonClasses)
 						 */
 						foreach ((array)$ClassroomDayTimeList as $key => $value) {
-								if ($value['time'] < $startDayTimeTime)
+								if ($value['time'] < $startTime)
 										$nonClasses[] = $value['code'];
 						}
 						/**

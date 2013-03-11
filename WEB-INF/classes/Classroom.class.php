@@ -202,6 +202,29 @@ class Classroom
 				}
 		}
 		/**
+		 * 1) Sınıfın aktif edildiği startDate verisini okur
+		 * 2) Sınıfın aktif edildiği startDayTime bilgisini dayTime listesinde arar ve saatini belirler
+		 * 3) İki veriyisi birleştirerek startDateTime haline getirir döndürür
+		 * 
+		 * @param string type
+		 * @return string time
+		 */
+		public function getStartDateTime($type = NULL)
+		{
+				$startDate = $this->getInfo('startDate');
+				$startDayTimeTime = $this->getDayTime($this->getInfo('startDayTime'))->getInfo('time');
+				/**
+				 * secilen tipe gore sonucu döndür
+				 */
+				switch ($type) {
+						case 'date': $result = $startDate; break;
+						case 'time': $result = $startDayTimeTime; break;
+						default: $result = $startDate . ' ' . $startDayTimeTime; break;
+				}
+				return $result;
+
+		}
+		/**
 		 * siniftan tum ogrencileri cikartan metot
 		 */
 		public function emptyClassroom()
@@ -214,22 +237,22 @@ class Classroom
 				}
 		}
 		/**
-		 * ders sayisini dondur
+		 * Tatil günlerinin çıkarıldığı ders sayısını döndürür
+		 * Eger type parametresi olarak holiday verilir ise sadece
+		 * tatil günlerinin sayısını döndürecektir
+		 * 
+		 * @return string
 		 */
 		public function getLectureCount($type = NULL)
 		{
 				$Fc = new FluxCapacitor();
-				$dateTime = getDateTime('%Y-%m-%d %H:%M:%S');
+				
+				$startDateTime = $this->getStartDateTime();
+				$limitDateTime = getDateTime('%Y-%m-%d %H:%M:%S');
 
-				$Fc->setValues(array('classroomCode' => $this->_code));
-
-				$ClassroomDayTimeList = $this->getDayTimeList();
-				$dayTimeKey = $Fc->getStartDayTimeKey();
-				$dayTimeTime = $ClassroomDayTimeList[$dayTimeKey]['time'];
-
-				$Fc->setValues(array('startDateTime' => $this->getInfo('startDate') . ' ' . $dayTimeTime,
-						'limitDateTime' => $dateTime));
-
+				$Fc->setValues(array(
+					'classroomCode'=>$this->_code, 'startDateTime'=>$startDateTime, 'limitDateTime'=>$limitDateTime
+				));
 				$lectureCount = $Fc->getLectureCount() - count($Fc->getHolidayLectureList());
 
 				if ($type == 'holiday') {
@@ -239,20 +262,20 @@ class Classroom
 				}
 		}
 		/**
-		 * sınıfın tatil durumunu dondur
+		 * Verdiğimiz tarihte ve saatte sınıfın sorguladığımız tipte bir tatilde olup olmadığını sorgular
+		 * Eğer tatile denk geliyor ise ilişkili olan tatilin kod numarasını döndürür
 		 * 
 		 * @param holidayType string : official, personnal, classroom, custom
+		 * @return array
 		 */
 		public function getHolidayStatus($holidayType)
 		{
 				$Fc = new FluxCapacitor();
 				$dateTime = getDateTime('%Y-%m-%d %H:%M:%S');
 
-
-				$Fc->setValues(array('classroomCode' => $this->_code));
-
-				$Fc->setValues(array('startDateTime' => $dateTime,
-						'limitDateTime' => $dateTime));
+				$Fc->setValues(array(
+						'classroomCode'=>$this->_code, 'startDateTime'=>$dateTime, 'limitDateTime'=>$dateTime
+				));
 
 				$intersectedHolidayList = $Fc->getIntersectedHolidayList();
 
@@ -383,17 +406,6 @@ class Classroom
 		{
 				$studentList = School::classCache()->getPeopleList("student");
 				return getFromArray($studentList, array("classroom" => $this->_code));
-		}
-		/**
-		 * istenilen sinifin baslangic gununun dayTimeList key kodunu dondurur
-		 * 
-		 * @return string int
-		 */
-		public function getStartDayTimeKey()
-		{
-				$startDayTime = $this->getInfo('startDayTime');
-				return findKeyValueInArray($this->getDayTimeList(), 'code', $startDayTime);
-				
 		}
 		/**
 		 * nesne tablo adini dondurur

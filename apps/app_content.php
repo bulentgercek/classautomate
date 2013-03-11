@@ -20,12 +20,11 @@ if ($_GET['code'] != 'sbyRoom') {
 		if ($classroomInfo['status'] == 'active') {
 				$Instructor = $School->getInstructor($Classroom->getInfo('instructor'));
 				$classroomInfo['lectureCount'] = $Classroom->getLectureCount();
-				$classroomInfo['holidayLectureCount'] = count($Classroom->getLectureCount('holiday'));
+				$classroomInfo['holidayLectureCount'] = $Classroom->getLectureCount('holiday');
 				$classroomInfo['holidayClassroomCode'] = $Classroom->getHolidayStatus('classroom');
 				$classroomInfo['nextLectureDateTime'] =  $Classroom->getNextLectureDateTime();
 				$classroomInfo['instructorNextPaymentDateTime'] =  $Instructor->getNextPaymentDateTime($Classroom);
 				$classroomInfo['instructorPaymentInCase'] =  $Instructor->getPaymentInCase($Classroom);
-				
 		}
 		/**
 		 * Ogrencinin diger bilgileri hazirlaniyor
@@ -35,8 +34,9 @@ if ($_GET['code'] != 'sbyRoom') {
 				/**
 				 * Ogrencinin sınıftaki ilk ders gunu bulunuyor
 				 */
-				$studentActiveDateTimesByClassroom = $Student->getActiveDateTimesByClassroom($Classroom);
-				$studentList[$studentKey]['firstLectureDateTime'] = $studentActiveDateTimesByClassroom[0]['endDateTime'];
+				$studentActiveLectureList = $Student->getActiveLectureList($Classroom);
+				$dayTimeTime = $Classroom->getDayTime($studentActiveLectureList[0]['dayTimeCode'])->getInfo('time');
+				$studentList[$studentKey]['firstLectureDateTime'] = $studentActiveLectureList[0]['date'] . ' ' . $dayTimeTime;
 
 				$cashStatus = $Student->getCashStatus($Classroom, 'studentDebt');
 				/**
