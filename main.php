@@ -41,7 +41,7 @@ $Session->start();
 $Db = Db::classCache();
 
 /**
- * Setting objesi yaratiliyor
+ * Setting objesi yaratiliyor,
  * dil icin browser ayari okunuyor
  * gerekli XML verisi global degiskene cache'lenerek ataniyor
  *
