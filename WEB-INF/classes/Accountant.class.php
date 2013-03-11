@@ -229,7 +229,6 @@ class Accountant
 
 				if (debugger('Accountant'))
 						d($studentLectureDetailsByClassroom);
-
 				/**
 				 * ogrencinin kasaya giren toplam odemelerini hazirla
 				 */
@@ -601,7 +600,7 @@ class Accountant
 				/**
 				 * period ders listesi hazirlaniyor
 				 */
-				foreach ($lectureList as $key => $value) {
+				foreach ((array)$lectureList as $key => $value) {
 						/**
 						 * ders tatil degil ise;
 						 */
@@ -633,15 +632,15 @@ class Accountant
 								unset($lectureList[$key]);
 						}
 				}
+
 				/**
 				 * sinifin ogrencilerinin ders odemeleri toplanarak period ders listesine islenecek
 				 */
 				$studentList = $Classroom->getStudentList();
-
 				foreach ((array)$studentList as $key => $value) {
 						$Student = School::classCache()->getStudent($value['code']);
-						$studentCashFlow = $this->getStudentCashFlowByClassroom($Student, $Classroom);
-
+						
+						$studentCashFlow = $this->getStudentCashFlowByClassroom($Student, $Classroom);					
 						/**
 						 * Dersler tek tek geciliyor derslerden gelen para toplanarak ana diziye ekleniyor
 						 */

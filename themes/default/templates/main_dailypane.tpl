@@ -10,10 +10,6 @@
 								<tr>
 										<td>
 												<div align="center">
-														<br />
-														<a href="#">Başlangıç Seviye 19:30</a><br />
-														<a href="#">İleri Seviye I 21:00</a><br />
-														<br />
 												</div>
 										</td>
 								</tr>

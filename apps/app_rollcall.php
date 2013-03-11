@@ -70,7 +70,6 @@ foreach ((array) $Classrooms as $key => $value) {
 		 * sinif nesnemizi cagiriyoruz
 		 */
 		$Classroom = $value['Classroom'];
-		$classroomDayTimeList = $Classroom->getDayTimeList();
 
 		// ######################### FLUX CAPACITOR VERILERİ ##############################
 		/**
@@ -115,7 +114,7 @@ foreach ((array) $Classrooms as $topValue) {
 		 */
 		$Classroom = $topValue['Classroom'];
 		$lectureList = $topValue['lectureList'];
-		$dayTimeList = $Classroom->getDayTimeList();
+		$dayTimeList = $Classroom->getDayTimeList(false, $weekDayNo);
 
 		/**
 		 * sinifin egitmenini cagir

@@ -379,6 +379,27 @@
 			"update": "Update",
 			"cancel": "Cancel"
 		},
+		"app_grouping": {
+			"title": "Groupings",
+			"addNewGroupingTitle": "Add New Grouping",
+			"groupingsListTitle": "Grouping List",
+			"groupingsListGroupingName": "Grouping Name",
+			"groupingsListUsage": "Usage",
+			"groupingsListProcess": "Process",
+			"groupingsListRemove": "Remove",
+			"groupingsListCount": "Grouping Count",
+			"groupingsListUsageObject": "class(es)",		
+			"name": "Grouping Name",
+			"submitRecordLabel": "Add Grouping",
+			"sureToDelete": "Are you sure to delete grouping?"
+		},
+		"app_grouping_update": {
+			"title": "Grouping Update",
+			"name": "Grouping Name",
+			"submitToGroupingText": "Click the button below to return to groupings.",
+			"submitToGrouping": "Back",
+			"submitRecordLabel": "Update Grouping"
+		},
 		"app_holiday": {
 			"title": "Holidays",
 			"addNewHolidayTitle": "Add New Holiday",
@@ -533,6 +554,7 @@
 			"app_person_add&position=secretary": "Secretary Registration",
 			"app_person_add&position=cleaner": "Clener Registration",
 			"app_classroom": "Classrooms",
+			"app_grouping": "Groupings",
 			"app_program": "Programs",
 			"app_saloon": "Saloons",
 			"app_holiday": "Holidays",

@@ -289,7 +289,6 @@ class Student extends Person
 				$Fc = new FluxCapacitor();
 
 				$paymenAndPeriodChangesByClassroom = $this->getPaymentAndPeriodChangesByClassroom($Classroom);
-
 				$lectureDetailsByClassroom = array();
 
 				$paymentTermNo = 0;

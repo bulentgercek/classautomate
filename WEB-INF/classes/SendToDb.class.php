@@ -110,6 +110,9 @@ class SendToDb
 						case "classroom" :
 								$commonArray = School::classCache()->getClassroomList();
 								break;
+						case "grouping" :
+								$commonArray = School::classCache()->getGroupingList();
+								break;
 						case "holiday" :
 								$commonArray = School::classCache()->getHolidayList();
 								break;
@@ -234,6 +237,9 @@ class SendToDb
 				switch ($tableName) {
 						case "classroom" :
 								$commonArray = School::classCache()->getClassroomList();
+								break;
+						case "grouping" :
+								$commonArray = School::classCache()->getGroupingList();
 								break;
 						case "holiday" :
 								$commonArray = School::classCache()->getHolidayList();

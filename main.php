@@ -51,6 +51,7 @@ $Db = Db::classCache();
 $Setting = Setting::classCache();
 $Setting->setInterfaceLang('db');
 $languageJSON = $Setting->getInterfaceLang();
+
 /**
  * [url_variables].json dosyasi okunuyor
  * url degiskenleri array'e gonderiliyor

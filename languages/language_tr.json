@@ -378,6 +378,27 @@
 			"submitRecordLabel": "Sınıfı Düzenle",
 			"sureToUpdate": "Sınıfı yeni hali ile kayıt etmek istediginize emin misiniz?"
 		},
+		"app_grouping": {
+			"title": "Gruplar",
+			"addNewGroupingTitle": "Yeni Grup Ekle",
+			"groupingsListTitle": "Grup Listesi",
+			"groupingsListGroupingName": "Grup İsmi",
+			"groupingsListUsage": "Kullanım",
+			"groupingsListProcess": "İşlem",
+			"groupingsListRemove": "Kaldır",
+			"groupingsListCount": "Grup Sayısı",
+			"groupingsListUsageObject": "grup(lar)",		
+			"name": "Grup İsmi",
+			"submitRecordLabel": "Grup Ekle",
+			"sureToDelete": "Grubu silmek istediğinize emin misiniz?"
+		},
+		"app_grouping_update": {
+			"title": "Grup Güncelle",
+			"name": "Grup İsmi",
+			"submitToGroupingText": "Aşağıdaki düğmeye tıklayarak Gruplar sayfasına dönebilirsiniz.",
+			"submitToGrouping": "Geri",
+			"submitRecordLabel": "Grubu Güncelle"
+		},
 		"app_holiday": {
 			"title": "Tatiller",
 			"addNewHolidayTitle": "Yeni Tatil Ekle",
@@ -531,6 +552,7 @@
 			"app_person_add&position=secretary": "Sekreter Kayıt",
 			"app_person_add&position=cleaner": "Temizlikçi Kayıt",
 			"app_classroom": "Sınıflar",
+			"app_grouping": "Gruplar",
 			"app_program": "Programlar",
 			"app_saloon": "Salonlar",
 			"app_holiday": "Tatiller",

@@ -120,16 +120,18 @@ class Classroom
 		/**
 		 * sinifin dayTime listesi
 		 */
-		public function getDayTimeList($isDeleteOn = false)
+		public function getDayTimeList($isDeleteOn = false, $weekDayNo = NULL)
 		{
 				$dayTimeList = $this->getInfo('dayTime');
-
 				/**
 				 * eger silinmis dayTime'lari da listelemek istemiyor
 				 * ve dolayisiyla $isDeleteOn = false demis ise;
 				 */
 				if (!$isDeleteOn) {
-						$dayTimeList = getFromArray($dayTimeList, array('status' => 'notUsed||used'));
+						if ($weekDayNo)
+								$dayTimeList = getFromArray($dayTimeList, array('status' => 'notUsed||used', 'day'=>$weekDayNo));
+						else 
+								$dayTimeList = getFromArray($dayTimeList, array('status' => 'notUsed||used'));
 				}
 
 				if ($dayTimeList != null) {

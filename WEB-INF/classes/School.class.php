@@ -17,7 +17,7 @@ class School
 		/**
 		 * sinif, program nesnelerini barindiran diziler
 		 */
-		private $_classroom, $_program, $_saloon, $_holiday, $_holidaySubject;
+		private $_classroom, $_grouping, $_program, $_saloon, $_holiday, $_holidaySubject;
 		private $_incomeExpense, $_incomeExpenseType;
 
 		/**
@@ -28,7 +28,7 @@ class School
 		/**
 		 * sinif, program listesi dizileri
 		 */
-		private $_classroomList, $_dayTimeList, $_programList, $_saloonList;
+		private $_classroomList, $_dayTimeList, $_groupingList, $_programList, $_saloonList;
 		private $_holidayList, $_holidaySubjectList = array();
 		private $_rollcallListByDate, $_incomeExpenseList, $_incomeExpenseTypeList = array();
 		private $_personChangesList, $_classroomChangesList;
@@ -79,6 +79,25 @@ class School
 				}
 				else
 						trigger_error($code . " numaralı sınıf kodu classList dizisinde bulunamadı.", E_USER_WARNING);
+		}
+		/**
+		 * grouping nesnesi yarat
+		 *
+		 * @return object
+		 */
+		public function getGrouping($code)
+		{
+				$this->readToArrays('groupings');
+				$result = findKeyValueInArray($this->_groupingList, "code", $code);
+
+				if ($result != -1) {
+						if ($this->_grouping[$code] == NULL) {
+								$this->_grouping[$code] = new Grouping($code);
+						}
+						return $this->_grouping[$code];
+				}
+				else
+						trigger_error($code . " numaralı grouping kodu groupingList dizisinde bulunamadı.", E_USER_WARNING);
 		}
 		/**
 		 * tatil nesnesi yarat
@@ -296,6 +315,16 @@ class School
 				return $this->_classroomList;
 		}
 		/**
+		 * grouping dizisini dondur
+		 *
+		 * @return array
+		 */
+		public function getGroupingList()
+		{
+				$this->readToArrays('groupings');
+				return $this->_groupingList;
+		}
+		/**
 		 * degisiklikler listesini dondur (istenilen tabloya gore)
 		 */
 		public function getChangesList($tableName, $tableCode)
@@ -436,7 +465,13 @@ class School
 										$this->readClassrooms();
 								}
 								break;
-
+								
+						case 'groupings':
+								if (!$this->_isArrayRead['groupings'] || $readAgain == true) {
+										$this->readGroupings();
+								}
+								break;
+								
 						case 'changes':
 								if (!$this->_isArrayRead['changes'] || $readAgain == true) {
 										$this->readChanges();
@@ -523,6 +558,18 @@ class School
 						}
 				}
 				$this->_isArrayRead["classrooms"] = true;
+		}
+		/**
+		 * veritabanindan grupları oku
+		 *
+		 * @return void
+		 */
+		public function readGroupings()
+		{
+				$criteria = array('table' => 'grouping');
+				$Db = Db::classCache();
+				$this->_groupingList = $Db->readTableFromDb($criteria, 'noBase');
+				$this->_isArrayRead['groupings'] = true;
 		}
 		/**
 		 * degisikleri oku
@@ -657,7 +704,7 @@ class School
 				return $Db->readTableFromDb($criteria, 'noBase');
 		}
 		/**
-		 * veritabanindan programlari oku
+		 * veritabanindan salonlari oku
 		 *
 		 * @return void
 		 */

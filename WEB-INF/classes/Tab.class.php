@@ -344,6 +344,7 @@ class Tab
 
 										switch ($object) {
 												case 'classroom':
+												case 'grouping':
 												case 'content':
 												case 'program':
 												case 'saloon':

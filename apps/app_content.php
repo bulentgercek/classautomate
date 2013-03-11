@@ -9,18 +9,20 @@ $School = School::classCache();
 
 $Classroom = $School->getClassroom($_GET['code']);
 $ClassroomList = $School->getClassroomList();
-
 $studentList = $Classroom->getStudentList();
 
 if ($_GET['code'] != 'sbyRoom') {
 
 		$MakeList = new MakeList('code,name,termCountLimit,termDateLimit,instructor_name,instructor_surname,program_name,saloon_name,startDate,notes,status', 'page', $ClassroomList);
+
 		$classroomInfo = getArrayKeyValue(getFromArray($MakeList->get(), array('code' => $_GET['code'])), 0);
 
 		if ($classroomInfo['status'] == 'active') {
 				$Instructor = $School->getInstructor($Classroom->getInfo('instructor'));
 				$classroomInfo['lectureCount'] = $Classroom->getLectureCount();
+								
 				$classroomInfo['holidayLectureCount'] = $Classroom->getLectureCount('holiday');
+
 				$classroomInfo['holidayClassroomCode'] = $Classroom->getHolidayStatus('classroom');
 				$classroomInfo['nextLectureDateTime'] =  $Classroom->getNextLectureDateTime();
 				$classroomInfo['instructorNextPaymentDateTime'] =  $Instructor->getNextPaymentDateTime($Classroom);

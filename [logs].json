@@ -4,12 +4,15 @@
 		
 		"versions":{
 			"0.3.4 ALPHA":{
-				"date":"08-03-2013", 
-				"time":"22:30",
+				"date":"11-03-2013", 
+				"time":"14:55",
 				"languages":{
 						"tr":{
 								"updates":[
-										"ClassAutoMate ilk Alpha versiyonu ile karşınızda!"
+										"ClassAutoMate ilk Alpha versiyonu ile karşınızda!",
+										"Yenilik : #34 Grup oluşturabilme ve düzenleme uygulaması sisteme eklendi",
+										"BugFix : #38 Yoklama sayfasında akivasyon sırasında ders saattleri fazladan görünüyor",
+										"BugFix : #39 Sınıfı Listele dediğimizde site kitlenip kalıyor!"
 								],
 								"bugs":[
 										"Yoklama sisteminde, yoklaması yapılmakta olan ders listesi seçili iken, tarih değiştirilir ve değiştirilen tarihte de ilgili ders bulunmamakta ise; (ki aynı gün aynı sınıfın başka dersleri varolmalıdır) 'Bu tarihte hiçbir aktif sınıf yoktur!' uyarısı vermektedir. Aslen, Günün Tüm Sınıfları'nı göstermesi gerekmektedir. Tarih yeniden seçilirse, sayfa tazeleniyor ve düzeliyor.(#16)",
@@ -18,17 +21,13 @@
 								]
 						},
 						"en":{
-								"updates":[
-										"This is Alpha version of the Classautomate!"
-								],
-								"bugs":[
-										"Known bugs..."
-								]
+								"updates":[],
+								"bugs":[]
 						}
 				},
 				"users":{
 						"bulent":"ClassAutomate BG'yi selamlar!",
-						"busalsa_emre":"Emre'ciğim, ClassAutoMate'in ilk kullanıcısı sen oldun. Yıllar sonra böyle bir vesile ile tekrar beraberiz:)"
+						"busalsa_emre":"Emre, yoklama sayfasında akivasyon saatlerinin fazla görünmesi sorununu düzelttim. Ayrıca sınıfı Listele dediğinde takılıyordu ya o da düzeldi. Yıkarıda sistem update'lerinde de yazıyor. Ayrıca Grup sistemi üzerinde çalışıyorum. Onu aradan çıkartayım dedim. Gruplama uygulamasını ekledim. Şimdi kişi sayfaları ile ilişkilendirme üzerinde çalışıyorum. Selamlar!"
 				}
 			}
 		}

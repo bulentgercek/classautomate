@@ -232,9 +232,8 @@ class DbChanges
 		 * 
 		 * MASTERCHANGE dizisi sifirlanana kadar kullanilir.
 		 */
-		public function setMasterChange($object, $dateTime)
+		public function setMasterChange($dateTime)
 		{
-				$this->_masterChange['object'] = $object;
 				$this->_masterChange['dateTime'] = $dateTime;
 		}
 		/**

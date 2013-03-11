@@ -89,9 +89,8 @@ class Execute
 								 * masterChange verilmiş mi?
 								 */
 								if ($queueJob['masterChange']) {
-										$masterChange['object']	=	$queueJob['masterChange']['object'];
 										$masterChange['dateTime']	= $queueJob['masterChange']['dateTime'];
-										DbChanges::classCache()->setMasterChange($masterChange['object'], $masterChange['dateTime']);
+										DbChanges::classCache()->setMasterChange($masterChange['dateTime']);
 								}
 								if ($queueJob['jobTc']) {
 										$tcField = 'tc:' . $queueJob['jobTc'];
@@ -113,6 +112,7 @@ class Execute
 								 */
 								switch (get_parent_class($queueJob['jobObject'])) {
 										case 'Classroom': $arrayReadCode = 'classrooms'; break;
+										case 'Grouping': $arrayReadCode = 'groupings'; break;
 										case 'Changes': $arrayReadCode = 'changes'; break;
 										case 'Holiday': $arrayReadCode = 'holidays'; break;
 										case 'Person': $arrayReadCode = 'people'; break;
@@ -280,6 +280,25 @@ class Execute
 								}
 								break;
 
+						case "grouping" :
+								switch ($this->_command[1]) {
+
+										case "add" :
+												$Grouping = new Grouping();
+												$this->setQueue($Grouping, $_POST);
+												break;
+
+										case "update" :
+												$School->getGrouping($_GET["code"])->setInfo($_POST);
+												break;
+
+										case "delete" :
+												$Grouping = $School->getGrouping($_POST['code']);
+												$School->deleteRecord($Grouping);
+												break;
+								}
+								break;
+						
 						case "saloon" :
 								switch ($this->_command[1]) {
 
@@ -433,11 +452,10 @@ class Execute
 																		$DayTime = $Classroom->getDayTime($value['code']);
 																		$DayTime->setInfo(array('status' => 'used', 'tc:update' => 'activateRollcallForm|direct'));
 																}
-																
+
 																// masterChange tanımla
-																$masterChange['object'] = $Classroom;
-																$classroomDayTimeTime = $Classroom->getDayTime($Classroom->getInfo('startDayTime'))->getInfo('time');
-																$masterChange['dateTime'] = $Classroom->getInfo('startDate') . ' ' . $classroomDayTimeTime;
+																$classroomDayTimeTime = $Classroom->getDayTime($tempPostArray['startDayTime'])->getInfo('time');
+																$masterChange['dateTime'] = $tempPostArray['startDate'] . ' ' . $classroomDayTimeTime;
 																/**
 																 * sinif aktif edildiginde icinde kayitli olan
 																 * ogrencilerin de firstLecture bilgisine 

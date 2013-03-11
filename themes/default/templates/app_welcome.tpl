@@ -10,16 +10,15 @@
 		<div id="formLine">
 				<div class="brown bold">{$app_welcome_updateTitle} {$logs.no}</div>
 				<div>{$app_welcome_updateDateTime} : {$logs['date']} {$logs['time']}</div>
-
 		</div>
-
+		<br>
 		<div id="formLine">
 				<div class="brown">{$app_welcome_updateNotes}</div>
 				{foreach from=$logs['updates'] key=myid item=item}
 						{$myid+1}) {$item}<br>
 				{/foreach}
 		</div>
-		
+		<br>
 		<div id="formLine">
 				<div class="brown">{$app_welcome_updateBugs}</div>
 				{foreach from=$logs['bugs'] key=myid item=item}

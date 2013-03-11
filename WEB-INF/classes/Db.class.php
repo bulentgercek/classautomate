@@ -185,7 +185,6 @@ class Db extends DbBase
 										$columns[] = $vv;
 						}
 				}
-
 				return $columns;
 		}
 		/**

@@ -90,6 +90,28 @@
 					"updateClassroomForm":"app_classroom"
 				}
 			},
+			"app_grouping":{
+				"get":null,
+				"post":{
+					"tc:addGrouping":"grouping->add",
+					"tc:deleteGrouping":"grouping->delete"
+				},
+				"action":{
+					"addGroupingForm":"app_grouping",
+					"deleteGroupingForm":"app_grouping"
+				}
+			},
+			"app_grouping_update":{
+				"get":[
+					"code"
+				],
+				"post":{
+					"tc:updateGrouping":"grouping->update"
+				},
+				"action":{
+					"updateGroupingForm":"app_grouping"
+				}
+			},
 			"app_holiday":{
 				"get":null,
 				"post":{

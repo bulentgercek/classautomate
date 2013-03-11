@@ -113,8 +113,10 @@ function debugger($className)
 		/** 
 		 * Debugger sadece classautotest veritabanına bağlanıldığında çalışacaktır
 		 */
-		if (Session::classCache()->get('dbName') == 'classautotest') 
-				$isDebuggerCanWork = true; else $isDebuggerCanWork = false;
+		if (Session::classCache()->get('dbName') == 'classautotest') {
+				//Session::classCache()->get('dbName') == 'busalsa') 
+				$isDebuggerCanWork = true; 
+		} else $isDebuggerCanWork = false;
 				
 		if (GlobalVar::get("debuggerArray") == NULL) {
 				$debuggerFileStr = '[debugger].json';

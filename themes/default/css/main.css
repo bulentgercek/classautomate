@@ -496,6 +496,118 @@ body,td,th {
 		text-align:left;
 }
 /**
+ * 	grouping
+ */
+#groupingMain {
+    width: 100%;
+    border: 1px;
+}
+#groupingMain #form {
+		margin: 20px;
+		border-bottom: 1px dashed #ffb13b;
+}
+#groupingMain #list {
+		margin-left:30px;
+		margin-right:30px;
+		margin-bottom:50px;
+}
+#groupingMain #header {
+		text-align:left;
+		line-height: 250%;
+}
+#groupingMain #formLine {
+		float:left;
+		height: 30px;
+		margin-right:20px;
+		margin-bottom:20px;
+}
+#groupingMain #space {
+		position:absolute;
+		margin-top:30px;
+		margin-left:100px;
+}
+#groupingMain label {
+    min-width:95px;
+    margin-top:8px;
+    float:left;
+    text-align:left;
+}
+#groupingMain input {
+    min-width:100px;
+    float:left;
+}
+#groupingMain #submitArea {
+		margin-top:1px;
+		float:left;
+		text-align:left;
+}
+/**
+ * 	grouping update
+ */
+#groupingUpdateMain {
+    width: 100%;
+    border: 1px;
+}
+#groupingUpdateMain #back {
+		width:145px;
+		float:left;
+		text-align:right;
+		margin-left:10px;
+}
+#groupingUpdateMain #form {
+		margin: 20px;
+		margin-left: 160px;
+		border-left: 1px dashed #ffb13b;
+}
+#groupingUpdateMain #list {
+		border-top: 1px dashed #ffb13b;
+		margin-left:30px;
+		margin-right:30px;
+		margin-bottom:50px;
+}
+#groupingUpdateMain #header {
+		text-align:left;
+		line-height: 250%;
+		margin-left:20px;
+		margin-bottom:20px;
+}
+#groupingUpdateMain #formLine {
+		clear:right;
+		min-height: 35px;
+		margin-left:20px;
+		margin-right:20px;
+		margin-bottom:20px;
+}
+#groupingUpdateMain #space {
+		position:absolute;
+		margin-top:30px;
+		margin-left:100px;
+}
+#groupingUpdateMain label {
+    min-width:95px;
+    margin-top:8px;
+    float:left;
+    text-align:left;
+}
+#groupingUpdateMain input {
+    min-width:20px;
+    float:left;
+}
+#groupingUpdateMain select {
+    max-width:120px;
+    float:left;
+}
+#groupingUpdateMain #endTime #startTime {
+		width: 20px;
+}
+#groupingUpdateMain #submitArea {
+		margin-top:1px;
+		float:left;
+		text-align:left;
+		margin-left:20px;
+		margin-bottom:40px;
+}
+/**
  * 	holiday
  */
 #holidayMain {
