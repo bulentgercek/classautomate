@@ -260,7 +260,7 @@
 			"submitRecordLabel_secretary": "Sekreter Bilgilerini Kaydet",
 			"submitRecordLabel_cleaner": "Temizlikçi Bilgilerini Kaydet",
 			"mobilePhoneFormatText": "Örnek : 5327448406",
-			"dateFormatText": "gün/ay/yıl",
+			"dateFormatText": "gün-ay-yıl",
 			"paymentFormatText": "Örnek : 140",
 			"notes": "Notlar"
 		},
@@ -312,7 +312,7 @@
 			"submitRecordLabel_secretary": "Sekreter Bilgilerini Güncelle",
 			"submitRecordLabel_cleaner": "Temizlikçi Bilgilerini Güncelle",
 			"mobilePhoneFormatText": "Örnek : 5327448406",
-			"dateFormatText": "gün/ay/yıl",
+			"dateFormatText": "gün-ay-yıl",
 			"paymentFormatText": "Örnek : 140",
 			"notes": "Notlar"
 		},

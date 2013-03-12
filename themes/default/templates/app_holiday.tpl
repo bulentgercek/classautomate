@@ -139,12 +139,12 @@
         
         $("#startDate").datepicker({
             showButtonPanel: true,
-            dateFormat: 'yy/mm/dd'
+            dateFormat: 'yy-mm-dd'
         }).attr('readonly', true);
         
         $("#endDate").datepicker({
             showButtonPanel: true,
-            dateFormat: 'yy/mm/dd'
+            dateFormat: 'yy-mm-dd'
         }).attr('readonly', true);
         
         currentTime = new Date();
@@ -152,8 +152,8 @@
         var day = currentTime.getDate();
         var year = currentTime.getFullYear();
         
-        $("#startDate").val(year + "/" + month + "/" + day);
-        $("#endDate").val(year + "/" + month + "/" + day);
+        $("#startDate").val(year + "-" + month + "-" + day);
+        $("#endDate").val(year + "-" + month + "-" + day);
         
         $('#personnel').hide();
         $('#classroom').hide();

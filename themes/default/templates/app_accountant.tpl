@@ -193,12 +193,12 @@
 
         $("#startDate").datepicker({
             showButtonPanel: true,
-            dateFormat: 'yy/mm/dd'
+            dateFormat: 'yy-mm-dd'
         }).attr('readonly', true);
         
         $("#endDate").datepicker({
             showButtonPanel: true,
-            dateFormat: 'yy/mm/dd'
+            dateFormat: 'yy-mm-dd'
         }).attr('readonly', true);
                 
         /**
@@ -211,8 +211,8 @@
             var endday = currentTime.getDate();
             var year = currentTime.getFullYear();
             
-            $("#startDate").val(year + "/" + month + "/" + startDay);
-            $("#endDate").val(year + "/" + month + "/" + endday);
+            $("#startDate").val(year + "-" + month + "-" + startDay);
+            $("#endDate").val(year + "-" + month + "-" + endday);
         }
         
         $.defineValues = function() {

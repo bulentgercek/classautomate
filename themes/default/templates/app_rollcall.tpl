@@ -40,9 +40,8 @@
         
 		$("#date").datepicker({
 			showButtonPanel: true,
-			dateFormat: 'yy/mm/dd'
+			dateFormat: 'yy-mm-dd'
 		}).attr('readonly', true);
-		
 
 		$("#date").change(function() {
 			$.defineValues();

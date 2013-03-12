@@ -479,7 +479,7 @@ class Execute
 																				$newStudentStatus = implode(',', $expStudentStatus);
 																				// lecture ilk kez giriliyorsa update et
 																				if ($Student->getInfo('firstLecture') == '0000-00-00 00:00:00') {
-																						$this->setQueue($Student, array('firstLecture' => $_POST['date'] . ' ' . $selectedDayTime['time']), 'update', 'direct', 'activateRollcallForm', $masterChange);
+																						$this->setQueue($Student, array('firstLecture' => $masterChange['dateTime']), 'update', 'direct', 'activateRollcallForm', $masterChange);
 																				}
 																				// status bilgisini guncelle
 																				$this->setQueue($Student, array('status' => $newStudentStatus), 'update', 'direct', 'activateRollcallForm', $masterChange);

@@ -312,7 +312,7 @@
 			"submitRecordLabel_secretary": "Update Secretary",
 			"submitRecordLabel_cleaner": "Update Cleaner",
 			"mobilePhoneFormatText": "Example : 5327448406",
-			"dateFormatText": "day/month/year",
+			"dateFormatText": "day-month-year",
 			"paymentFormatText": "Example : 140",
 			"notes": "Notes"
 		},
