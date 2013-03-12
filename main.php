@@ -51,7 +51,7 @@ $Db = Db::classCache();
 $Setting = Setting::classCache();
 $Setting->setInterfaceLang('db');
 $languageJSON = $Setting->getInterfaceLang();
-
+$lanugage = $Setting->getLanguage('db');
 /**
  * [url_variables].json dosyasi okunuyor
  * url degiskenleri array'e gonderiliyor
@@ -215,6 +215,7 @@ if (getRefresh() == 'true') {
 		 */
 		$Smarty->assign('theme', $theme);
 		$Smarty->assign('themePath', $themePath);
+		$Smarty->assign('language', $lanugage);
 		/**
 		 * yuklenen tum template'ler gosteriliyor
 		 *
