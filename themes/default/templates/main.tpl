@@ -46,6 +46,7 @@
 <script type="text/javascript" src="{$themePath}js/{$main_paneMotion_js}"></script>
 <script type="text/javascript" src="{$themePath}js/{$main_jqueryURLParser_js}"></script>
 <script type="text/javascript" src="{$themePath}js/{$main_jqueryChosen_js}"></script>
+<script type="text/javascript" src="{$themePath}js/{$main_jqueryTimePicker_js}"></script>
 <script  type="text/javascript">
 		/* Turkish initialisation for the jQuery UI date picker plugin. */
 		/* Written by Izzet Emre Erkan (kara@karalamalar.net). */

@@ -5,7 +5,6 @@
         -->
 </style>
 <script type="text/javascript" src="{$themePath}js/{$main_jqueryTableSorter_js}"></script>
-<script type="text/javascript" src="{$themePath}js/{$main_jqueryTimePicker_js}"></script>
 <script type="text/javascript">
     /**
      * json metinleri
