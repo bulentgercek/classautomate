@@ -1196,7 +1196,7 @@ function getPeriodMultiplier($period)
 						break;
 				case 'monthly': $result = 4;
 						break;
-				case 'monthly3': $result = 6;
+				case 'monthly3': $result = 12;
 						break;
 				case 'monthly6': $result = 24;
 						break;

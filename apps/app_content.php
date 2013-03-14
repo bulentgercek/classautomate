@@ -43,8 +43,8 @@ if ($_GET['code'] != 'sbyRoom') {
 
 				$cashStatus = $Student->getCashStatus($Classroom, 'studentDebt');
 				if (debugger('General')) {
-						var_dump($Student->getInfo('name'));
-						var_dump($cashStatus);
+						s($Student->getInfo('name'));
+						s($cashStatus);
 				}
 				/**
 				 * Diziyi başlatıyoruz, sonrasında öğrencinin borc durumu kontrol ediliyor

@@ -5,10 +5,11 @@
 		"versions":{
 			"0.3.4 ALPHA":{
 				"date":"14-03-2013", 
-				"time":"03:38",
+				"time":"04:01",
 				"languages":{
 						"tr":{
 								"updates":[
+										"BugFix  : #48 '3 ay ödemeli öğrenci için, Sıradaki Ödeme Tarihi yanlış sonuç veriyor!'",
 										"BugFix  : #47 'Ödeme dönemi değişmedi ise ödeme dönemi ders sayısı aynı devam etmeli!'",
 										"Yenilik : #41 Takvim ve Zaman seçimleri, seçilmiş olan dile göre değişiyor.",
 										"Bugfix  : #42 'Öğrenci ödemesi girişi kutusu tıkladığında 0 silinmiyor.'",
@@ -29,7 +30,7 @@
 				},
 				"users":{
 						"bulent":"ClassAutomate BG'yi selamlar!",
-						"busalsa_emre":"Artık ödeme giriş kutuları hem ekleme de hem de güncelleme de istediğin gibi çalışıyorlar;) Takvim ve saat-dakika seçim alanlarının dil problemi de çözüldü."
+						"busalsa_emre":"Şu an üzerinde çalıştığım konu, sınıf içeriği sayfasında gördüğün Borç hanesine olması gereken rakamı yazdırmak. Ondan sonra hızlıca asıl ihtiyacımız olan, yeni kayıt edilecek öğrencilere hali hazırda ders yaptığını ve kaç ders yaptığını girebileceğimiz alanları, öğrenci kayıt sayfasına yerleştirme işine geçeceğim."
 				}
 			}
 		}
