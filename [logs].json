@@ -4,11 +4,12 @@
 		
 		"versions":{
 			"0.3.4 ALPHA":{
-				"date":"12-03-2013", 
-				"time":"02:18",
+				"date":"14-03-2013", 
+				"time":"03:38",
 				"languages":{
 						"tr":{
 								"updates":[
+										"BugFix  : #47 'Ödeme dönemi değişmedi ise ödeme dönemi ders sayısı aynı devam etmeli!'",
 										"Yenilik : #41 Takvim ve Zaman seçimleri, seçilmiş olan dile göre değişiyor.",
 										"Bugfix  : #42 'Öğrenci ödemesi girişi kutusu tıkladığında 0 silinmiyor.'",
 										"Yenilik : #34 Grup oluşturabilme ve düzenleme uygulaması sisteme eklendi",
