@@ -9,6 +9,7 @@
 				"languages":{
 						"tr":{
 								"updates":[
+										"Yenilik : #46 Öğrenci 'Ne kadar borcum kaldı?' dediğinde öğrenebileceğimiz kaynak hazırlandı.",
 										"BugFix  : #48 '3 ay ödemeli öğrenci için, Sıradaki Ödeme Tarihi yanlış sonuç veriyor!'",
 										"BugFix  : #47 'Ödeme dönemi değişmedi ise ödeme dönemi ders sayısı aynı devam etmeli!'",
 										"Yenilik : #41 Takvim ve Zaman seçimleri, seçilmiş olan dile göre değişiyor.",
@@ -30,7 +31,7 @@
 				},
 				"users":{
 						"bulent":"ClassAutomate BG'yi selamlar!",
-						"busalsa_emre":"Şu an üzerinde çalıştığım konu, sınıf içeriği sayfasında gördüğün Borç hanesine olması gereken rakamı yazdırmak. Ondan sonra hızlıca asıl ihtiyacımız olan, yeni kayıt edilecek öğrencilere hali hazırda ders yaptığını ve kaç ders yaptığını girebileceğimiz alanları, öğrenci kayıt sayfasına yerleştirme işine geçeceğim."
+						"busalsa_emre":"Eveeeettt! Artık Sınıf İçeriği sayfasında (Sınıf Listele) Borç bilgisini görebiliyorsun;) Şu an üzerinde çalıştığım konu, yeni kayıt edilecek öğrencilere hali hazırda kaç derse girdiğini, öğrenci kayıt sayfasına yerleştirme aşaması."
 				}
 			}
 		}

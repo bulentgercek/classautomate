@@ -35,7 +35,12 @@ class Classroom
 		 * @var Object
 		 */
 		private $Changes;
-
+		
+		/**
+		 * activeLectureList yedegi
+		 */
+		private $_classroomActiveLectureList;
+		
 		/**
 		 * constract metodu@
 		 *
@@ -298,36 +303,39 @@ class Classroom
 		 */
 		public function getActiveLectureList()
 		{
-				$Fc = new FluxCapacitor();
+				if (!$this->_classroomActiveLectureList) {
+						
+						$Fc = new FluxCapacitor();
 
-				$classroomActiveDateTimes = $this->getActiveDateTimes();
+						$classroomActiveDateTimes = $this->getActiveDateTimes();
 
-				$classroomActiveLectureList = array();
+						$classroomActiveLectureList = array();
 
-				if ($classroomActiveDateTimes != null) {
-						foreach ($classroomActiveDateTimes as $key => $value) {
+						if ($classroomActiveDateTimes != null) {
+								foreach ($classroomActiveDateTimes as $key => $value) {
 
-								$Fc->setValues(array('classroomCode' => $this->getInfo('code'),
-										'startDateTime' => $value['startDateTime'],
-										'limitDateTime' => $value['endDateTime']));
+										$Fc->setValues(array('classroomCode' => $this->getInfo('code'),
+												'startDateTime' => $value['startDateTime'],
+												'limitDateTime' => $value['endDateTime']));
 
-								$filteredLectures = $Fc->getLecture();
-								/**
-								 * sinif numaralarını temizle
-								 * (active olmayan numaraları atladigimizdan
-								 * numaralar atladıgi yerde sifirlaniyor.
-								 * dolayisiyle artik dogru olmayan ders no'suna gerek kalmadi.)
-								 */
-								if ($filteredLectures != null) {
-										foreach ($filteredLectures as $key => $value) {
-												unset($filteredLectures[$key]['count']);
+										$filteredLectures = $Fc->getLecture();
+										/**
+										 * sinif numaralarını temizle
+										 * (active olmayan numaraları atladigimizdan
+										 * numaralar atladıgi yerde sifirlaniyor.
+										 * dolayisiyle artik dogru olmayan ders no'suna gerek kalmadi.)
+										 */
+										if ($filteredLectures != null) {
+												foreach ($filteredLectures as $key => $value) {
+														unset($filteredLectures[$key]['count']);
+												}
+												$classroomActiveLectureList = array_merge($classroomActiveLectureList, $filteredLectures);
 										}
-										$classroomActiveLectureList = array_merge($classroomActiveLectureList, $filteredLectures);
 								}
 						}
+						$this->_classroomActiveLectureList = $classroomActiveLectureList;
 				}
-
-				return $classroomActiveLectureList;
+				return $this->_classroomActiveLectureList;
 		}
 		/**
 		 * Tarihe bakarak sıradaki dersin bilgilerini döndürür

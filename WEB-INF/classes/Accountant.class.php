@@ -34,6 +34,11 @@ class Accountant
 		 * ogrencilerin para akislari bu degiskende saklanacak
 		 */
 		private $_studentCashFlow;
+		
+		/**
+		 * classroomPaymentPeriods yedegi
+		 */
+		private $_classroomPaymentPeriods;
 
 		/**
 		 * Classın construct methodu yoktur
@@ -605,78 +610,81 @@ class Accountant
 		 */
 		public function getClassroomPaymentPeriods(Classroom $Classroom)
 		{
-				/**
-				 * genel diziler ve veriler okunuyor, hazirlaniyor
-				 */
-				$lectureList = $Classroom->getActiveLectureList();
-				$period = strtolower(getFirstUpperCaseWord($Classroom->getInfo('instructorPaymentPeriod')));
-				$periodMultiplier = getPeriodMultiplier($period);
-				$periodLectureCount = getLectureCountByPeriod($Classroom, $period);
-				/**
-				 * degiskenler tanimlaniyor
-				 */
-				$lectureNo = 0;
-				$periodCount = 1;
-				/**
-				 * period ders listesi hazirlaniyor
-				 */
-				foreach ((array)$lectureList as $key => $value) {
+				if (!$this->classroomPaymentPeriods[$Classroom->getInfo('code')]) {
 						/**
-						 * ders tatil degil ise;
+						 * genel diziler ve veriler okunuyor, hazirlaniyor
 						 */
-						if ($lectureList[$key]['lectureStatus'] != 'off') {
+						$lectureList = $Classroom->getActiveLectureList();
+						$period = strtolower(getFirstUpperCaseWord($Classroom->getInfo('instructorPaymentPeriod')));
+						$periodMultiplier = getPeriodMultiplier($period);
+						$periodLectureCount = getLectureCountByPeriod($Classroom, $period);
+						/**
+						 * degiskenler tanimlaniyor
+						 */
+						$lectureNo = 0;
+						$periodCount = 1;
+						/**
+						 * period ders listesi hazirlaniyor
+						 */
+						foreach ((array)$lectureList as $key => $value) {
 								/**
-								 * odeme donemi sonu geldi mi?
+								 * ders tatil degil ise;
 								 */
-								if ($lectureNo == $periodLectureCount) {
+								if ($lectureList[$key]['lectureStatus'] != 'off') {
 										/**
-										 * degerleri sifirla ve yeni odeme donemini baslat
+										 * odeme donemi sonu geldi mi?
 										 */
-										$lectureNo = 0; $periodCount++;
+										if ($lectureNo == $periodLectureCount) {
+												/**
+												 * degerleri sifirla ve yeni odeme donemini baslat
+												 */
+												$lectureNo = 0; $periodCount++;
+										}
+										/**
+										 * eger ilk gunse period o gun baslamis
+										 */
+										$lectureList[$key]['lectureNo'] = ++$lectureNo; 
+										$lectureList[$key]['periodNo'] = $periodCount;
+										/**
+										 * activeLectureList'den gelen ders durumu 
+										 * gereksiz oldugundan diziden cikariliyor
+										 */
+										unset($lectureList[$key]['lectureStatus']);
+								} 
+								/**
+								 * ders tatil ise;
+								 */
+								else {
+										unset($lectureList[$key]);
 								}
-								/**
-								 * eger ilk gunse period o gun baslamis
-								 */
-								$lectureList[$key]['lectureNo'] = ++$lectureNo; 
-								$lectureList[$key]['periodNo'] = $periodCount;
-								/**
-								 * activeLectureList'den gelen ders durumu 
-								 * gereksiz oldugundan diziden cikariliyor
-								 */
-								unset($lectureList[$key]['lectureStatus']);
-						} 
-						/**
-						 * ders tatil ise;
-						 */
-						else {
-								unset($lectureList[$key]);
 						}
-				}
 
-				/**
-				 * sinifin ogrencilerinin ders odemeleri toplanarak period ders listesine islenecek
-				 */
-				$studentList = $Classroom->getStudentList();
-				foreach ((array)$studentList as $key => $value) {
-						$Student = School::classCache()->getStudent($value['code']);
-						
-						$studentCashFlow = $this->getStudentCashFlowByClassroom($Student, $Classroom);					
 						/**
-						 * Dersler tek tek geciliyor derslerden gelen para toplanarak ana diziye ekleniyor
+						 * sinifin ogrencilerinin ders odemeleri toplanarak period ders listesine islenecek
 						 */
-						$periodEarnedTotal = 0;
-						foreach ($lectureList as $key => $value) {
-								$currentLectureFlow = getFromArray($studentCashFlow, array('date'=>$value['date'], 'dayTime'=>$value['dayTimeCode']));
-								$lectureList[$key]['earnedMoney'] += $currentLectureFlow[0]['lecturePrice'];
-								$periodEarnedTotal += $lectureList[$key]['earnedMoney'];
-								$lectureList[$key]['earnedMoneyTotal'] = $periodEarnedTotal;
-								
-								if ($lectureList[$key]['lectureNo'] == $periodLectureCount) {
-										$lectureList[$key]['earnedMoneyByPeriod'] = $periodEarnedTotal;
+						$studentList = $Classroom->getStudentList();
+						foreach ((array)$studentList as $key => $value) {
+								$Student = School::classCache()->getStudent($value['code']);
+
+								$studentCashFlow = $this->getStudentCashFlowByClassroom($Student, $Classroom);				
+								/**
+								 * Dersler tek tek geciliyor derslerden gelen para toplanarak ana diziye ekleniyor
+								 */
+								$periodEarnedTotal = 0;
+								foreach ($lectureList as $key => $value) {
+										$currentLectureFlow = getFromArray($studentCashFlow, array('date'=>$value['date'], 'dayTime'=>$value['dayTimeCode']));
+										$lectureList[$key]['earnedMoney'] += $currentLectureFlow[0]['lecturePrice'];
+										$periodEarnedTotal += $lectureList[$key]['earnedMoney'];
+										$lectureList[$key]['earnedMoneyTotal'] = $periodEarnedTotal;
+
+										if ($lectureList[$key]['lectureNo'] == $periodLectureCount) {
+												$lectureList[$key]['earnedMoneyByPeriod'] = $periodEarnedTotal;
+										}
 								}
 						}
+						$this->classroomPaymentPeriods[$Classroom->getInfo('code')] = $lectureList;
 				}
-				return $lectureList;
+				return $this->classroomPaymentPeriods[$Classroom->getInfo('code')];
 		}
 		/**
 		 * getClassroomPaymentPeriods metodundan gelen diziyi kullanarak

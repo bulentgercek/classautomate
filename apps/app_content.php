@@ -32,7 +32,14 @@ if ($_GET['code'] != 'sbyRoom') {
 		 * Ogrencinin diger bilgileri hazirlaniyor
 		 */
 		foreach ((array) $studentList as $studentKey=>$studentValue) {
+				
 				$Student = $School->getStudent($studentValue['code']);
+				$totalLecturePrice = 0;
+				
+				if (debugger('General')) {
+						//s($Student->getInfo('name'));
+						//s($studentCashFlow);
+				}
 				/**
 				 * Ogrencinin sınıftaki ilk ders gunu bulunuyor
 				 */
@@ -42,16 +49,23 @@ if ($_GET['code'] != 'sbyRoom') {
 				$studentList[$studentKey]['firstLectureDateTime'] = $studentLectureDetailsByClassroom[0]['date'] . ' ' . $dayTimeTime;
 
 				$cashStatus = $Student->getCashStatus($Classroom, 'studentDebt');
-				if (debugger('General')) {
-						s($Student->getInfo('name'));
-						s($cashStatus);
+				/**
+				 * ogrencinin guncel odeme periyodu içindeki girdiği derslerin listesini aliyoruz
+				 */
+				$studentCashFlowByPeriod = getFromArray($Student->getCashFlowByClassroom($Classroom), array('paymentTermNo'=>$cashStatus['paymentTermNo']));
+				/**
+				 * listeyi dondurerek bu ana kadar ki ders ucretlerinin toplamini buluyoruz
+				 */
+				foreach ($studentCashFlowByPeriod as $key => $value) {
+						$totalLecturePrice += $value['lecturePrice'];
 				}
+				$remainingDebt = $cashStatus['payment'] - ($totalLecturePrice + $cashStatus['studentMoneyLeftInCase']);
 				/**
 				 * Diziyi başlatıyoruz, sonrasında öğrencinin borc durumu kontrol ediliyor
 				 * uygun sartlarda ise örneğin halen sınıftan atılmamış ise:)
 				 * devam ediyoruz, aksi takdirde NONE göndereceğiz.
 				 */
-				$intend = array(	'debtInfo' => $cashStatus['info'], 'remainingDebt' => $cashStatus['value']);
+				$intend = array(	'debtInfo' => $cashStatus['info'], 'remainingDebt' => abs($remainingDebt));
 				switch ($cashStatus['info']) {
 						case 'debtInfo_3':
 						case 'debtInfo_5':
