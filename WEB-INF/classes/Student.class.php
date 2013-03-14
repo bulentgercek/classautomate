@@ -25,7 +25,12 @@ class Student extends Person
 		 * @var Object
 		 */
 		protected $Changes;
-
+		
+		/**
+		 * lectureDetails yedegi
+		 */
+		private $_lectureDetailsByClassroom;
+				
 		/**
 		 * ogrencinin istenilen sınıfta 
 		 * hangi tarihlerde yer aldigini 
@@ -279,30 +284,46 @@ class Student extends Person
 				return $finalList;
 		}
 		/**
-		 * ogrencinin odeme donemi, odeme donemine ait odeme miktari, odeme donemi numarasini
+		 * Ögrencinin odeme donemi, odeme donemine ait odeme miktari, odeme donemi numarasini
 		 * ve odeme donemi ders numarasini aktif derslere gore listeleyen metot
 		 * 
 		 * @return Array
 		 */
 		public function getLectureDetailsByClassroom(Classroom $Classroom)
 		{
-				$Fc = new FluxCapacitor();
+				/**
+				 * verilerin yedegini almışmıyız? (Sınıfa gore)
+				 */
+				if (!$this->_lectureDetailsByClassroom[$Classroom->getInfo('code')]) {
+						/**
+						 * flux
+						 */
+						$Fc = new FluxCapacitor();
+						/**
+						 * tum odeme ve odeme periyodu degisimlerini cagir (Sınıfa gore)
+						 */
+						$paymenAndPeriodChangesByClassroom = $this->getPaymentAndPeriodChangesByClassroom($Classroom);
+						/**
+						 * hazirlanacak arrayi hazirla
+						 */
+						$lectureDetailsByClassroom = array();
+						/**
+						 * odeme periyodu sayisini hazirla
+						 */
+						$paymentTermNo = 0;
 
-				$paymenAndPeriodChangesByClassroom = $this->getPaymentAndPeriodChangesByClassroom($Classroom);
-				$lectureDetailsByClassroom = array();
-
-				$paymentTermNo = 0;
-
-				if ($paymenAndPeriodChangesByClassroom != null) {
-						foreach ($paymenAndPeriodChangesByClassroom as $key => $value) {
-								$lectureNo = 0;
+						foreach ((array)$paymenAndPeriodChangesByClassroom as $key => $value) {
+								/**
+								 * odeme periyodu degismedigi surece lectureNo sıfırlanmayacak
+								 */
+								if ($value['paymentPeriod'] != $tempPeriod)
+										$lectureNo = 0;
 
 								$Fc->setValues(array('classroomCode' => $Classroom->getInfo('code'),
 										'startDateTime' => $value['startDateTime'],
 										'limitDateTime' => $value['endDateTime']));
 
 								$filteredLectures = $Fc->getLecture();
-
 								/**
 								 * para akis bilgilerini isle
 								 * odeme donemine gore diziyi hazirla
@@ -310,40 +331,47 @@ class Student extends Person
 								$lectureCountByPeriod = getLectureCountByPeriod($Classroom, $value['paymentPeriod']);
 								$offLectures = 0;
 
-								if ($filteredLectures != null) {
-										foreach ($filteredLectures as $Fkey => $FValue) {
-												if ($filteredLectures[$Fkey]['lectureStatus'] == 'on') {
-														$filteredLectures[$Fkey]['payment'] = $value['payment'];
-														$filteredLectures[$Fkey]['paymentPeriod'] = $value['paymentPeriod'];
+								foreach ((array)$filteredLectures as $Fkey => $FValue) {
+										
+										if ($filteredLectures[$Fkey]['lectureStatus'] == 'on') {
+												$filteredLectures[$Fkey]['payment'] = $value['payment'];
+												$filteredLectures[$Fkey]['paymentPeriod'] = $value['paymentPeriod'];
 
-														if ($value['paymentPeriod'] != 'fixed') {
-																if ($filteredLectures[$Fkey]['count'] > $lectureCountByPeriod) {
-																		$lectureNo = $filteredLectures[$Fkey]['count'] % $lectureCountByPeriod;
-																} else {
-																		$lectureNo++;
-																}
+												if ($value['paymentPeriod'] != 'fixed') {
+														if ($lectureNo == $lectureCountByPeriod) {
+																$lectureNo = 1;
 														} else {
 																$lectureNo++;
 														}
-
-														if ($lectureNo == 1)
-																$paymentTermNo++;
-
-														$filteredLectures[$Fkey]['paymentTermNo'] = $paymentTermNo;
-														$filteredLectures[$Fkey]['paymentTermLectureNo'] = $lectureNo;
-														$filteredLectures[$Fkey]['paymentTermLectureCount'] = ($filteredLectures[$Fkey]['count'] - $offLectures);
-														unset($filteredLectures[$Fkey]['count']);
-														unset($filteredLectures[$Fkey]['lectureStatus']);
 												} else {
-														unset($filteredLectures[$Fkey]);
-														$offLectures++;
+														$lectureNo++;
 												}
+
+												if ($lectureNo == 1 && $value['paymentPeriod'] != $tempPeriod)
+														$paymentTermNo++;
+
+												$filteredLectures[$Fkey]['paymentTermNo'] = $paymentTermNo;
+												$filteredLectures[$Fkey]['paymentTermLectureNo'] = $lectureNo;
+												unset($filteredLectures[$Fkey]['count']);
+												unset($filteredLectures[$Fkey]['lectureStatus']);
+										} else {
+												unset($filteredLectures[$Fkey]);
+												$offLectures++;
 										}
-										$lectureDetailsByClassroom = array_merge($lectureDetailsByClassroom, $filteredLectures);
 								}
+								$lectureDetailsByClassroom = array_merge($lectureDetailsByClassroom, $filteredLectures);
+								/**
+								 * karsilastirma icin periyodu yedekliyoruz
+								 */
+								$tempPeriod = $value['paymentPeriod'];
 						}
+						/**
+						 * degiskene yedekle
+						 */
+						$this->_lectureDetailsByClassroom[$Classroom->getInfo('code')] = $lectureDetailsByClassroom;
 				}
-				return $lectureDetailsByClassroom;
+				
+				return $this->_lectureDetailsByClassroom[$Classroom->getInfo('code')];
 		}
 		/**
 		 * ogrencinin derslere gore detayli odeme akisini dizi olarak dondur
@@ -477,33 +505,75 @@ class Student extends Person
 
 						case 'status' :
 								$newClassrooms = getArrayKeyValue($this->getClassroomChangesInPost(), 'post');
-
+								$statusResult = array();
+								
 								if ($senderMethod == "add" || $senderMethod == "update") {
 
 										if ($this->isClassroomSbyRoomInPost()) {
-												$statusResult = "notUsed";
+												$statusResult[] = "notUsed";
 										} else if ($this->isThereAnyActiveClassroomInPost()) {
+												/**
+												 * post ile gelen sinif listesi ve o siniflarin status listesi
+												 */
 												$classroomStatusList = $this->isThereAnyActiveClassroomInPost('list');
-
+												/**
+												 * sınıf ve status listesini tek dondur
+												 */
 												foreach ($classroomStatusList as $key => $value) {
+														/**
+														 * dongudeki sınıf
+														 */
 														$Classroom = School::classCache()->getClassroom($value['code']);
+														/**
+														 * sınıf notUsed vaziyetinde mi?
+														 */
 														if ($Classroom->getInfo('status') == 'notUsed') {
-																$Classroom->setInfo(array('status' => 'used', 'tc:update' => 'updateClassroomForm|direct'));
-																$statusResult .= "used";
+																/**
+																 * o zaman used yap cunku ogrenci kayit oluyor
+																 */
+																Execute::classCache()->setQueue($Classroom, array('status' => 'used'), 'update', 'direct', 'updateClassroomForm');
+																/**
+																 * sınıfın durumu degistiğinden ogrencinin status'une used yazıyoruz
+																 */
+																$statusResult[] = "used";
+														/**
+														 * sınıfın durumu used mı?
+														 */
 														} else if ($Classroom->getInfo('status') == 'used') {
-																$statusResult .= "used";
+																/**
+																 * o zaman ogrenci de used olacak
+																 */
+																$statusResult[] = "used";
+														/**
+														 * sinif aktif edilmiş durumda mı?
+														 */
 														} else if ($Classroom->getInfo('status') == 'active') {
 																/**
 																 * issue #25 buradan cözülecek
-																 * Sınıfı aktif ise öğrenci önce USED yapılacak;
+																 * Sınıfı aktif ise ve öğrenci sınıfta aktif değilse önce USED yapılacak;
+																 * 
+																 * once ogrencinin hali hazırdaki sınıf ve durumları listesini alıyoruz
 																 */
-																$statusResult .= "used";
+																$studentClassroomListWithStatus = $this->getClassroomListWithStatus();
 																/**
+																 * su an post icinde gelen ve dongudeki guncel sınıf 
+																 * ogrencinin hali hazırdaki sınıf listesinde var mı?
+																 */
+																$currentClassroom = getFromArray($studentClassroomListWithStatus, array('code'=>$value['code']));
+																$currentClassroom = $currentClassroom[0];
+																/**
+																 * simdi ogrencinin bu guncel sınıfta aktif olup olmadığına bakacağız
+																 * degil ise once used yapıyoruz
+																 */
+																if ($currentClassroom && $currentClassroom['status'] != 'active') {
+																		$statusResult[] = "used";
+																} else {
+																		$statusResult[] = 'active';
+																}
+																/**
+																 * ######## BU DB GÖNDERİMİ İÇİN İŞ BİTTİ BUNDAN SONRAKİ KISIM BİR SONRAKİ GÖNDERİM İLE İLGİLİ ######
 																 * simdi sırada geleceğe dair bir kayıt yapmaya geldi
 																 * Execute kuyruğuna ogrencinin aktif yapılacağını yerleştiriyoruz
-																 */
-																$masterChange['object'] = $Classroom;
-																/**
 																 * sinifin aktif oldugu dersin bitis saatini ogren
 																 */
 																$classroomActiveDateTimes = $Classroom->getActiveDateTimes();
@@ -533,35 +603,49 @@ class Student extends Person
 																		$masterChange['dateTime'] = $Classroom->getNextLectureDateTime();
 																}
 																/**
-																 * ogrenci önce USED yapıldı, sınıf kaydı ve CHANGE bilgisi ona göre yapıldı.
-																 * Şimdi de ogrenciyi aktif etmek üzere kuyruğa iş bırakıyoruz.
-																 * Böylece CHANGE aktif edilme bilgisini ayrı olarak kaydedecek.
-																 * issue #25 tamamen çözülmüş oldu.
+																 * ogrenci önce USED yapılmıştı(üstte), sınıf kaydı ve CHANGE bilgisi ona göre tamamlandı
+																 * Şimdi de ogrenciyi aktif etmek üzere 
+																 * elimizdeki statusresult degiskeninin yedegini aliyoruz
+																 * guncel sinif bilgisini used ise active olarak degistiriyoruz
 																 */
-																Execute::classCache()->setQueue(
-																		$this, array('status'=>'active'), 'update', 'direct', 'updateClassroomForm', $masterChange
-																);
+																$queueResult = $statusResult;
+																if ($statusResult[count($statusResult)-1] == 'used') {
+																		$queueResult[count($queueResult)-1] = 'active';
+																}
 														}
-														if ($key < count($classroomStatusList) - 1)
-																$statusResult .= ',';
 												}
+												/**
+												 * used iken active donusturulen veriler
+												 * ogrencinin status kısmına işlenmek üzere kuyruğa atılıyor
+												 */
+												$queueStatus = implode(',', $statusResult);
+												Execute::classCache()->setQueue(
+														$this, array('status'=> $queueStatus), 'update', 'direct', 'updateClassroomForm', $masterChange
+												);
+										/**
+										 * eger post icinde ogrencinin dahil edildiği sınıflardan
+										 * hiçbiri active değil ise ogrencinin sınıf kayıtları used olarak dondurulecek
+										 * sınıfların arasında notUsed olan var ise de, artık içine ogrenci konulduğundan used yapılacak
+										 */
 										} else {
 												foreach ($newClassrooms as $key => $value) {
-														$statusResult .= "used";
+														$statusResult[] = "used";
 														$Classroom = School::classCache()->getClassroom($value);
 														if ($Classroom->getInfo('status') == 'notUsed')
 																$Classroom->setInfo(array('status' => 'used', 'tc:update' => 'updateClassroomForm|direct'));
-														if ($key < count($newClassrooms) - 1)
-																$statusResult .= ',';
 												}
 										}
 								}
-
+								/**
+								 * sil komutu gelmiş ise ogrenci silinecek
+								 */
 								if ($senderMethod == "delete") {
-										$statusResult = "deleted";
+										$statusResult[] = "deleted";
 								}
-
-								return $statusResult;
+								/**
+								 * dizi halinde olan result'u string'e donustur , koyarak
+								 */
+								return implode(',', $statusResult);
 								break;
 
 						case 'recordDate':

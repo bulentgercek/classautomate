@@ -188,7 +188,7 @@ abstract class Person
 		/**
 		 * sinif kayitlarinda aktif sinif var mi?
 		 *
-		 * @return boolean
+		 * @return boolean, array
 		 */
 		public function isThereAnyActiveClassroomInPost($returnType = 'boolean')
 		{
@@ -202,6 +202,20 @@ abstract class Person
 						if ($returnType == 'list') {
 								$result[$key] = array('code' => $value, 'status' => School::classCache()->getClassroom($value)->getInfo('status'));
 						}
+				}
+				return $result;
+		}
+		/**
+		 * siniflari ve status durumunu dondur
+		 * 
+		 * @return array
+		 */
+		public function getClassroomListWithStatus()
+		{
+				$statusList = explode(',', $this->getInfo('status'));
+				$classroomList =  explode(',', $this->getInfo('classroom'));
+				foreach ($classroomList as $key => $value) {
+						$result[] = array('code' => $value, 'status' => $statusList[$key]);
 				}
 				return $result;
 		}

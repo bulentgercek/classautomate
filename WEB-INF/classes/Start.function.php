@@ -1249,4 +1249,43 @@ function getCallingFunction()
 		$callers = debug_backtrace();
 		return $callers[2]['function'];
 }
+/**
+ * Bir sayiyi verilen sayiya boler
+ * tam bolunmuyorsa arta kalan degeri
+ * dizide en son degere yazar
+ * 
+ * Bu sayede para hesaplari icin harika bir işlev görür
+ * 
+ * @param type $amount
+ * @param type $splitTimes
+ * @return array
+ */
+function divvyUp($amount, $splitTimes) {
+    if (!is_int($splitTimes) || !(is_int($amount) || is_float($amount)) || $amount / $splitTimes < 0.01) {
+        return null; //either improper inputs or can not split to a penny or more
+    }
+    $n = round($amount / $splitTimes, 2);
+    $rem = fmod($amount, $n); //remainder of $amount / $n (note mod operator '%' does not work with floats, must use fmod)
+     //basically DONE by here (the 'predictions' are done, just need to decide what to do with the differential, if any).
+     //There will be two cases of differential:
+     //$rem will be within ($splitTimes / 100) of $n,
+     //or $rem will be less than ($splitTimes / 100).
+     //(($splitTimes / 100) being number of pennies)
+    $splits = array_fill(0, $splitTimes, $n);
+    //$randomPersonsIndex = rand(0, $splitTimes - 1); //who are we to decide who the lucky/unlucky one is? Let it be random, I'd say!
+		$randomPersonsIndex = $splitTimes;
+    if ($rem < $splitTimes / 100) {
+        $splits[$randomPersonsIndex] += $rem;
+    } else {
+        $splits[$randomPersonsIndex] = $rem;
+    }
+    return array(
+        'total' => $amount,
+        'splitTimes' => $splitTimes,
+        'normalAmount' => $n,
+        'offsetAmount' => $splits[$randomPersonsIndex],
+        'randomLuckyOrUnluckyPerson' => $randomPersonsIndex + 1,
+        'splits' => $splits
+    );
+}
 ?>

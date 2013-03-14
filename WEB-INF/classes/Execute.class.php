@@ -65,14 +65,28 @@ class Execute
 		 */
 		public function setQueue($jobObject, array $job, $jobTc=NULL, $jobTt=NULL, $jobFormName=NULL, $masterChange=NULL)
 		{
-				if (debugger("Execute")) {
-						echo 'DEBUG : ' . getCallingClass() . '->Execute->setQueue : ';
-						d($jobObject);
-						d($job);
+				/**
+				 * jobTc parametre olarak gonderilmiş mi? (Gönderilmişse POST değildir)
+				 * jobTc, jobTt ve jobFormName POST verisinden hazırlanıyor
+				 */
+				if (!$jobTc) {
+						$jobTcKey = findStringInArray('|', $job);
+						$jobTc = getArrayKeyValue(explode(':', $jobTcKey), 1);
+						$jobTt = getArrayKeyValue(explode('|', $job[$jobTcKey]), 1);
+						$jobFormName = getArrayKeyValue(explode('|', $job[$jobTcKey]), 0);
+						unset($job[$jobTcKey]);
 				}
+				/**
+				 * işlem kuyruğa atılıyor
+				 */
 				$this->_queue[] = array(
 						'jobObject'=>$jobObject, 'jobTc'=>$jobTc, 'jobTt'=>$jobTt, 'jobFormName'=>$jobFormName, 'job'=>$job, 'masterChange'=>$masterChange
 				);
+				if (debugger("Execute")) {
+						$currentItem = count($this->_queue)-1;
+						echo 'DEBUG : ' . getCallingClass() . '->Execute->setQueue : Job No = ' . ($currentItem + 1);
+						d($this->_queue[$currentItem]);
+				}
 		}
 		/**
 		 * Kuyruğa yerleştirilmiş olan işleri sırasi ile yapan metot
@@ -80,9 +94,10 @@ class Execute
 		public function applyQueue()
 		{
 				if ($this->_queue) {
-						foreach ($this->_queue as $queueKey=>$queueJob) {
+						$processQueue = $this->_queue;
+						foreach ($processQueue as $queueKey=>$queueJob) {
 								if (debugger("Execute")) {
-										echo 'DEBUG : Execute->applyQueue : Job No = ' . ++$count . ' / ' . count($this->_queue);
+										echo 'DEBUG : Execute->applyQueue : Job No = ' . ($queueKey + 1);
 										d($queueJob);
 								}
 								/**
@@ -92,21 +107,16 @@ class Execute
 										$masterChange['dateTime']	= $queueJob['masterChange']['dateTime'];
 										DbChanges::classCache()->setMasterChange($masterChange['dateTime']);
 								}
-								if ($queueJob['jobTc']) {
-										$tcField = 'tc:' . $queueJob['jobTc'];
-										$tFormNameAndType = $queueJob['formName'] . '|' . $queueJob['jobTt'];
-										$jobIntend = merge2Array($queueJob['job'], array($tcField=>$tFormNameAndType));
-								} else {
-										$jobIntend =$queueJob['job'];
-								}
+								/**
+								 * joTc olmasi gerektiği hale getiriliyor
+								 */
+								$tcField = 'tc:' . $queueJob['jobTc'];
+								$tFormNameAndType = $queueJob['formName'] . '|' . $queueJob['jobTt'];
+								$jobIntend = merge2Array($queueJob['job'], array($tcField=>$tFormNameAndType));
 								/**
 								 * kuyruk islemini uygula
 								 */
 								$queueJob['jobObject']->setInfo($jobIntend);
-								/**
-								 * kuyruktan işlemi yapılanı sil
-								 */
-								unset($this->_queue[$queueKey]);
 								/**
 								 * islemi yapılan nesneye ait dizilerin icerigini tazele
 								 */
@@ -125,6 +135,10 @@ class Execute
 								if (debugger("Execute")) {
 										echo 'DEBUG : Execute->applyQueue : ' . get_parent_class($queueJob['jobObject']) . ' listesi yenilendi.<br>';
 								}
+								/**
+								 * kuyruktan işlemi yapılanı sil
+								 */
+								unset($this->_queue[$queueKey]);
 						}
 						/**
 						 * kuyruk uygulanirken yeni veri atilmis olabilir

@@ -8,7 +8,6 @@
  */
 class Changes
 {
-
 		/**
 		 * genel degiskenler
 		 */
@@ -63,8 +62,18 @@ class Changes
 				// bos olmadigi dizi verilerini ele ve liste haline getir
 				if (isset($array['changeField'])) {
 						foreach ((array)$filteredArrayFirstState as $key => $value) {
+								/**
+								 * bos statusler icin son status alanini yedekliyoruz (bos degil ise)
+								 * sonrada eksik olan yerleri dolduruyoruz
+								 */
+								if ($value['status'] != '') {
+										$tempStatus = $filteredArrayFirstState[$key]['status'];
+								} else {
+										$filteredArrayFirstState[$key]['status'] = $tempStatus;
+								}
+
 								if ($value[$array['changeField']] != '')
-										$filteredArraySecondState[] = $value;
+										$filteredArraySecondState[] = $filteredArrayFirstState[$key];
 								else {
 										/**
 										 * eger kisi odeme listesi yapiyor isek degismediği halde;
@@ -73,22 +82,21 @@ class Changes
 										 * odeme periodu ve odemesini de yazdim
 										 */
 										if(isset($array['Person'])) {
-												if ($value['status'] == 'active')
-														$filteredArraySecondState[] = $value;
+												if ($filteredArrayFirstState[$key]['status'] == 'active')
+														$filteredArraySecondState[] = $filteredArrayFirstState[$key];
 										}
 								}
 						}
-
+						
 						$filteredArray = $filteredArraySecondState;
 				}
-				// Ucuncu asamada da changeField'a changeValue verilmişse onlari liste haline getir
 
+				// Ucuncu asamada da changeField'a changeValue verilmişse onlari liste haline getir
 				if (isset($array['changeField'])) {
 						if (isset($array['changeValue'])) {
 								$filterWithValue = true;
 						}
 				}
-
 
 				if (isset($array['changeField'])) {
 
@@ -145,7 +153,7 @@ class Changes
 																		$addToArray = false;
 																}
 														}
-
+														
 														// veri degeri sorguda istenilene esit ve Classroom tablosuna ait ise;
 														if ($this->_tableName == 'classroom') {
 																// o zaman, filtereler dizisinde yeni satira gec ve 'array'e ekle' modunu aktif et
@@ -161,11 +169,11 @@ class Changes
 																$filteredList[$currentKey] = array_merge($filteredList[$currentKey], array('startDateTime' => $value['dateTime']));
 
 																// Eger son kayita gelmissek, bitis tarihini simdiki tarihten alacak
-																if ($key != $lastKey)
+																if ($key != $lastKey) {
 																		$endDateTimeValue = $filteredArray[$key + 1]['dateTime'];
-																else
+																}	else {
 																		$endDateTimeValue = getDateTimeAsFormatted();
-
+																}
 																$filteredList[$currentKey] = array_merge($filteredList[$currentKey], array('endDateTime' => $endDateTimeValue));
 														}
 												} else {

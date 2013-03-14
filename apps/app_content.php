@@ -36,11 +36,16 @@ if ($_GET['code'] != 'sbyRoom') {
 				/**
 				 * Ogrencinin sınıftaki ilk ders gunu bulunuyor
 				 */
-				$studentActiveLectureList = $Student->getActiveLectureList($Classroom);
-				$dayTimeTime = $Classroom->getDayTime($studentActiveLectureList[0]['dayTimeCode'])->getInfo('time');
-				$studentList[$studentKey]['firstLectureDateTime'] = $studentActiveLectureList[0]['date'] . ' ' . $dayTimeTime;
+				$studentLectureDetailsByClassroom = $Student->getLectureDetailsByClassroom($Classroom);
+				
+				$dayTimeTime = $Classroom->getDayTime($studentLectureDetailsByClassroom[0]['dayTimeCode'])->getInfo('time');
+				$studentList[$studentKey]['firstLectureDateTime'] = $studentLectureDetailsByClassroom[0]['date'] . ' ' . $dayTimeTime;
 
 				$cashStatus = $Student->getCashStatus($Classroom, 'studentDebt');
+				if (debugger('General')) {
+						var_dump($Student->getInfo('name'));
+						var_dump($cashStatus);
+				}
 				/**
 				 * Diziyi başlatıyoruz, sonrasında öğrencinin borc durumu kontrol ediliyor
 				 * uygun sartlarda ise örneğin halen sınıftan atılmamış ise:)
@@ -57,6 +62,9 @@ if ($_GET['code'] != 'sbyRoom') {
 								$intend['nextPaymentDateTime'] = $Student->getNextPaymentDateTimeByClassroom($Classroom);
 				}
 				$studentDebtList[] = $intend;
+
+				//s($Student->getChangeList());
+				//s($Student->getActiveDateTimesByClassroom($Classroom));
 		}
 } else {
 		$classroomInfo = array('code' => 'sbyRoom');

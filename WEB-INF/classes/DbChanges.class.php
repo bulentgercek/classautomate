@@ -182,6 +182,7 @@ class DbChanges
 						'tableCode' => $this->_dbChanges['tableCode'],
 						'changeType' => $this->_dbChanges['dbProcess'],
 						'currents' => $this->_dbChanges['currents'],
+						'phase' => 0,
 						'status' => '',
 						'classroom' => '',
 						'payment' => '',
@@ -196,6 +197,12 @@ class DbChanges
 				foreach ($this->_neededDbChangesFound as $key => $value) {
 						$array[$key] = $value;
 				}
+				
+				/**
+				 * status ne olursa olsun eklensin istiyorum
+				 * cok kritik bir veri çünkü
+				 */
+				//$array['status'] = 
 
 				/**
 				 * acik okulun database'ine baglaniliyor
