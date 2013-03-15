@@ -31,7 +31,7 @@
 				},
 				"users":{
 						"bulent":"ClassAutomate BG'yi selamlar!",
-						"busalsa_emre":"Eveeeettt! Artık Sınıf İçeriği sayfasında (Sınıf Listele) Borç bilgisini görebiliyorsun;) Şu an üzerinde çalıştığım konu, yeni kayıt edilecek öğrencilere hali hazırda kaç derse girdiğini, öğrenci kayıt sayfasına yerleştirme aşaması."
+						"busalsa_emre":"Emre'ciğim, sınıf içeriği (sınıf listeleme) sayfasına Borç hanesindeki bilginin üzerine mouse ile geldiğinde Ödeme Bilgisini görebildiğin bir pop-up gösterim ekledim:)"
 				}
 			}
 		}

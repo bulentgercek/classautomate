@@ -8,8 +8,12 @@
 		</div>
 
 		<div id="formLine">
-				<div class="brown bold">{$app_welcome_updateTitle} {$logs.no}</div>
+				<div class="pureRed bold">{$app_welcome_updateTitle} {$logs.no}</div>
 				<div>{$app_welcome_updateDateTime} : {$logs['date']} {$logs['time']}</div>
+		</div>
+		<div id="formLine">
+				<div class="red bold">{$app_welcome_updateUserNotes}</div>
+				{$logs['users']}
 		</div>
 		<br>
 		<div id="formLine">
@@ -24,11 +28,6 @@
 				{foreach from=$logs['bugs'] key=myid item=item}
 						{$myid+1}) {$item}<br>
 				{/foreach}
-		</div>
-		<br>
-		<div id="formLine">
-				<div class="brown">{$app_welcome_updateUserNotes}</div>
-				{$logs['users']}
 		</div>
 
 		<br><br><br>
