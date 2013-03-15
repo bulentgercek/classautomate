@@ -333,6 +333,26 @@ body,td,th {
     margin:5px 0;
     padding:1%;
 }
+#contentMain .pop-up {
+		display: none;
+		position: absolute;
+		padding: 20px;
+		background: #e5eaff;
+		color: #000000;
+		border: 1px solid #69c;
+}
+#contentMain .trigger {
+		font-weight: bold;
+		color: #69C;
+}
+#contentMain #trigger:hover {
+		font-weight: bold;
+		color: #7f0912;
+}
+#contentMain #trigger:visited {
+		font-weight: bold;
+		color: #69C;
+}
 #contentMain #submitArea {
 		margin-left:15px;
 		float:left;

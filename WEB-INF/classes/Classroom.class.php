@@ -375,7 +375,6 @@ class Classroom
 						 * Tatil ders sayısı kadar eklemeyi de ihmal etmiyoruz.
 						 */
 						$nextLectureList = $Fc->getLecture(NULL, $futureLectureCount);
-
 						$nextLecture = end($nextLectureList);
 						return $nextLecture['date'] . ' ' . $this->getDayTime($nextLecture['dayTimeCode'])->getInfo('time');					
 				} 

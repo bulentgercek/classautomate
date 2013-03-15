@@ -115,7 +115,30 @@
             function() {
                 $('#listTable tbody tr:eq('+indexValue+') > td:last [id^="processEdit"]').fadeTo("fast", .5);
         });
+				
+        /**
+         * Odeme bilgisi goruntuleme pop-up
+         * 
+         * @author Laura Montgomery <http://creativeindividual.co.uk/2011/02/create-a-pop-up-div-in-jquery/>
+         */
+        var moveLeft = 20;
+        var moveDown = 10;
         
+        $('[id^="trigger"]').hover(function(e) {
+            popUpName = $(this).attr('id').split('_');
+            $('div#pop-up_' + popUpName[1]).show();
+              //.css('top', e.pageY + moveDown)
+              //.css('left', e.pageX + moveLeft)
+              //.appendTo('body');
+            }, function() {
+            $('div#pop-up_' + popUpName[1]).hide();
+        });
+        
+        $('[id^="trigger"]').mousemove(function(e) {
+            popUpName = $(this).attr('id').split('_');
+            $('div#pop-up_' + popUpName[1]).css('top', e.pageY + moveDown).css('left', e.pageX + moveLeft);
+        });
+				
         /**
          * baslangic islemleri 
          */
@@ -192,7 +215,13 @@
 	                    <tr>
 												<td>{$item.name} {$item.surname}</td>
 												<td>{$item.firstLectureDateTime}</td>
-	                      <td>{$item.remainingDebt}  {$currency}{if $item.debtInfo} ({$main_{$item.debtInfo}}){/if}</td>
+												<td>
+														<a href="#" id="trigger_{$item.code}" class="trigger noDecor">{$item.remainingDebt}  {$currency}{if $item.debtInfo} ({$main_{$item.debtInfo}}){/if}</a>
+														<div id="pop-up_{$item.code}" class="pop-up">
+																<span class="red header">Ödeme Bilgisi</span><br>
+																<span class="black">{$item.payment} {$currency} ({$main_{$item.paymentPeriod}})</span>
+														</div>
+												</td>
 	                      <td style="width:150px">{$item.nextPaymentDateTime}</td>
 	                      <td style="width:30px">
 	                            <div class="buttons"><a id="processEdit_{$item.code}" class="button editLeft alphaQuarter" href="main.php?tab=app_person_update&code={$item.code}&position=student">&nbsp;</a></div>                                      
