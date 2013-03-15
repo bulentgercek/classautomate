@@ -529,7 +529,7 @@
 			"notActiveClassroomCountResult": "Not Active Classroom Count",
 			"submitRecordLabel": "Update Rollcall",
 			"sureToActivate": "Are you sure to activate this class at this date?",
-			"noActiveClassroom": "No active classroom at this date!",
+			"noActiveClassroom": "No active classroom at this date or You are trying to access a classroom that doesn't exist at this date!",
 			"noStudent": "No student in this classroom. Please add some!"
 		},
 		"login": {

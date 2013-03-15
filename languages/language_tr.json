@@ -527,7 +527,7 @@
 			"classroomCountResult": "Günün Sınıf Sayısı",
 			"submitRecordLabel": "Yoklamayı Güncelle",
 			"sureToActivate": "Bu sınıfı seçili olan tarihte aktif etmek istediginize emin misiniz?",
-			"noActiveClassroom": "Bu tarihte hiçbir aktif sınıf yoktur!",
+			"noActiveClassroom": "Bu tarihte hiçbir aktif sınıf yok veya olmayan bir sınıfı görüntülemeye çalışıyorsunuz!",
 			"noStudent": "Bu sınıfta öğrenci kaydı yoktur. Lütfen ekleyip devam ediniz!"
 		},
 		"login": {
