@@ -43,5 +43,8 @@ setExtSmartyVars('classList', $classList);
 $School = School::classCache();
 $peopleList = $School->getPeopleList();
 setExtSmartyVars('peopleList', $peopleList);
-
+/**
+ * daha önceden Session'a gönderilen sınıf seçimi sayfaya aktarılıyor
+ */
+setExtSmartyVars('classroomSelection', $Session->get('classroomSelection'));
 ?>

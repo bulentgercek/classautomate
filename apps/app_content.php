@@ -11,6 +11,13 @@ $Classroom = $School->getClassroom($_GET['code']);
 $ClassroomList = $School->getClassroomList();
 $studentList = $Classroom->getStudentList();
 
+/**
+ * #51 secilen sınıf Session'a gönderiliyor 
+ */
+Session::classCache()->set('classroomSelection', $_GET['code']);
+/**
+ * sınıf sbyRoom değil ise;
+ */
 if ($_GET['code'] != 'sbyRoom') {
 
 		$MakeList = new MakeList('code,name,termCountLimit,termDateLimit,instructor_name,instructor_surname,program_name,saloon_name,startDate,notes,status', 'page', $ClassroomList);

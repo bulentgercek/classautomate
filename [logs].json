@@ -9,6 +9,7 @@
 				"languages":{
 						"tr":{
 								"updates":[
+										"Yenilik : #51 Sınıf Listele işlemi yapılan sınıf hafızaya alınıyor, son secimi hatırlıyor.",
 										"Yenilik : #46 Öğrenci 'Ne kadar borcum kaldı?' dediğinde öğrenebileceğimiz kaynak hazırlandı.",
 										"BugFix  : #48 '3 ay ödemeli öğrenci için, Sıradaki Ödeme Tarihi yanlış sonuç veriyor!'",
 										"BugFix  : #47 'Ödeme dönemi değişmedi ise ödeme dönemi ders sayısı aynı devam etmeli!'",
@@ -31,7 +32,7 @@
 				},
 				"users":{
 						"bulent":"ClassAutomate BG'yi selamlar!",
-						"busalsa_emre":"Emre'ciğim, sınıf içeriği (sınıf listeleme) sayfasına Borç hanesindeki bilginin üzerine mouse ile geldiğinde Ödeme Bilgisini görebildiğin bir pop-up gösterim ekledim:)"
+						"busalsa_emre":"Emre'ciğim, sınıf içeriği (sınıf listeleme) sayfasına Borç hanesindeki bilginin üzerine mouse ile geldiğinde Ödeme Bilgisini görebildiğin bir pop-up gösterim ekledim, ayrıca son seçtiğin sınıf seçimini de hafıza da tutuyor."
 				}
 			}
 		}
