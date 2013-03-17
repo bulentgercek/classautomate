@@ -41,24 +41,26 @@ foreach ((array) $dailyDayTimeList as $key => $value) {
 				 * sinif nesnemizi cagiriyoruz
 				 */
 				$Classroom = $School->getClassroom($value['classroom']);
-				/**
-				 * sinifin kayit tarihi ile gunun tarihi karsilastiriliyor
-				 */
-				$currentDateDayTime = $date . ' ' . $value['endTime'];
-				$isClassroomRecordOk = getDateTimeDiff($currentDateDayTime, $Classroom->getInfo('recordDate'), 'type');
-				/**
-				 * eger secilen gunun tarih ve ders bitis saati, 
-				 * sinifin kayit tarihinden sonra veya ayni saatte ise
-				 * ilgili sinif ile ilgili islem yapilabilecek
-				 * 
-				 * (bitis tarihi diyoruz boylece sinif ders bitmeden calistirilabilecek)
-				 */
-				if ($isClassroomRecordOk >= 0) {
-						$Classrooms[$value['classroom']]['Classroom'] = $Classroom;
+				if ($Classroom->getInfo('status') != 'deleted') {
 						/**
-						 * sinifin guncel durumu diziye ekleniyor
+						 * sinifin kayit tarihi ile gunun tarihi karsilastiriliyor
 						 */
-						$Classrooms[$value['classroom']]['classroomStatus'] = $Classroom->getInfo('status');
+						$currentDateDayTime = $date . ' ' . $value['endTime'];
+						$isClassroomRecordOk = getDateTimeDiff($currentDateDayTime, $Classroom->getInfo('recordDate'), 'type');
+						/**
+						 * eger secilen gunun tarih ve ders bitis saati, 
+						 * sinifin kayit tarihinden sonra veya ayni saatte ise
+						 * ilgili sinif ile ilgili islem yapilabilecek
+						 * 
+						 * (bitis tarihi diyoruz boylece sinif ders bitmeden calistirilabilecek)
+						 */
+						if ($isClassroomRecordOk >= 0) {
+								$Classrooms[$value['classroom']]['Classroom'] = $Classroom;
+								/**
+								 * sinifin guncel durumu diziye ekleniyor
+								 */
+								$Classrooms[$value['classroom']]['classroomStatus'] = $Classroom->getInfo('status');
+						}
 				}
 		}
 }

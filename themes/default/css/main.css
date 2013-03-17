@@ -47,7 +47,8 @@ body,td,th {
  * panel kontrol dugmesi alani
  */
 #mainCenterTopTable td.paneControl {
-		width:190px;
+		width:200px;
+		text-align:center;
 }
 /**
  * tab tablosu
@@ -1193,6 +1194,9 @@ body,td,th {
 }
 .gray {
 		color: #8d8d8d;
+}
+.grayBlue {
+		color: #69C;
 }
 .noDecor:link {
 		text-decoration: none;
