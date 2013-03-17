@@ -9,6 +9,7 @@
 				"languages":{
 						"tr":{
 								"updates":[
+										"Yenilik : #33 Günlük İşler Paneline günün sınıfları işlenmiştir.",
 										"BugFix  : #16 Yoklama sayfasında bir sınıf listesi açık iken, sınıfın olmadığı bir günün seçilmesi durumunda çıkan sorun düzeltildi.",
 										"Yenilik : #51 Sınıf Listele işlemi yapılan sınıf hafızaya alınıyor, son secimi hatırlıyor.",
 										"Yenilik : #46 Öğrenci 'Ne kadar borcum kaldı?' dediğinde öğrenebileceğimiz kaynak hazırlandı.",
@@ -32,7 +33,7 @@
 				},
 				"users":{
 						"bulent":"ClassAutomate BG'yi selamlar!",
-						"busalsa_emre":"Emre'ciğim, sınıf içeriği (sınıf listeleme) sayfasına Borç hanesindeki bilginin üzerine mouse ile geldiğinde Ödeme Bilgisini görebildiğin bir pop-up gösterim ekledim, ayrıca son seçtiğin sınıf seçimini de hafıza da tutuyor."
+						"busalsa_emre":"Emre'ciğim, sınıf içeriği (sınıf listeleme) sayfasına Borç hanesindeki bilginin üzerine mouse ile geldiğinde Ödeme Bilgisini görebildiğin bir pop-up gösterim ekledim, ayrıca son seçtiğin sınıf seçimini de hafıza da tutuyor. Ayrıca Günlük İşler paneli de artık günün sınıflarını gösteriyor. Tıkladığında da ilgili sınıfın yoklamasına gidiyorsun."
 				}
 			}
 		}
