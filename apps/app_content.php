@@ -62,7 +62,20 @@ if ($_GET['code'] != 'sbyRoom') {
 				foreach ($studentCashFlowByPeriod as $key => $value) {
 						$totalLecturePrice += $value['lecturePrice'];
 				}
-				$remainingDebt = $cashStatus['payment'] - ($totalLecturePrice + $cashStatus['studentMoneyLeftInCase']);
+				/**
+				 * ogrencinin son durumunu yorumlayarak 
+				 * kalan borcu belirliyoruz
+				 */
+				switch ($cashStatus['info']) {
+						/**
+						 * Ödeme Olmadığından Sınıftan Çıkarıldı
+						 */
+						case 'debtInfo_3':
+								$remainingDebt = 0;
+								break;
+						default:
+								$remainingDebt = $cashStatus['payment'] - ($totalLecturePrice + $cashStatus['studentMoneyLeftInCase']);
+				}
 				/**
 				 * Diziyi başlatıyoruz, sonrasında öğrencinin borc durumu kontrol ediliyor
 				 * uygun sartlarda ise örneğin halen sınıftan atılmamış ise:)

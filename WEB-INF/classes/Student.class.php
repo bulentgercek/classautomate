@@ -400,13 +400,18 @@ class Student extends Person
 		{
 				// ogrencinin sinif bilgisini al
 				$expClassroom = explode(',', $this->getInfo('classroom'));
-
+		
 				// istenmeyen sinifi diziden cikart
-				unset($expClassroom[findStringInArray($code, $expClassroom)]);
+				unset($expClassroom[findStringInArray($Classroom->getInfo('code'), $expClassroom)]);
 
 				// eger tum siniflar cikti ise Bekleme Odasina yerlestir
-				if (empty($expClassroom))
+				if (empty($expClassroom)) {
 						$expClassroom[0] = 'sbyRoom';
+						if ($this->getInfo('status') == 'active')
+								$status = 'used';
+						else
+								$status = $this->getInfo('status');
+				}
 
 				// yeni sinif bilgisini kayitlara isle
 				$firstKey = key($expClassroom);
@@ -416,8 +421,8 @@ class Student extends Person
 				} else {
 						$stringClassroom = $expClassroom[$firstKey];
 				}
-
-				$this->setInfo(array('tc:update' => 'updateClassroom|direct', 'classroom' => $stringClassroom));
+				
+				$this->setInfo(array('tc:update'=>'updateClassroom|direct', 'classroom'=>$stringClassroom, 'status'=>$status));
 		}
 		/**
 		 * İstenilen tarihten başlayarak, öğrencinin sıradaki ödeme tarihini

@@ -313,7 +313,12 @@ class Accountant
 						/**
 						 * eger fixed degil ise;
 						 * odeme ucreti, period icinde kac ders varsa bolunerek
-						 * tek ders ucreti bulunacak 
+						 * tek ders ucreti bulunacak
+						 * Önemli : Bölme sonucu çıkan son değer ondalık bölmenin
+						 * tam olarak doğru sonuç vermemesi dolayısıyla
+						 * artık değer olarak görünecektir. Bu sebeple, 
+						 * diğer bölme sonuçlarından
+						 * farklı olmasına şaşırmaman gerekiyor! 
 						 */ else {
 								$moneyDivide = divvyUp((float)$payment, (int)$lectureCountByPeriod);
 								$oneLecturePrice = $moneyDivide['splits'][$value['paymentTermLectureNo']];
@@ -363,19 +368,32 @@ class Accountant
 												 */
 												else {
 														/**
-														 * ...ve ders saati doldu ise ogrenci siniftan cikarilacak;
+														 * Tarih geçmiş mi? Geçmedi ise saati kontrol et. 
 														 */
-														if (getDateTimeDiff(getTimeAsFormatted(), $endTime, 'type') > 0) {
+														if (getDateTimeDiff(getDateAsFormatted(), $value['date'], 'type') == 0) {
+																/**
+																 * ...ve ders saati doldu ise ogrenci siniftan cikarilacak;
+																 */
+																if (getDateTimeDiff(getTimeAsFormatted(), $endTime, 'type') > 0) {
+																		$studentDebtInfo = 'debtInfo_3'; //noPaymentAndOut
+																		$isCalculate = false;
+																		$isOut = true;
+																}
+																/**
+																 * ...ve ders saati daha dolmadi ise uyari verilecek, ders saati bitimi beklenecek
+																 */
+																else {
+																		$studentDebtInfo = 'debtInfo_4'; //minPaymentRestrictWarning
+																		$isCalculate = false;
+																}
+														}
+														/**
+														 * ...tarih gecmis ise direkt olarak ogrenciyi cikart.
+														 */
+														if (getDateTimeDiff(getDateAsFormatted(), $value['date'], 'type') == 1) {
 																$studentDebtInfo = 'debtInfo_3'; //noPaymentAndOut
 																$isCalculate = false;
 																$isOut = true;
-														}
-														/**
-														 * ...ve ders saati daha dolmadi ise uyari verilecek, ders saati bitimi beklenecek
-														 */
-														else {
-																$studentDebtInfo = 'debtInfo_4'; //minPaymentRestrictWarning
-																$isCalculate = false;
 														}
 												}
 										}
@@ -392,19 +410,32 @@ class Accountant
 														 */
 														if ($this->_studentMoneyLeftInCase < 0) {
 																/**
-																 * ...ders sonu gelmisse siniftan cikartma islemini onayla
+																 * Tarih geçmiş mi? Geçmedi ise saati kontrol et. 
 																 */
-																if (getDateTimeDiff(getTimeAsFormatted(), $endTime, 'type') > 0) {
+																if (getDateTimeDiff(getDateAsFormatted(), $value['date'], 'type') == 0) {
+																		/**
+																		 * ...ders sonu gelmisse siniftan cikartma islemini onayla
+																		 */
+																		if (getDateTimeDiff(getTimeAsFormatted(), $endTime, 'type') > 0) {
+																				$studentDebtInfo = 'debtInfo_5'; //newTermNegativeBalanceNoPaymentAndOut
+																				$isCalculate = false;
+																				$isOut = true;
+																		}
+																		/**
+																		 * ...ders sonu gelmemisse uyari yap, hesapla ve derse girebilsin
+																		 */
+																		else {
+																				$studentDebtInfo = 'debtInfo_6'; //newTermNegativeBalanceMinPaymentRestrictWarning
+																				$isCalculate = false;
+																		}
+																}
+																/**
+																 * ...tarih gecmis ise direkt olarak ogrenciyi cikart.
+																 */
+																if (getDateTimeDiff(getDateAsFormatted(), $value['date'], 'type') == 1) {
 																		$studentDebtInfo = 'debtInfo_5'; //newTermNegativeBalanceNoPaymentAndOut
 																		$isCalculate = false;
 																		$isOut = true;
-																}
-																/**
-																 * ...ders sonu gelmemisse uyari yap, hesapla ve derse girebilsin
-																 */
-																else {
-																		$studentDebtInfo = 'debtInfo_6'; //newTermNegativeBalanceMinPaymentRestrictWarning
-																		$isCalculate = false;
 																}
 														}
 														/**
@@ -419,8 +450,7 @@ class Accountant
 												 */
 												else {
 														/**
-														 * Bilgisayarın saatini değiştirerek gidiyor olabilirim.
-														 * O nedenle tarih geçmemiş ise;
+														 * Tarih geçmiş mi? Geçmedi ise saati kontrol et. 
 														 */
 														if (getDateTimeDiff(getDateAsFormatted(), $value['date'], 'type') == 0) {
 																/**
@@ -499,6 +529,7 @@ class Accountant
 						if ($isOut) {
 								if (debugger('Accountant'))
 										var_dump('Ogrenci siniftan cikariliyor : ' . $Student->getInfo('code') . ' / ' . $Student->getInfo('name') . ' ' . $Student->getInfo('surname'));
+								$Student->removeFromClassroom($Classroom);
 								return $cashResult;
 						}
 				}
@@ -536,7 +567,7 @@ class Accountant
 				$result['paymentTermNo'] = $cashFlowList[$last]['paymentTermNo'];
 				$result['paymentTermLectureNo'] = $cashFlowList[$last]['paymentTermLectureNo'];
 				$result['payment'] = $cashFlowList[$last]['payment'];
-
+				
 				return $result;
 		}
 		/**

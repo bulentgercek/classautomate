@@ -34,8 +34,8 @@ $MakeList = new MakeList('main_header',
 									'shortCharStopper' => '.',
 									'sortColumn'=>'day'
 								));
-$classList = $MakeList->get();
-setExtSmartyVars('classList', $classList);
+$classroomList = $MakeList->get();
+setExtSmartyVars('classList', $classroomList);
 
 /**
  * kisi listesi hazirlaniyor

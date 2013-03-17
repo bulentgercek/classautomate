@@ -303,6 +303,7 @@ class MakeList
 
 						if (isset($this->_typeArray['sortColumn'])) {
 								$TableArray = SortArrayWithKey::get($TableArray, $this->_typeArray['sortColumn'], 'ASC');
+								$TableArray = getFromArray($TableArray, array('status'=>'notUsed||used||active'));
 						}
 				} else {
 						$TableArray = $this->_array;
