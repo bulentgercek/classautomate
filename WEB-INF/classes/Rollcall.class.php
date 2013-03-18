@@ -103,7 +103,7 @@ class Rollcall
 						case 'code':
 								return $this->_code;
 								break;
-
+					
 						default:
 								return $this->getInfo($columnName);
 				}

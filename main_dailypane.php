@@ -110,7 +110,7 @@ foreach ((array) $Classrooms as $key=>$value) {
 						'startTime'=>getArrayKeyValue($dayTime,'time'),
 						'endTime'=>getArrayKeyValue($dayTime,'endTime'),
 						'lectureStatus'=>$lectureValue['lectureStatus'],
-						'url'=>'main.php?tab=app_rollcall&classroom=' . $value['Classroom']->getInfo('code') . '&dayTime=' . getArrayKeyValue($dayTime,'code') . '&date=now'
+						'url'=>'main.php?tab=app_rollcall&classroom=' . $value['Classroom']->getInfo('code') . '&dayTime=' . getArrayKeyValue($dayTime,'code') . '&date=' . getDateAsFormatted()
 				);
 		}
 }
