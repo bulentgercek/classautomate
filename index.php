@@ -26,6 +26,10 @@ define('KINT_THE_DEBUGGER', 'WEB-INF/lib/kint/Kint.class.php');
 require KINT_THE_DEBUGGER;
 require START_FUNCTION_FILE;
 /**
+ * server'ımız Amerika'da
+ */
+date_default_timezone_set('America/New_York');
+/**
  * session yaratiliyor
  */
 $Session = Session::classCache();

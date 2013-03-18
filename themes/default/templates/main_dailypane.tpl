@@ -17,7 +17,7 @@
 														{foreach from=$panelClassroomList key=k item=item}
 																<a href="{if $item.lectureStatus eq 'on'}{$item.url}{else}main.php?tab=app_rollcall&classroom=all&dayTime=&date=now{/if}" class="grayBlue noDecor">
 																		{$item.name}<br>({$item.startTime}-{$item.endTime})
-																</a>
+																</a><br><br>
 														{/foreach}
 												</div>
 										</td>

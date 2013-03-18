@@ -293,6 +293,60 @@ function getWeekDayAsText($value)
 		return $Setting->getInterfaceLang()->classautomate->dayOfWeek[$value];
 }
 /**
+ * Gunun tarihinin alındığı metodu kolayca değiştirebilmen için hazırladığım
+ * düzenleyici metot. Buradaki amaç istediğimde getClientDateTime'ı aradan çıkarabilmektir.
+ * Böylece Php'nin DateTime nesnesini istediğimde devreye sokabileceğim.
+ * Çünkü, new DateTime() dediğimde şimdiki tarihi ve timeZone'u dizi halinde döndürüyor;)
+ * 
+ * @author Bulent Gercek <bulentgercek@gmail.com>
+ * @package ClassAutoMate
+ * @subpackage StartFunctions
+ */
+function getDateTime($format = '%Y-%m-%d %H:%M:%S')
+{
+		return getClientDateTime($format);
+}
+/**
+ * site ziyaretcisinin lokal saatini verir
+ * parametre : %H saat, %M dakika, %S saniyedir
+ *
+ * @author Bulent Gercek <bulentgercek@gmail.com>
+ * @package ClassAutoMate
+ * @subpackage StartFunctions
+ * 
+ * @param string formatted
+ * @return string
+ */
+function getClientDateTime($format = '%Y-%m-%d %H:%M:%S')
+{
+		$Session = Session::classCache();
+		$timeZoneOffset = $Session->get('timeZone');
+		$dayLightSaving = date('I');
+		$serverTimeZone = ini_get('date.timezone');
+		/**
+		 * Timezone tespit et (YENİ - DayLightSaving ile)
+		 */
+		//$theTime = time(); // specific date/time we're checking, in epoch seconds. 
+
+		//$tz = new DateTimeZone('America/New_York'); 
+		//$transition = $tz->getTransitions($theTime, $theTime); 
+
+		// only one array should be returned into $transition. Now get the data: 
+		//$offset = abs($transition[0]['offset']/3600); 
+		//$abbr = $transition[0]['abbr']; 
+		/**
+		$clientLocal = setlocale(LC_ALL, NULL);
+		setlocale(LC_TIME, '$clientLocal');
+		*/
+		$timeZoneValue = $timeZoneOffset + $dayLightSaving;
+		if ($serverTimeZone == 'America/New_York') $timeZoneValue = $timeZoneValue + 3;
+		
+		$clientTime = strtotime('+ ' . $timeZoneValue . ' hour');
+		$finalStringClientTime = strftime($format, $clientTime);
+
+		return $finalStringClientTime;
+}
+/**
  * gunun tarihini yıl-ay-gun olarak dondurur
  * 
  * @author Bulent Gercek <bulentgercek@gmail.com>
@@ -578,41 +632,6 @@ function getClientIp()
 		}
 
 		return $ip;
-}
-/**
- * Gunun tarihinin alındığı metodu kolayca değiştirebilmen için hazırladığım
- * düzenleyici metot. Buradaki amaç istediğimde getClientDateTime'ı aradan çıkarabilmektir.
- * Böylece Php'nin DateTime nesnesini istediğimde devreye sokabileceğim.
- * Çünkü, new DateTime() dediğimde şimdiki tarihi ve timeZone'u dizi halinde döndürüyor;)
- * 
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- */
-function getDateTime($format = '%Y-%m-%d / %H:%M:%S')
-{
-		return getClientDateTime($format);
-}
-/**
- * site ziyaretcisinin lokal saatini verir
- * parametre : %H saat, %M dakika, %S saniyedir
- *
- * @author Bulent Gercek <bulentgercek@gmail.com>
- * @package ClassAutoMate
- * @subpackage StartFunctions
- * 
- * @param string formatted
- * @return string
- */
-function getClientDateTime($format = '%Y-%m-%d / %H:%M:%S')
-{
-		$Session = Session::classCache();
-		$clientLocal = setlocale(LC_ALL, NULL);
-		setlocale(LC_TIME, '$clientLocal');
-		$clientTime = strtotime('+ ' . $Session->get('timeZone') . ' hour');
-		// add 1 hour for BST
-		$finalStringClientTime = strftime($format, $clientTime);
-		return $finalStringClientTime;
 }
 /**
  * md5 converter
