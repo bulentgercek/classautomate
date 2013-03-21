@@ -59,7 +59,7 @@ if ($_GET['code'] != 'sbyRoom') {
 				/**
 				 * listeyi dondurerek bu ana kadar ki ders ucretlerinin toplamini buluyoruz
 				 */
-				foreach ($studentCashFlowByPeriod as $key => $value) {
+				foreach ((array)$studentCashFlowByPeriod as $value) {
 						$totalLecturePrice += $value['lecturePrice'];
 				}
 				/**

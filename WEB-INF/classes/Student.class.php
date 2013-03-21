@@ -360,7 +360,8 @@ class Student extends Person
 												$offLectures++;
 										}
 								}
-								$lectureDetailsByClassroom = array_merge($lectureDetailsByClassroom, $filteredLectures);
+								$lectureDetailsByClassroom = array_merge($lectureDetailsByClassroom, (array)$filteredLectures);
+										
 								/**
 								 * karsilastirma icin periyodu yedekliyoruz
 								 */
@@ -369,7 +370,7 @@ class Student extends Person
 						/**
 						 * degiskene yedekle
 						 */
-						$this->_lectureDetailsByClassroom[$Classroom->getInfo('code')] = SortArrayWithKey::get($lectureDetailsByClassroom, "date", 'ASC');;
+						$this->_lectureDetailsByClassroom[$Classroom->getInfo('code')] = SortArrayWithKey::get($lectureDetailsByClassroom, "date", 'ASC');
 				}
 				return $this->_lectureDetailsByClassroom[$Classroom->getInfo('code')];
 		}

@@ -476,7 +476,6 @@ class Execute
 																 * aktif edilme tarihini isle
 																 */
 																$studentList = $Classroom->getStudentList();
-																$selectedDayTime = getArrayKeyValue(getFromArray($School->getDayTimeList(), array('code' => $_POST['dayTime'])), 0);
 
 																if ($studentList != NULL) {
 																		foreach ($studentList as $studentListValue) {
@@ -534,11 +533,13 @@ class Execute
 																				 * sonradan da ogrencinin firstLecture bilgisine 
 																				 * yeni tarihi isle 
 																				 */
-																				$selectedDayTime = getArrayKeyValue(getFromArray($School->getDayTimeList(), array('code' => $_POST['dayTime'])), 0);
+																				$Classroom = $School->getClassroom($_POST['classroom']);
+																				$classroomDayTimeTime = $Classroom->getDayTime($tempPostArray['dayTime'])->getInfo('time');
+																				$masterChange['dateTime'] = $tempPostArray['date'] . ' ' . $classroomDayTimeTime;
 
 																				$Student = $School->getStudent($tempPostArray['personCode']);
 																				if ($Student->getInfo('firstLecture') == '0000-00-00 00:00:00') {
-																						$this->setQueue($Student, array('firstLecture' => $tempPostArray['date'] . ' ' . $selectedDayTime['time']), 'update', 'direct', 'rollcallUpdateForm', $masterChange);
+																						$this->setQueue($Student, array('firstLecture' => $masterChange['dateTime']), 'update', 'direct', 'rollcallUpdateForm', $masterChange);
 																				}
 																		}
 																}
