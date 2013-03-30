@@ -3,23 +3,12 @@
 		"description":"ClassAutoMate Log Dosyasi",
 		
 		"versions":{
-			"0.3.4 ALPHA":{
-				"date":"14-03-2013", 
-				"time":"04:01",
+			"0.3.5 ALPHA":{
+				"date":"30-03-2013", 
+				"time":"02:23",
 				"languages":{
 						"tr":{
 								"updates":[
-										"Yenilik : #33 Günlük İşler Paneline günün sınıfları işlenmiştir.",
-										"BugFix  : #16 Yoklama sayfasında bir sınıf listesi açık iken, sınıfın olmadığı bir günün seçilmesi durumunda çıkan sorun düzeltildi.",
-										"Yenilik : #51 Sınıf Listele işlemi yapılan sınıf hafızaya alınıyor, son secimi hatırlıyor.",
-										"Yenilik : #46 Öğrenci 'Ne kadar borcum kaldı?' dediğinde öğrenebileceğimiz kaynak hazırlandı.",
-										"BugFix  : #48 '3 ay ödemeli öğrenci için, Sıradaki Ödeme Tarihi yanlış sonuç veriyor!'",
-										"BugFix  : #47 'Ödeme dönemi değişmedi ise ödeme dönemi ders sayısı aynı devam etmeli!'",
-										"Yenilik : #41 Takvim ve Zaman seçimleri, seçilmiş olan dile göre değişiyor.",
-										"Bugfix  : #42 'Öğrenci ödemesi girişi kutusu tıkladığında 0 silinmiyor.'",
-										"Yenilik : #34 Grup oluşturabilme ve düzenleme uygulaması sisteme eklendi",
-										"BugFix  : #38 'Yoklama sayfasında akivasyon sırasında ders saattleri fazladan görünüyor'",
-										"BugFix  : #39 'Sınıfı Listele dediğimizde site kitlenip kalıyor!'"
 								],
 								"bugs":[
 										"Öğrenci sınıfa dahil olduktan sonra, sınıfa dahil olduğu günden önceki tarihlerde de yoklamada görünüyor. (#9) ",
@@ -33,7 +22,7 @@
 				},
 				"users":{
 						"bulent":"ClassAutomate BG'yi selamlar!",
-						"busalsa_emre":"Emre'ciğim, sınıf içeriği (sınıf listeleme) sayfasına Borç hanesindeki bilginin üzerine mouse ile geldiğinde Ödeme Bilgisini görebildiğin bir pop-up gösterim ekledim, ayrıca son seçtiğin sınıf seçimini de hafıza da tutuyor. Ayrıca Günlük İşler paneli de artık günün sınıflarını gösteriyor. Tıkladığında da ilgili sınıfın yoklamasına gidiyorsun."
+						"busalsa_emre":""
 				}
 			}
 		}
