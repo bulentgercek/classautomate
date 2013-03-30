@@ -53,16 +53,23 @@ class SendToDb
 						echo "DEBUG : " . getCallingClass() . "->SendToDb->add() - addCriteria : ";
 						d($addCriteria);
 				}
-
+				/**
+				 * gelen veriler arasında recordType bilgisi var mı kontrol et
+				 * var ise dondur ve phase bilgisi olarak degerlendir
+				 */
+				$phaseInfo = self::getPhaseInfo($nonPOST);
 				/**
 				 * current verisini hazirla
 				 */
-				$currents = self::getCurrents($currentsArray);
-
+				$currents = self::getCurrents($currentsArray, $phaseInfo);
+				/**
+				 * veritabanına gönderilecek phase değerini belirle
+				 */
+				$phase = $phaseInfo ? '1' : '0';
 				/**
 				 * degisiklikleri tespit etmek ve uygulamak uzere DBCHANGES'e gonder
 				 */
-				$DbChanges->setDbChanges(array('table' => $tableName, 'tableCode' => $tableCode, 'dbProcess' => $process, 'currents' => $currents, 'tableFields' => $columnsBackup, 'values' => $valuesBackup));
+				$DbChanges->setDbChanges(array('table' => $tableName, 'tableCode' => $tableCode, 'dbProcess' => $process, 'currents' => $currents, 'phase' => $phase, 'tableFields' => $columnsBackup, 'values' => $valuesBackup));
 
 				/**
 				 * veritabanina ekle, debugger aciksa kayit yapmayacak
@@ -373,42 +380,69 @@ class SendToDb
 				return $valuesArray;
 		}
 		/**
+		 * gonderilen form bilgisinde recordType olup olmadigina bakar
+		 * var ise Phase bilgisi olarak döndürür
+		 */
+		public static function getPhaseInfo($array)
+		{
+				/**
+				 * gelen veri post mu? değil mi?
+				 */
+				$sentArray = empty($array) ? $_POST : $array;
+				foreach ($sentArray as $key => $value) {
+						if (stristr($key, 'recordType')) {
+								$classroomCode = getArrayKeyValue(explode('_', $key), 1);
+								$phaseInfo[$classroomCode] = $value;
+						}
+				}
+				return $phaseInfo;
+		}
+		/**
 		 * tablo adina gore CHANGES tablosuna
 		 * yedeklenecek bilgileri hazirlayan metot
 		 */
-		public static function getCurrents($array)
+		public static function getCurrents($array, $phaseInfo = NULL)
 		{
-				if ($array['tableName'] == 'person') {
-						$currents = $array['valuesArray']['classroom'];
-
-						/**
-						 * eger UPDATE islemi yapiliyor ise
-						 */
-						if (isset($array['arrayDifference'])) {
-								$isPaymentChanged = isset($array['arrayDifference']['payment']);
-								$isPaymentPeriodChanged = isset($array['arrayDifference']['paymentPeriod']);
-								$isStatusChangedToActive = $array['arrayDifference']['status'] == 'active' ? true : false;
+				if (!$phaseInfo) {
+						if ($array['tableName'] == 'person') {
+								$currents = $array['valuesArray']['classroom'];
 								/**
-								 * payment degisikligi gelmis ise CURRENTS'a paymentPeriod eklenecek,
-								 * eger paymentPeriod degisikligi gelmis ise CURRENTS'a payment eklenecek.
-								 * Hicbiri degismemis veya ikisi de degismis ise hicbirsey eklenmeyecek.
+								 * eger UPDATE islemi yapiliyor ise
 								 */
-								if ($isPaymentChanged) {
-										$currents .= '<+>' . $array['valuesArray']['paymentPeriod'];
-								} else if ($isPaymentPeriodChanged) {
-										$currents .= '<+>' . $array['valuesArray']['payment'];
-								} else if ($isStatusChangedToActive) {
-										$currents .= '<+>' . $array['valuesArray']['paymentPeriod'];
-										$currents .= '<+>' . $array['valuesArray']['payment'];
+								if (isset($array['arrayDifference'])) {
+										$isPaymentChanged = isset($array['arrayDifference']['payment']);
+										$isPaymentPeriodChanged = isset($array['arrayDifference']['paymentPeriod']);
+										$isStatusChangedToActive = $array['arrayDifference']['status'] == 'active' ? true : false;
+										/**
+										 * payment degisikligi gelmis ise CURRENTS'a paymentPeriod eklenecek,
+										 * eger paymentPeriod degisikligi gelmis ise CURRENTS'a payment eklenecek.
+										 * Hicbiri degismemis veya ikisi de degismis ise hicbirsey eklenmeyecek.
+										 */
+										if ($isPaymentChanged) {
+												$currents .= '<+>' . $array['valuesArray']['paymentPeriod'];
+										} else if ($isPaymentPeriodChanged) {
+												$currents .= '<+>' . $array['valuesArray']['payment'];
+										} else if ($isStatusChangedToActive) {
+												$currents .= '<+>' . $array['valuesArray']['paymentPeriod'];
+												$currents .= '<+>' . $array['valuesArray']['payment'];
+										}
 								}
 						}
+				} else {
+						if ($array['tableName'] == 'person') {
+								foreach ($phaseInfo as $key => $value) {
+										$classroomKeys[] = $key;
+										$values[] = str_replace(',', '|', $value);
+								}
+								$classrooms = implode(',', $classroomKeys);
+								$phaseValues = implode(',', $values);
+								$currents = $classrooms . '<+>' . $phaseValues;
+						}
 				}
-
 				if (debugger("SendToDb")) {
 						echo "DEBUG : " . getCallingClass() . "->SendToDb->getCurrents() - currents : ";
 						d($currents);
 				}
-
 				return $currents;
 		}
 }

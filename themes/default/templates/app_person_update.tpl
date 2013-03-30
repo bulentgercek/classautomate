@@ -306,7 +306,7 @@
 						});
 						tableRowHtml += '</select></td>';
 
-						tableRowHtml += '<td><input name="payment_' + tableRowButtonValue + '" id="payment_' + tableRowButtonValue + '" type="text" value="' + $('#payment').val() + '" class="gTextInput" tabindex="{$tabStart++}" size="7">';
+						tableRowHtml += '<td><input name="payment_' + tableRowButtonValue + '" id="payment_' + tableRowButtonValue + '" type="text" value="' + $('#payment').val() + '" class="gTextInput" tabindex="{$tabStart++}" size="4">{$currency}';
 						tableRowHtml += '<td><a id="removeBut_' + tableRowButtonValue + '" href="javascript:" class="button">X</a></td>';
 						tableRowHtml += '</tr>';
 
@@ -576,7 +576,7 @@
 														{/foreach}
 
 												</select>
-												<input style="float:left" id="payment" type="text" class="gTextInput" tabindex="{$tabStart++}" size="7">
+												<input style="float:left" id="payment" type="text" class="gTextInput" tabindex="{$tabStart++}" size="4">
 
 												<div class="buttons">
 														<a id="addClass" class="button" href="javascript:" tabindex="{$tabStart++}">{$app_person_update_addClass}</a>

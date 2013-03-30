@@ -56,6 +56,7 @@ if ($_GET['code'] != 'sbyRoom') {
 				 * ogrencinin guncel odeme periyodu içindeki girdiği derslerin listesini aliyoruz
 				 */
 				$studentCashFlowByPeriod = getFromArray($Student->getCashFlowByClassroom($Classroom), array('paymentTermNo'=>$cashStatus['paymentTermNo']));
+
 				/**
 				 * listeyi dondurerek bu ana kadar ki ders ucretlerinin toplamini buluyoruz
 				 */

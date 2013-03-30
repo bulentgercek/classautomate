@@ -97,7 +97,7 @@ class DbChanges
 				 */
 				if (debugger("Changes")) {
 						echo "<br><b>--------------------- CHANGES ---------------------</b><br><br>";
-						echo "DEBUG : " . getCallingClass() . "->Changes->setChanges() - dbChanges :";
+						echo "DEBUG : " . getCallingClass() . "->Changes->setDbChanges() - dbChanges :";
 						d($this->_dbChanges);
 				}
 
@@ -105,13 +105,13 @@ class DbChanges
 				$this->_findNeededDbChanges();
 
 				if (debugger("Changes")) {
-						echo "DEBUG : " . getCallingClass() . "->Changes->setChanges() - neededChangesFound :";
+						echo "DEBUG : " . getCallingClass() . "->Changes->setDbChanges() - neededChangesFound :";
 						d($this->_neededDbChangesFound);
 				}
 
 				if (count($this->_neededDbChangesFound) > 0) {
 						if (debugger("Changes")) {
-								echo "DEBUG : " . getCallingClass() . "->Changes->setChanges() - setDbArrays() :<br>";
+								echo "DEBUG : " . getCallingClass() . "->Changes->setDbChanges() - setDbArrays() :<br>";
 						}
 						$this->_setDbArrays();
 				}
@@ -182,7 +182,7 @@ class DbChanges
 						'tableCode' => $this->_dbChanges['tableCode'],
 						'changeType' => $this->_dbChanges['dbProcess'],
 						'currents' => $this->_dbChanges['currents'],
-						'phase' => 0,
+						'phase' => $this->_dbChanges['phase'] ? $this->_dbChanges['phase'] : '0',
 						'status' => '',
 						'classroom' => '',
 						'payment' => '',

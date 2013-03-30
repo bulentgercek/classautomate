@@ -16,6 +16,7 @@
 		var monthly6 = '{$app_person_add_paymentPeriod_monthly6}';
 		var monthly12 = '{$app_person_add_paymentPeriod_monthly12}';
 		var position = '{$position}';
+		var classroomInfo = $.parseJSON('{$classroomInfo|@json_encode}');
 
 </script>
 <script type="text/javascript">
@@ -105,9 +106,9 @@
 				});
 
 				$('#addPersonForm').live('submit', function() {
-		{if $position != "student"}
-						$('#classList').removeAttr('name');
-		{/if}
+						{if $position != "student"}
+										$('#classList').removeAttr('name');
+						{/if}
 
 						// submit sirasinda gitmesi icin sby-room odeme kutusunun disable ozelligini kapat
 						$('[id^="payment_sbyRoom"]').removeAttr('disabled');
@@ -196,6 +197,9 @@
 
 				// payment hanesine 0 yaziliyor
 				$('#payment').val('0');
+				
+				// paymentInCase hanesine 0 yaziliyor
+				$('#paymentInCase').val('0');
 
 				// sinif sayisi bilgilendirme alanina uyari yazisi yaziliyor
 				$('#classCounterInfo').html(warningText);
@@ -210,6 +214,7 @@
 				 */
 				$('#addClass').click(function() {
 						$.addUpdateRow();
+						$('#recordType').val('new').trigger('change');
 				});
 
 				/**
@@ -256,12 +261,59 @@
 				 */
 				$("#classList").change(function() {
 						if ($("#classList :selected").val() == 'sbyRoom') {
-								$('#paymentPeriod, #payment').attr('disabled', 'disabled');
+								$('#paymentPeriod, #payment').hide();
+								$('#recordType').hide();
+								$('#recordType').val('new').trigger('change');
 						} else {
 								$('#paymentPeriod, #payment').removeAttr('disabled');
+								$('#paymentPeriod, #payment').show();
+								$('#recordType').show();
+								/**
+								 * startingLecture kutusunu hazirla
+								 */			
+								$.updateStartingLecture();
 						}
 				});
-
+				/**
+				 * odeme periyodu degisti mi?
+				 */
+				$('#paymentPeriod').change(function() {
+						/**
+						 * startingLecture kutusunu hazirla
+						 */			
+						$.updateStartingLecture();
+				});
+				
+				/**
+				 * kayit tipi kontrolu
+				 */
+				$("#recordType").change(function() {
+						if ($(this).val() == 'continue') {
+								$('#continue').slideDown();
+						} else {
+								$('#continue').slideUp();
+						}
+				});
+				/**
+				 * alinan odeme alani kontrolu
+				 *
+				 * bos birakmaya calisildiginda 0 yazarak dolduracak
+				 */
+				$('#paymentInCase').live("change", function() {
+						if ($(this).val() == "") {
+								$(this).val('0');
+						}
+				});
+				$('#paymentInCase').focus(function() {
+						if ($(this).val() == "0") {
+								$(this).val('');
+						}
+				});
+				$('#paymentInCase').blur(function() {
+						if ($(this).val() == "") {
+								$(this).val('0');
+						}
+				});
 				/**
 				 * select listesin de secili olana gore tabloya satir ekleyen metot
 				 */
@@ -270,6 +322,14 @@
 						tableRowButtonValue = $("#classList :selected").val();
 						tableRowClassName = $("#classList :selected").text();
 						tableRowPaymentPeriod = $("#paymentPeriod :selected").val();
+
+						if($('#recordType :selected').val() == 'continue') {
+								tableRowRecordType = $('#startingLecture :selected').val() + ',' + $('#paymentInCase').val();
+								tableRowRecordTypeText = $('#recordType :selected').text() + '<br>' + $('#paymentInCase').val() + ' {$currency}<br>{$app_person_add_lecture}:' + $('#startingLecture :selected').val();
+						} else {
+								tableRowRecordType = $('#recordType :selected').val();
+								tableRowRecordTypeText = $('#recordType :selected').text();
+						}
 
 						tableRowHtml = '<tr>';
 						tableRowHtml += '<td>' + tableRowClassName + '</td>';
@@ -286,7 +346,8 @@
 						});
 						tableRowHtml += '</select></td>';
 
-						tableRowHtml += '<td><input name="payment_' + tableRowButtonValue + '" id="payment_' + tableRowButtonValue + '" type="text" value="' + $('#payment').val() + '" class="gTextInput" tabindex="{$tabStart++}" size="7">';
+						tableRowHtml += '<td><input name="payment_' + tableRowButtonValue + '" id="payment_' + tableRowButtonValue + '" type="text" value="' + $('#payment').val() + '" class="gTextInput" tabindex="{$tabStart++}" size="4"></td>';
+						tableRowHtml += '<td><input name="recordType_' + tableRowButtonValue + '" id="recordType_' + tableRowButtonValue + '" type="hidden" value="' + tableRowRecordType + '">' + tableRowRecordTypeText + '</td>';
 						tableRowHtml += '<td><a id="removeBut_' + tableRowButtonValue + '" href="javascript:" class="button">X</a></td>';
 						tableRowHtml += '</tr>';
 
@@ -323,7 +384,10 @@
 
 								// secili olani listeden kaldir
 								$.listControl.removeItem('classList', classListIndex);
-
+								/**
+								 * startingLecture kutusunu hazirla
+								 */			
+								$.updateStartingLecture();
 						}
 
 						// isleme sokulan sbyroom ise yan secenekleri disable et ve tabloya odeme icin YOK yaz.
@@ -390,196 +454,250 @@
 								$('#paymentPeriod, #payment').removeAttr('disabled');
 						}
 				};
+
+				/**
+				 * sinifin period carpanini dondur
+				 * 
+				 * @author Bulent Gercek <bulentgercek@gmail.com>
+				 * @return String
+				 */
+				$.getPeriodMultiplier = function(period)
+				{
+						switch (period) {
+								case 'weekly': result = 1;
+										break;
+								case 'monthly': result = 4;
+										break;
+								case 'monthly3': result = 12;
+										break;
+								case 'monthly6': result = 24;
+										break;
+								case 'monthly12': result = 48;
+										break;
+								case 'yearly': result = 48;
+										break;
+								case 'fixed' : result = 1;
+						}
+						return result;
+				};
+				
+				/**
+				 * donemlik ders sayisini gonder
+				 */
+				$.getLessonCount = function(classroomValue, period) {
+						if (!classroomInfo[classroomValue]['lessonLimit']) {
+								periodMultiplier = $.getPeriodMultiplier(period);
+								lessonCountWeekly = classroomInfo[classroomValue]['lessonCountWeekly'];
+								result =  periodMultiplier * lessonCountWeekly;
+						} else {
+								result = classroomInfo[classroomValue]['lessonLimit'];
+						}
+						return result;
+				};
+				
+				/**
+				 *  startingLecture alanını gönderilen limit sayısı kadar doldurur 
+				 */
+				$.fillStartingLecture = function(count) {
+						$('#startingLecture').empty();
+						for(i=1; i<=count; i++) {
+								$('#startingLecture').append( $('<option></option>').val(i).html(i) );
+            }
+				};
+				
+				/**
+				 * startingLecture kutusunu guncelle
+				 */
+				$.updateStartingLecture = function() {
+						lessonCount = $.getLessonCount($("#classList :selected").val() ,$("#paymentPeriod :selected").val());
+						$.fillStartingLecture(lessonCount);
+				}
+				
+				// varsayilan olarak continue alanini gizle
+				$('#continue').hide();
+				/**
+				 * startingLecture kutusunu hazirla
+				 */			
+				$.updateStartingLecture();
 		});
 </script>
 <div id="personAdd">
-
 		<div id="photo">
 				<img src="{$themePath}images/default_photo.gif" alt="" width="120" height="150" border="1">		
 		</div>
-
 		<div id="form">
 				<form method="post" name="addPersonForm" id="addPersonForm">
 						<div id="header" class="header brown bold">{$app_person_add_title_{$position}}</div>
-
 						<div id="formLine">
-                <label for="name" class="requested">{$app_person_add_name}</label>
+								<label for="name" class="requested">{$app_person_add_name}</label>
 								<input name="name" type="text" id="name" tabindex="{$tabStart++}" class="gTextInput">
 								<span id="vres_name" class="requestedWarning"></span>
-            </div>
-
+						</div>
 						<div id="formLine">
-                <label for="surname" class="requested">{$app_person_add_surname}</label>
+								<label for="surname" class="requested">{$app_person_add_surname}</label>
 								<input name="surname" type="text" id="surname" tabindex="{$tabStart++}" class="gTextInput">
 								<span id="vres_surname" class="requestedWarning"></span>
-            </div>
-
+						</div>
 						<div id="formLine">
-                <label for="gender">{$app_person_add_gender}</label>
-                <select name="gender" id="gender" tabindex="{$tabStart++}" class="gTextInput">
-                    <option value="man">{$app_person_add_genderMan}</option>
-                    <option value="woman">{$app_person_add_genderWoman}</option>
-                </select>
-            </div>
-
-            <div id="formLine">
-                <label for="birthDate">{$app_person_add_birthDate}</label>
-                <input name="birthDate" type="text" id="birthDate" size="10" tabindex="{$tabStart++}" class="gTextInput">
-            </div>
-
-            <div id="formLine">
-                <label for="birthPlace">{$app_person_add_birthPlace}</label>
-                <input name="birthPlace" type="text" id="birthPlace" tabindex="{$tabStart++}" class="gTextInput">
-            </div>
-
-            {if $position == "student"}
-                <div id="formLine">
-                    <label for="job">{$app_person_add_job}</label>
-                    <input name="job" type="text" id="job" tabindex="{$tabStart++}" class="gTextInput">
-                </div>
-            {/if}
-
-            <div id="formLine">
-                <label for="mobilePhone" class="requested">{$app_person_add_mobilePhone}</label>
-                <input name="mobilePhone" type="text" id="mobilePhone" tabindex="{$tabStart++}" class="gTextInput">
-                <span id="vres_mobilePhone" class="requestedWarning"></span>
-            </div>
-
-            <div id="formLine">
-                <label for="email"{if $position == "student" || $position == "instructor" || $position == "asistant"} class="requested" {/if}>{$app_person_add_email}</label>
-                <input name="email" type="text" id="email" tabindex="{$tabStart++}" class="gTextInput">
-                {if $position == "student" || $position == "instructor" || $position == "asistant"}
+								<label for="gender">{$app_person_add_gender}</label>
+								<select name="gender" id="gender" tabindex="{$tabStart++}" class="gTextInput">
+										<option value="man">{$app_person_add_genderMan}</option>
+										<option value="woman">{$app_person_add_genderWoman}</option>
+								</select>
+						</div>
+						<div id="formLine">
+								<label for="birthDate">{$app_person_add_birthDate}</label>
+								<input name="birthDate" type="text" id="birthDate" size="10" tabindex="{$tabStart++}" class="gTextInput">
+						</div>
+						<div id="formLine">
+								<label for="birthPlace">{$app_person_add_birthPlace}</label>
+								<input name="birthPlace" type="text" id="birthPlace" tabindex="{$tabStart++}" class="gTextInput">
+						</div>
+						{if $position == "student"}
+								<div id="formLine">
+										<label for="job">{$app_person_add_job}</label>
+										<input name="job" type="text" id="job" tabindex="{$tabStart++}" class="gTextInput">
+								</div>
+						{/if}
+						<div id="formLine">
+								<label for="mobilePhone" class="requested">{$app_person_add_mobilePhone}</label>
+								<input name="mobilePhone" type="text" id="mobilePhone" tabindex="{$tabStart++}" class="gTextInput">
+								<span id="vres_mobilePhone" class="requestedWarning"></span>
+						</div>
+						<div id="formLine">
+								<label for="email"{if $position == "student" || $position == "instructor" || $position == "asistant"} class="requested" {/if}>{$app_person_add_email}</label>
+								<input name="email" type="text" id="email" tabindex="{$tabStart++}" class="gTextInput">
+								{if $position == "student" || $position == "instructor" || $position == "asistant"}
 										<span id="vres_email" class="requestedWarning"></span>
-                {/if}
-            </div>
-
-            <div id="formLine">
-                <label for="address">{$app_person_add_address}</label>
-                <textarea name="address" type="text" id="address" tabindex="{$tabStart++}" class="gTextInput"></textarea>
-            </div>
-
-            {if $position == "student" || $position == "instructor" || $position == "asistant"}
-                <div id="formLine">
-                    <label for="height">{$app_person_add_height}</label>
-                    <input name="height" type="text" id="height" tabindex="{$tabStart++}" class="gTextInput">
-                    <div id="space"></div>
-                </div>        
-
-                <div id="formLine">
-                    <label for="weight">{$app_person_add_weight}</label>
-                    <input name="weight" type="text" id="weight" tabindex="{$tabStart++}" class="gTextInput">
-                    <div id="space"></div>
-                </div>        
-
-                <div id="formLine">
-                    <label for="shoeSize">{$app_person_add_shoeSize}</label>
-                    <input name="shoeSize" type="text" id="shoeSize" tabindex="{$tabStart++}" class="gTextInput">
-                    <div id="space"></div>
-                </div>
-            {/if}
-
-            <div id="formLine">
-                <label for="bloodType">{$app_person_add_bloodType}</label>
+								{/if}
+						</div>
+						<div id="formLine">
+								<label for="address">{$app_person_add_address}</label>
+								<textarea name="address" type="text" id="address" tabindex="{$tabStart++}" class="gTextInput"></textarea>
+						</div>
+						{if $position == "student" || $position == "instructor" || $position == "asistant"}
+								<div id="formLine">
+										<label for="height">{$app_person_add_height}</label>
+										<input name="height" type="text" id="height" tabindex="{$tabStart++}" class="gTextInput">
+										<div id="space"></div>
+								</div>
+								<div id="formLine">
+										<label for="weight">{$app_person_add_weight}</label>
+										<input name="weight" type="text" id="weight" tabindex="{$tabStart++}" class="gTextInput">
+										<div id="space"></div>
+								</div>
+								<div id="formLine">
+										<label for="shoeSize">{$app_person_add_shoeSize}</label>
+										<input name="shoeSize" type="text" id="shoeSize" tabindex="{$tabStart++}" class="gTextInput">
+										<div id="space"></div>
+								</div>
+						{/if}
+						<div id="formLine">
+								<label for="bloodType">{$app_person_add_bloodType}</label>
 								<select name="bloodType" id="bloodType" tabindex="{$tabStart++}" class="gSelect">
-
 										{foreach from=$bloodTypeList key=k item=v}
 												<option value="{$v}">{$v}</option>
 										{/foreach}
-
 								</select>
-            </div>
-
-            <div id="formLine">
-                <label for="healthInsurance">{$app_person_add_healthInsurance}</label>
-                <input name="healthInsurance" type="text" id="healthInsurance" tabindex="{$tabStart++}" class="gTextInput">
-                <div id="space"></div>
-            </div>
-
-            {if $position == "student"}
+						</div>
+						<div id="formLine">
+								<label for="healthInsurance">{$app_person_add_healthInsurance}</label>
+								<input name="healthInsurance" type="text" id="healthInsurance" tabindex="{$tabStart++}" class="gTextInput">
+								<div id="space"></div>
+						</div>
+						{if $position == "student"}
+								
 								<div id="list">
+										
 										<div id="selectAdd">
 												<label>{$app_person_add_classes} / {$app_person_add_payment}</label>
-
-												<div style="margin-top:10px;margin-bottom: 10px">
-														<span class="brownText14" style="float:left">
+												
+												<div style="margin-top:10px; clear: both;">
+														<span class="brownText14">
 																<select name="classList" id="classList" tabindex="{$tabStart++}" class="gSelect">
-
 																		{foreach from=$classList key=k item=v}
 																				<option value="{$k}">{$v}</option>
 																		{/foreach}
-
-																{if count($classList)>0}<option value="splitter" disabled="disabled">- - - - - - - - - - - - - - - - -</option>{/if}
-																<option value="sbyRoom">{$main_header_sbyRoom}</option>
-
+																		{if count($classList)>0}
+																				<option value="splitter" disabled="disabled">- - - - - - - - - - - - - - - - -</option>
+																		{/if}
+																		<option value="sbyRoom">{$main_header_sbyRoom}</option>
+																</select>
+														</span>
+																
+														<select id="paymentPeriod" tabindex="{$tabStart++}" class="gSelect">
+																{foreach from=$paymentPeriodList key=k item=v}
+																		<option value="{$v}"{if $v == $app_person_add_defPayPeriod}SELECTED{/if}>{$app_person_add_paymentPeriod_{$v}}</option>
+																{/foreach}
 														</select>
-												</span>
-												<select style="float:left" id="paymentPeriod" tabindex="{$tabStart++}" class="gSelect">
-
-														{foreach from=$paymentPeriodList key=k item=v}
-																<option value="{$v}"{if $v == $app_person_add_defPayPeriod}SELECTED{/if}>{$app_person_add_paymentPeriod_{$v}}</option>
-														{/foreach}
-
-												</select>
-												<input style="float:left" id="payment" type="text" class="gTextInput" tabindex="{$tabStart++}" size="7">
-
-												<div class="buttons">
+														
+														<input id="payment" type="text" class="gTextInput" tabindex="{$tabStart++}" size="4">
+														
+														<select id="recordType" tabindex="{$tabStart++}" class="gSelect">
+																<option value="new">Yeni</option>
+																<option value="continue">Devam</option>
+														</select>
+												</div>
+																
+												<div id="continue" style="clear: left; border-top: 1px solid red; border-bottom: 1px solid red; clear: left; padding: 5px; margin-top: 5px; margin-bottom: 5px">
+														<label for="paymentInCase">{$app_person_add_paymentInCase}</label>
+														<input id="paymentInCase" type="text" tabindex="{$tabStart++}" class="gTextInput" size="4">{$currency}
+														<label for="startingLecture">{$app_person_add_startingLecture}</label>
+														<select id="startingLecture" tabindex="{$tabStart++}" class="gSelect"></select>
+												</div>
+																
+												<div class="buttons"style="float:left;">
 														<a id="addClass" class="button" href="javascript:" tabindex="{$tabStart++}">{$app_person_add_addClass}</a>
-												</div>                	
+												</div>
+												
+												<div id="warningArea" style="float:left;" class="pureRed">
+														<input name="classCounter" id="classCounter" type="hidden" value=""><span id="classCounterInfo"></span><span id="vres_classCounter" class="requested"></span>
+												</div>
 										</div>
-
-										<div id="warningArea" style="clear:left" class="pureRed">
-												<input name="classCounter" id="classCounter" type="hidden" value=""><span id="classCounterInfo"></span><span id="vres_classCounter" class="requested"></span>
-										</div>
-								</div>
-
-								<div id="classes">
-										<table>
-												<tr>
-														<td colspan="3">
-																<div id="listingWithHeader">
-																		{$app_person_add_classes}
-																		<div id="listing">
-																				<table id="classListTable">
-																						<thead>
-																								<tr>
-																										<th scope="col">{$app_person_add_class}</th>
-																										<th scope="col">{$app_person_add_paymentPeriod}</th>
-																										<th scope="col">{$app_person_add_payment}</th>
-																										<th scope="col">{$app_person_add_removeClass}</th>
-																								</tr>
-																						</thead>
-																						<tfoot>
-																								<tr>
-																										<td colspan="4"><em><span id="warningTextArea"></span></em></td>
-																								</tr>
-																						</tfoot>
-																						<tbody>
-																				</table>
+												
+										<div id="classes" style="clear:both;">
+												<table>
+														<tr>
+																<td colspan="3">
+																		<div id="listingWithHeader">
+																				{$app_person_add_classes}
+																				<div id="listing">
+																						<table id="classListTable">
+																								<thead>
+																										<tr>
+																												<th scope="col">{$app_person_add_class}</th>
+																												<th scope="col">{$app_person_add_paymentPeriod}</th>
+																												<th scope="col">{$app_person_add_payment}</th>
+																												<th scope="col">{$app_person_add_recordType}</th>
+																												<th scope="col">{$app_person_add_removeClass}</th>
+																										</tr>
+																								</thead>
+																								<tfoot>
+																										<tr>
+																												<td colspan="5"><em><span id="warningTextArea"></span></em></td>
+																										</tr>
+																								</tfoot>
+																								<tbody>
+																						</table>
+																				</div>
 																		</div>
-																</div>
-														</td>
-												</tr>
-										</table>
+																</td>
+														</tr>
+												</table>
+										</div>
 								</div>
+						{/if}
+						<br>
+						<div id="clear"></div>
+						<div id="formLine">
+								<label for="notes">{$app_person_add_notes}</label>
+								<textarea name="notes" cols="24" rows="4" id="notes" tabindex="{$tabStart++}" class="gTextInput"></textarea>
 						</div>
-				{/if}
-
-				<br>
-				<div id="clear"></div>
-
-				<div id="formLine">
-						<label for="notes">{$app_person_add_notes}</label>
-						<textarea name="notes" cols="24" rows="4" id="notes" tabindex="{$tabStart++}" class="gTextInput"></textarea>
-				</div>			
-
-				<div id="submitArea" class="buttons">
-						<a id="submit" class="button add" href="javascript:" tabindex="{$tabStart++}">{$app_person_add_submitRecordLabel_{$position}}</a>
-				</div>
-
-				<div id="clear"></div>
-
-		</form>
-
+						<div id="submitArea" class="buttons">
+								<a id="submit" class="button add" href="javascript:" tabindex="{$tabStart++}">{$app_person_add_submitRecordLabel_{$position}}</a>
+						</div>
+						<div id="clear"></div>
+				</form>
+		</div>
 </div>
-</div>			
 <!-- /kisi ekleme -->

@@ -35,4 +35,6 @@ switch ($_GET["position"]) {
 }
 setExtSmartyVars('personValues', $personValues);
 setExtSmartyVars('position', $_GET["position"]);
+
+setExtSmartyVars("currency", strtoupper($Setting->getCurrency()));
 ?>

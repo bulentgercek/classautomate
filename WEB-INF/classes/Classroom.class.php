@@ -471,12 +471,12 @@ class Classroom
 						case 'termDateLimit' :
 								if ($_POST["termStatus"] == "1") {
 										if ($_POST["termLimitChooser"] == "dateLimit") {
-												return str_replace("/", "-", $_POST["dateLimitCalendar"]);
+												return str_replace("/", "-", $_POST["dateLimitCalendar"] . ' 23:59:59');
 										} else {
-												return '0000-00-00';
+												return '0000-00-00 00:00:00';
 										}
 								} else {
-										return '0000-00-00';
+										return '0000-00-00 00:00:00';
 								}
 
 						case 'asistant' :

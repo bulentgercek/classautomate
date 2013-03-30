@@ -243,7 +243,7 @@ class Accountant
 						if (debugger('Accountant'))
 								var_dump('studentIncomesTotal : ' . $this->_studentMoneyLeftInCase[$studentCode]);
 				} else {
-						return $this->_studentCashFlow[$studentCode][$classroomCode];
+						return $this->_studentMoneyLeftInCase[$studentCode];
 				}
 
 				foreach ($studentLectureDetailsByClassroom as $key => $value) {
@@ -533,6 +533,7 @@ class Accountant
 								return $cashResult;
 						}
 				}
+				
 				return $cashResult;
 		}
 		/**
