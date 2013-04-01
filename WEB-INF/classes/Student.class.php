@@ -45,7 +45,7 @@ class Student extends Person
 		 */
 		public function getActiveLectureList(Classroom $Classroom)
 		{
-				$Fc = FluxCapacitor::classCache();
+				$Fc = new FluxCapacitor();
 
 				$studentActiveDateTimes = $this->getActiveDateTimesByClassroom($Classroom);
 				$studentActiveLectureList = array();
@@ -273,7 +273,7 @@ class Student extends Person
 		 */
 		public function getLectureDetailsByClassroom(Classroom $Classroom)
 		{
-				$Fc = FluxCapacitor::classCache();
+				$Fc = new FluxCapacitor();
 
 				$paymenAndPeriodChangesByClassroom = $this->getPaymentAndPeriodChangesByClassroom($Classroom);
 				$lectureDetailsByClassroom = array();

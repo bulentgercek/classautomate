@@ -545,11 +545,12 @@ class Accountant
 				/**
 				 * Flux
 				 */
-				$Fc = FluxCapacitor::classCache();
+				$Fc = new FluxCapacitor();
 				/**
 				 * degiskenler hazirlaniyor
 				 */
 				$lectureList = $Student->getLectureDetailsByClassroom($Classroom);
+
 				/**
 				 * en azindan bir ders yapilmis olmasi gerekiyor
 				 */
@@ -580,7 +581,8 @@ class Accountant
 						/**
 						 * Flux'a zaman dilimlerini tanimliyoruz
 						 */
-						$Fc->setValues( array(  'startDateTime'=>$startDate,
+						$Fc->setValues( array(  'classroomCode' => $Classroom->getInfo('code'),
+																		'startDateTime'=>$startDate,
 																		'limitDateTime'=>$endDate) );
 						/**
 						 * Flux'dan gerekli diziyi cekiyoruz,
@@ -595,5 +597,13 @@ class Accountant
 						$nextPaymentDateTime = Setting::classCache()->getInterfaceLang()->classautomate->main->none;
 				}
 				return $nextPaymentDateTime;
+		}
+		/**
+		 * egitmen odeme periodlarini belirleyen metot
+		 */
+		public function getInstructorPaymentPeriods(Instructor $Instructor, Classroom $Classroom)
+		{
+				$lectureList = $Classroom->getActiveLectureList();
+				var_dump($lectureList);
 		}
 }

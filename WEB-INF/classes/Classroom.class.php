@@ -218,7 +218,7 @@ class Classroom
 		 */
 		public function getLectureCount($type = NULL)
 		{
-				$Fc = FluxCapacitor::classCache();
+				$Fc = new FluxCapacitor();
 				$dateTime = getClientDateTime('%Y-%m-%d %H:%M:%S');
 
 				$Fc->setValues(array('classroomCode' => $this->_code));
@@ -245,7 +245,7 @@ class Classroom
 		 */
 		public function getHolidayStatus($holidayType)
 		{
-				$Fc = FluxCapacitor::classCache();
+				$Fc = new FluxCapacitor();
 				$dateTime = getClientDateTime('%Y-%m-%d %H:%M:%S');
 
 
@@ -273,7 +273,7 @@ class Classroom
 		 */
 		public function getActiveLectureList()
 		{
-				$Fc = FluxCapacitor::classCache();
+				$Fc = new FluxCapacitor();
 
 				$classroomActiveDateTimes = $this->getActiveDateTimes();
 

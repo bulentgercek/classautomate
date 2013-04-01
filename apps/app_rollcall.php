@@ -7,7 +7,7 @@
  * @package ClassAutoMate
  */
 $School = School::classCache();
-$Fc = FluxCapacitor::classCache();
+$Fc = new FluxCapacitor();
 /**
  * gunun tarihini belirle
  */

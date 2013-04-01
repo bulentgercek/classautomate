@@ -59,4 +59,9 @@ setExtSmartyVars("studentList", $studentList);
 
 $currency = strtoupper(Setting::classCache()->getCurrency());
 setExtSmartyVars("currency", $currency);
+
+/*
+$Instructor = $School->getInstructor($Classroom->getInfo('instructor'));
+Accountant::classCache()->getInstructorPaymentPeriods($Instructor, $Classroom);
+*/
 ?>

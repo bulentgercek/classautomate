@@ -743,7 +743,7 @@ class School
 		 */
 		public function checkClassroomsLimits()
 		{
-				$Fc = FluxCapacitor::classCache();
+				$Fc = new FluxCapacitor();
 
 				$classroomList = $this->getClassroomList();
 				$dateTime = getDateTimeAsFormatted();

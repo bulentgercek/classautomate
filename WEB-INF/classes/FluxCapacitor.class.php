@@ -8,16 +8,6 @@
  */
 class FluxCapacitor
 {
-
-		/**
-		 *
-		 * Bu class'in yedegi
-		 *
-		 * @access private
-		 * @var object
-		 */
-		private static $_instance;
-
 		/**
 		 * genel degiskenler
 		 */
@@ -26,28 +16,16 @@ class FluxCapacitor
 		private $_classroomCode;
 		private $_lectureList;
 		private $_holidayLectureList;
-
 		/**
 		 * Classın construct methodu yoktur
 		 *
 		 * @return void
 		 */
-		private function __construct()
+		public function __construct($values = NULL)
 		{
-				
-		}
-		/**
-		 * Singleton fonksiyonu
-		 *
-		 * @access public
-		 * @return object
-		 */
-		public static function & classCache()
-		{
-				if (!self::$_instance) {
-						self::$_instance = new FluxCapacitor();
+				if ($values) {
+						$this->setValues($values);
 				}
-				return self::$_instance;
 		}
 		/**
 		 * Baslangic ve bitis tarihleri veriliyor
@@ -124,7 +102,7 @@ class FluxCapacitor
 						$ClassroomDayTimeList = $Classroom->getDayTimeList();
 
 						$holidayLectureList = array();
-						foreach ($ClassroomDayTimeList as $ClassroomDayTimeListValue) {
+						foreach ((array)$ClassroomDayTimeList as $ClassroomDayTimeListValue) {
 
 								if ($holidayList != null) {
 										foreach ($holidayList as $holidayValue) {
@@ -246,7 +224,7 @@ class FluxCapacitor
 						$weekDayListSorter = array();
 						$maxCount = false;
 
-						foreach ($ClassroomDayTimeList as $ClassroomDayTimeListValue) {
+						foreach ((array)$ClassroomDayTimeList as $ClassroomDayTimeListValue) {
 
 								$weekDayList = getWeekDays($ClassroomDayTimeListValue['day'], $this->_startDateTime, $this->_limitDateTime);
 
@@ -319,7 +297,7 @@ class FluxCapacitor
 						/**
 						 * once cikarilacaklar listesini olustur (nonClasses)
 						 */
-						foreach ($ClassroomDayTimeList as $key => $value) {
+						foreach ((array)$ClassroomDayTimeList as $key => $value) {
 								if ($value['time'] < $startDayTimeTime)
 										$nonClasses[] = $value['code'];
 						}
