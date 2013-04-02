@@ -125,7 +125,7 @@ class IncomeExpense
 						case 'dateTime':
 								if ($senderMethod == "add") {
 										if (!isset($_POST['dateTime']))
-												return getClientDateTime('%Y-%m-%d %H:%M:%S');
+												return getDateTime('%Y-%m-%d %H:%M:%S');
 										else
 												return $_POST['dateTime'];
 								}

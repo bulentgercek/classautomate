@@ -212,7 +212,7 @@ function mainDate()
 				$xmlMount = $languageJSON->classautomate->month[$i - 1];
 				settype($xmlMount, 'string');
 
-				if (getClientDateTime('%m') == $i) {
+				if (getDateTime('%m') == $i) {
 						$mainDate[month] = $xmlMount;
 				}
 		}
@@ -226,7 +226,7 @@ function mainDate()
 				$xmlDow = $languageJSON->classautomate->dayOfWeek[$i];
 				settype($xmlDow, 'string');
 
-				if (getClientDateTime('%w') == $i) {
+				if (getDateTime('%w') == $i) {
 						$mainDate[dayOfWeek] = $xmlDow;
 				}
 		}
@@ -235,7 +235,7 @@ function mainDate()
 		 *
 		 * @var array $mainDate[full]
 		 */
-		$mainDate[full] = getClientDateTime('%d ') . $mainDate[month] . getClientDateTime(' %Y');
+		$mainDate[full] = getDateTime('%d ') . $mainDate[month] . getDateTime(' %Y');
 
 		return $mainDate;
 }
@@ -291,7 +291,7 @@ function getWeekDayAsText($value)
  */
 function getDateAsFormatted()
 {
-		return getClientDateTime('%Y-%m-%d');
+		return getDateTime('%Y-%m-%d');
 }
 /**
  * cagirildigi anin zaman bilgisini saat:dakika:saniye formatinda dondurur
@@ -302,7 +302,7 @@ function getDateAsFormatted()
  */
 function getTimeAsFormatted()
 {
-		return getClientDateTime('%H:%M:%S');
+		return getDateTime('%H:%M:%S');
 }
 /**
  * gunun tarihini yıl-ay-gun saat:dakika:saniye olarak dondurur
@@ -313,7 +313,7 @@ function getTimeAsFormatted()
  */
 function getDateTimeAsFormatted()
 {
-		return getClientDateTime('%Y-%m-%d %H:%M:%S');
+		return getDateTime('%Y-%m-%d %H:%M:%S');
 }
 /**
  * tarihe gore yılın kaçıncı haftası oldugunu donduren metot
@@ -568,6 +568,16 @@ function getClientIp()
 		}
 
 		return $ip;
+}
+/**
+ * Gunun tarihinin alındığı metodu kolayca değiştirebilmen için hazırladığım
+ * düzenleyici metot. Buradaki amaç istediğimde getClientDateTime'ı aradan çıkarabilmektir.
+ * Böylece Php'nin DateTime nesnesini istediğimde devreye sokabileceğim.
+ * Çünkü, new DateTime() dediğimde şimdiki tarihi ve timeZone'u dizi halinde döndürüyor;)
+ */
+function getDateTime($format = '%Y-%m-%d / %H:%M:%S')
+{
+		return getClientDateTime($format);
 }
 /**
  * site ziyaretcisinin lokal saatini verir
@@ -1089,7 +1099,7 @@ function getWeekDays($day, $start, $end)
 {
 		$dayNames = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
 		$dateList = array();
-		
+
 		/**
 		 * gelen gun dikkate alinarak,
 		 * baslangic tarihinden, bitis tarihine kadar
@@ -1106,7 +1116,7 @@ function getWeekDays($day, $start, $end)
 				//var_dump($start . ' ve ' . $end .  ' gunlerinin ikisi de Pazara denk geldi arttirdim! ');
 				$count++;
 		}
-		
+
 		if ($count >= 1) {
 				$startDate = new DateTime($start);
 				$endDate = new DateTime($end);
@@ -1135,7 +1145,7 @@ function getWeekDays($day, $start, $end)
 				 * bitis gunu eklenmemis ise, gelen gun mu kontrol ederek eklememiz gerekiyor
 				 */
 				if (getWeekDayOfTheDate($end) == $day) {
-						if ($dateList[count($dateList)-1] != $endDate->format("Y-m-d")) {
+						if ($dateList[count($dateList) - 1] != $endDate->format("Y-m-d")) {
 								$dateList[] = $endDate->format("Y-m-d");
 						}
 				}
@@ -1168,12 +1178,18 @@ function getArrayKeyValue($array, $key)
 function getPeriodMultiplier($period)
 {
 		switch ($period) {
-				case 'weekly': $result = 1;	break;
-				case 'monthly': $result = 4; break;
-				case 'monthly3': $result = 6;	break;
-				case 'monthly6': $result = 24; break;
-				case 'monthly12': $result = 48;	break;
-				case 'yearly': $result = 48; break;
+				case 'weekly': $result = 1;
+						break;
+				case 'monthly': $result = 4;
+						break;
+				case 'monthly3': $result = 6;
+						break;
+				case 'monthly6': $result = 24;
+						break;
+				case 'monthly12': $result = 48;
+						break;
+				case 'yearly': $result = 48;
+						break;
 		}
 		return $result;
 }
@@ -1201,12 +1217,12 @@ function getLectureCountByPeriod($Classroom, $period)
  */
 function arrayRotate($array, $rotateCount = 1)
 {
-	$currentCount = 1;
-	while($currentCount <= $rotateCount) {
-		$final = array_shift($array);
-		array_push($array, $final);
-		$currentCount++;
-	}
-	return $array;
+		$currentCount = 1;
+		while ($currentCount <= $rotateCount) {
+				$final = array_shift($array);
+				array_push($array, $final);
+				$currentCount++;
+		}
+		return $array;
 }
 ?>

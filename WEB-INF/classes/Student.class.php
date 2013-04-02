@@ -83,8 +83,8 @@ class Student extends Person
 		public function getPaymentAndPeriodChanges()
 		{
 				$result = array();
-				$paymentChanges = $this->Changes->getFilteredList(array('changeField' => 'payment', 'extraFields' => 'paymentPeriod', 'Person' => $this));
-				$paymentPeriodChanges = $this->Changes->getFilteredList(array('changeField' => 'paymentPeriod', 'extraFields' => 'payment', 'Person' => $this));
+				$paymentChanges = $this->Changes->getFilteredList(array('changeField' => 'payment', 'extraFields' => 'paymentPeriod,status', 'Person' => $this));
+				$paymentPeriodChanges = $this->Changes->getFilteredList(array('changeField' => 'paymentPeriod', 'extraFields' => 'payment,status', 'Person' => $this));
 
 				/**
 				 * Hangisi daha fazla sayida bilgi iceriyorsa o dogrudur
@@ -99,7 +99,7 @@ class Student extends Person
 						$lastOfPaymentPeriodChanges = $paymentPeriodChanges[count($paymentPeriodChanges) - 1];
 
 						$whoIsVeryLast = getDateTimeDiff($lastOfPaymentChanges['startDateTime'], $lastOfPaymentPeriodChanges['startDateTime'], 'type');
-
+						
 						if ($whoIsVeryLast == 0)
 								$result = $paymentChanges;
 						if ($whoIsVeryLast == 1)
@@ -107,18 +107,28 @@ class Student extends Person
 						if ($whoIsVeryLast == -1)
 								$result = $paymentPeriodChanges;
 				}
-
+				
 				/**
 				 * finalde dondurulecek diziyi hazirla
 				 */
 				$finalList = array();
-
+				
 				foreach ($result as $key => $value) {
 						$classroomValues = getArrayKeyValue(explode('<+>', $value['currents']), 0);
 
 						if ($value['field'] == 'payment') {
-								$paymentValues = $value['fieldValue'];
-
+								if ($value['fieldValue'] != '') {
+										$paymentValues = $value['fieldValue'];
+								}
+								/**
+								 * issue #23 Çözümü :
+								 * eger fieldValue bos ise STATUS->ACTIVE yapilmis olan veriyle ugrasiyoruz demektir
+								 * o nedenle de payment degerini currents'dan alıyoruz
+								 */
+								else {
+										$paymentValues = getArrayKeyValue(explode('<+>', $value['currents']), 2);
+								}
+								
 								if ($value['paymentPeriod'] != '') {
 										$paymentPeriodValues = $value['paymentPeriod'];
 								} else {
@@ -135,10 +145,13 @@ class Student extends Person
 								}
 						}
 
-						$finalList[$key] = array('classroom' => $classroomValues, 'payment' => $paymentValues, 'paymentPeriod' => $paymentPeriodValues,
-								'startDateTime' => $value['startDateTime'], 'endDateTime' => $value['endDateTime']);
+						$finalList[$key] = array(		'classroom' => $classroomValues, 
+																				'payment' => $paymentValues, 
+																				'paymentPeriod' => $paymentPeriodValues,
+																				'startDateTime' => $value['startDateTime'],
+																				'endDateTime' => $value['endDateTime'],
+																				'status'=>$value['status']);
 				}
-
 				return $finalList;
 		}
 		/**
@@ -276,6 +289,7 @@ class Student extends Person
 				$Fc = new FluxCapacitor();
 
 				$paymenAndPeriodChangesByClassroom = $this->getPaymentAndPeriodChangesByClassroom($Classroom);
+
 				$lectureDetailsByClassroom = array();
 
 				$paymentTermNo = 0;
@@ -289,7 +303,7 @@ class Student extends Person
 										'limitDateTime' => $value['endDateTime']));
 
 								$filteredLectures = $Fc->getLecture();
-								//var_dump($Fc);
+
 								/**
 								 * para akis bilgilerini isle
 								 * odeme donemine gore diziyi hazirla
@@ -384,9 +398,9 @@ class Student extends Person
 		 * 
 		 * @return Date String
 		 */
-		public function getNextPaymentDateByClassroom(Classroom $Classroom)
+		public function getNextPaymentDateTimeByClassroom(Classroom $Classroom)
 		{
-				return Accountant::classCache()->getStudentNextPaymentDate($this, $Classroom);
+				return Accountant::classCache()->getStudentNextPaymentDateTime($this, $Classroom);
 		}
 		/**
 		 * $_POST formda olup da database'de karsiligi olmayan
@@ -480,7 +494,54 @@ class Student extends Person
 														} else if ($Classroom->getInfo('status') == 'used') {
 																$statusResult .= "used";
 														} else if ($Classroom->getInfo('status') == 'active') {
-																$statusResult .= "active";
+																/**
+																 * issue #25 buradan cözülecek
+																 * Sınıfı aktif ise öğrenci önce USED yapılacak;
+																 */
+																$statusResult .= "used";
+																/**
+																 * simdi sırada geleceğe dair bir kayıt yapmaya geldi
+																 * Execute kuyruğuna ogrencinin aktif yapılacağını yerleştiriyoruz
+																 */
+																$masterChange['object'] = $Classroom;
+																/**
+																 * sinifin aktif oldugu dersin bitis saatini ogren
+																 */
+																$classroomActiveDateTimes = $Classroom->getActiveDateTimes();
+																$startDate = getArrayKeyValue(explode(' ', $classroomActiveDateTimes[0]['startDateTime']), 0);
+																$startTime = getArrayKeyValue(explode(' ', $classroomActiveDateTimes[0]['startDateTime']), 1);
+																$startDayTime = getFromArray($Classroom->getDayTimeList(), array('time'=>$startTime));
+																$endTime = $startDayTime[0]['endTime'];
+																/**
+																 * issue #25 1. hatanın çözümü :
+																 * eger içinde bulundugumuz tarih sınıfın aktif oldugu dersin bitiş saatinden önce ise;
+																 * (ki bu demektir ki öğrenci o derse girmiş kabul edilecek)
+																 */
+																$classroomActiveDateTimes = $Classroom->getActiveDateTimes();
+
+																$timeDiff = getDateTimeDiff(getDateTimeAsFormatted(), $startDate . ' ' . $endTime, 'type');
+
+																if ($timeDiff == -1 || $timeDiff == 0) { 
+																		$classroomDayTimeTime = $Classroom->getDayTime($Classroom->getInfo('startDayTime'))->getInfo('time');
+																		$masterChange['dateTime'] = $Classroom->getInfo('startDate') . ' ' . $classroomDayTimeTime;
+																} 
+																/**
+																 * issue #25 2.hatanın çözümü :
+																 * eger içinde bulunduğumuz tarih sınıfın aktif olduğu dersin bitiş tarihinden sonra ise;
+																 * ogrencinin aktif olacağı tarih bir sonraki ders olacaktır.
+																 */
+																else {
+																		$masterChange['dateTime'] = $Classroom->getNextLectureDateTime();
+																}
+																/**
+																 * ogrenci önce USED yapıldı, sınıf kaydı ve CHANGE bilgisi ona göre yapıldı.
+																 * Şimdi de ogrenciyi aktif etmek üzere kuyruğa iş bırakıyoruz.
+																 * Böylece CHANGE aktif edilme bilgisini ayrı olarak kaydedecek.
+																 * issue #25 tamamen çözülmüş oldu.
+																 */
+																Execute::classCache()->setQueue(
+																		$this, array('status'=>'active'), 'update', 'direct', 'updateClassroomForm', $masterChange
+																);
 														}
 														if ($key < count($classroomStatusList) - 1)
 																$statusResult .= ',';

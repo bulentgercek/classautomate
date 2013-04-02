@@ -60,7 +60,7 @@ class SendToDb
 				$currents = self::getCurrents($currentsArray);
 
 				/**
-				 * degisiklikleri tespit etmek uzere DBCHANGES'e gonder
+				 * degisiklikleri tespit etmek ve uygulamak uzere DBCHANGES'e gonder
 				 */
 				$DbChanges->setDbChanges(array('table' => $tableName, 'tableCode' => $tableCode, 'dbProcess' => $process, 'currents' => $currents, 'tableFields' => $columnsBackup, 'values' => $valuesBackup));
 
@@ -187,7 +187,7 @@ class SendToDb
 						$currents = self::getCurrents(array_merge($currentsArray, array('arrayDifference' => $arrayDifference)));
 
 						/**
-						 * degisiklikleri tespit etmek uzere DBCHANGES'e gonder
+						 * degisiklikleri tespit etmek uzere ve uygulamak üzere DBCHANGES'e gonder
 						 */
 						$DbChanges->setDbChanges(array('table' => $tableName, 'tableCode' => $tableCode, 'dbProcess' => $process, 'currents' => $currents, 'tableFields' => $columnsBackup, 'values' => $valuesBackup));
 
@@ -295,7 +295,7 @@ class SendToDb
 
 				/**
 				 * UYARI : Silme islemi bir kaydi hic yokmus gibi ortadan kaldiriyor
-				 *         dolayisiyla CHANGE kaydi tutmanin da bir anlami olmadigina karar verdim.
+				 *         dolayisiyla CHANGES kaydi tutmanin da bir anlami olmadigina karar verdim. (02.2013)
 				 *         Bu islem DISABLE edildi.
 				 */
 				//$DbChanges->setDbChanges(array('table'=>$tableName, 'tableCode'=>$tableCode, 'dbProcess'=>$process, 'currents'=>$currents, 'tableFields'=>$columnsBackup, 'values'=>$valuesBackup));
@@ -381,6 +381,7 @@ class SendToDb
 						if (isset($array['arrayDifference'])) {
 								$isPaymentChanged = isset($array['arrayDifference']['payment']);
 								$isPaymentPeriodChanged = isset($array['arrayDifference']['paymentPeriod']);
+								$isStatusChangedToActive = $array['arrayDifference']['status'] == 'active' ? true : false;
 								/**
 								 * payment degisikligi gelmis ise CURRENTS'a paymentPeriod eklenecek,
 								 * eger paymentPeriod degisikligi gelmis ise CURRENTS'a payment eklenecek.
@@ -389,6 +390,9 @@ class SendToDb
 								if ($isPaymentChanged) {
 										$currents .= '<+>' . $array['valuesArray']['paymentPeriod'];
 								} else if ($isPaymentPeriodChanged) {
+										$currents .= '<+>' . $array['valuesArray']['payment'];
+								} else if ($isStatusChangedToActive) {
+										$currents .= '<+>' . $array['valuesArray']['paymentPeriod'];
 										$currents .= '<+>' . $array['valuesArray']['payment'];
 								}
 						}

@@ -132,7 +132,7 @@ class History
 		 */
 		private function _getDateTime()
 		{
-				return getClientDateTime('%Y-%m-%d %H:%M:%S');
+				return getDateTime('%Y-%m-%d %H:%M:%S');
 		}
 }
 

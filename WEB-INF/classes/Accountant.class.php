@@ -84,7 +84,10 @@ class Accountant
 						$intend['classroom'] = $Classroom->getInfo('code');
 				}
 
-				return getFromArray($list, $intend);
+				if ($intend)
+						return getFromArray($list, $intend);
+				else
+						return $list;
 		}
 		/**
 		 * bir ogrencinin gelirler toplamini dondur
@@ -158,6 +161,7 @@ class Accountant
 
 				$incomesTotal = $this->calculateIncExpTotal('+');
 				$expensesTotal = $this->calculateIncExpTotal('-');
+
 				/**
 				 * en kucuk tarihli degeri belirliyoruz
 				 */
@@ -166,7 +170,7 @@ class Accountant
 				$firstDateTime = $incomeExpenseList[0]['dateTime'];
 				$lastDateTime = $incomeExpenseList[count($incomeExpenseList) - 1]['dateTime'];
 
-				$listCount = getDateTimeDiff($firstDateTime, $lastDateTime, 'm');
+				$listCount = getDateTimeDiff($firstDateTime, $lastDateTime, 'm') + 1;
 
 				$firstYear = getArrayKeyValue(explode('-', $incomeExpenseList[0]['dateTime']), 0);
 				$firstMonth = getArrayKeyValue(explode('-', $incomeExpenseList[0]['dateTime']), 1);
@@ -183,9 +187,11 @@ class Accountant
 										$currentMonth++;
 								}
 						}
+						$currentMonth = sprintf("%02d", $currentMonth);
+
 						$profitListIncomesTotal = getArrayKeyValue(getArrayKeyValue(getFromArray($incomesTotal, array('year' => $currentYear, 'month' => $currentMonth)), 0), 'total');
 						$profitListExpensesTotal = getArrayKeyValue(getArrayKeyValue(getFromArray($expensesTotal, array('year' => $currentYear, 'month' => $currentMonth)), 0), 'total');
-
+						
 						if ($profitListIncomesTotal == '')
 								$profitListIncomesTotal = 0;
 						if ($profitListExpensesTotal == '')
@@ -197,6 +203,7 @@ class Accountant
 								'profitTotal' => $profitListIncomesTotal - $profitListExpensesTotal
 						);
 				}
+
 				return $profitList;
 		}
 		/**
@@ -219,7 +226,7 @@ class Accountant
 				if (debugger('Accountant'))
 						echo '<br><b>' . $Student->getInfo('code') . ' Nolu ögrencinin ' . $Classroom->getInfo('code') . ' nolu sınıfa ait odeme/odeme donemi bilgileri (Aktif Oldugu Dönemler)</b> : ';
 				$studentLectureDetailsByClassroom = $Student->getLectureDetailsByClassroom($Classroom);
-				
+
 				if (debugger('Accountant'))
 						var_dump($studentLectureDetailsByClassroom);
 
@@ -514,7 +521,7 @@ class Accountant
 		 * 
 		 * @return Date String
 		 */
-		public function getStudentNextPaymentDate(Student $Student, Classroom $Classroom)
+		public function getStudentNextPaymentDateTime(Student $Student, Classroom $Classroom)
 		{
 				/**
 				 * Flux
@@ -577,7 +584,7 @@ class Accountant
 		 * 
 		 * @return Array
 		 */
-		public function getInstructorPaymentPeriods(Classroom $Classroom)
+		public function getClassroomPaymentPeriods(Classroom $Classroom)
 		{
 				/**
 				 * genel diziler ve veriler okunuyor, hazirlaniyor
@@ -630,9 +637,11 @@ class Accountant
 				 * sinifin ogrencilerinin ders odemeleri toplanarak period ders listesine islenecek
 				 */
 				$studentList = $Classroom->getStudentList();
-				foreach ($studentList as $key => $value) {
+
+				foreach ((array)$studentList as $key => $value) {
 						$Student = School::classCache()->getStudent($value['code']);
 						$studentCashFlow = $this->getStudentCashFlowByClassroom($Student, $Classroom);
+
 						/**
 						 * Dersler tek tek geciliyor derslerden gelen para toplanarak ana diziye ekleniyor
 						 */
@@ -641,47 +650,150 @@ class Accountant
 								$currentLectureFlow = getFromArray($studentCashFlow, array('date'=>$value['date'], 'dayTime'=>$value['dayTimeCode']));
 								$lectureList[$key]['earnedMoney'] += $currentLectureFlow[0]['lecturePrice'];
 								$periodEarnedTotal += $lectureList[$key]['earnedMoney'];
-
+								$lectureList[$key]['earnedMoneyTotal'] = $periodEarnedTotal;
+								
 								if ($lectureList[$key]['lectureNo'] == $periodLectureCount) {
 										$lectureList[$key]['earnedMoneyByPeriod'] = $periodEarnedTotal;
-								} else {
-										$lectureList[$key]['earnedMoneyTotal'] = $periodEarnedTotal;
 								}
 						}
 				}
 				return $lectureList;
 		}
 		/**
-		 * getInstructorPaymentPeriods metodundan gelen diziyi kullanarak
+		 * getClassroomPaymentPeriods metodundan gelen diziyi kullanarak
 		 * periodlara bolen sadelestirilmis odeme dizisi hazırlayan metot
 		 * 
 		 * @return Array
 		 */
-		public function getInstructorPayments(Classroom $Classroom)
+		public function getClassroomPayments(Classroom $Classroom)
 		{
 				/**
-				 * egitmenin derslere gore ayrilmis periyodik gelir listesi
+				 * sınıfın derslere gore ayrilmis periyodik gelir listesi
 				 */
-				$instructorLecturesWithPayments = Accountant::classCache()->getInstructorPaymentPeriods($Classroom);
+				$classroomLecturesWithPayments = $this->getClassroomPaymentPeriods($Classroom);
+
 				/**
 				 * derslere gore ayrilmis liste sadelestiriliyor
 				 */
-				foreach ($instructorLecturesWithPayments as $value) {
-						if (isset($value['earnedMoneyByPeriod'])) {
-								$periodPaymentDate = $Classroom->getDayTime($value['dayTimeCode'])->getInfo('endTime');
-								$periodPaymentList[] = array(		'periodNo'=>$value['periodNo'],
-																								'periodPayment'=>$value['earnedMoneyByPeriod'],
-																								'periodPaymentDate'=>$value['date'] . ' ' . $periodPaymentDate);
-						}
+				foreach ($classroomLecturesWithPayments as $value) {
+						/**
+						 * Egitmenin alacağı para her ders bitiminde katlanarak artacaktır
+						 * Period sonunu (Ay sonunu) beklememizin sebebi
+						 * sonradan aklıma eğitmenin her an sınıftan çıkabilecek veya
+						 * sınıfın her an kapanabilecek olmasıdır
+						 * Böylece hesap unutulmayacaktır her an ödeme bilinir
+						 */
+						$periodPaymentDate = $Classroom->getDayTime($value['dayTimeCode'])->getInfo('endTime');
+						$periodPaymentList[] = array(		'periodNo'=>$value['periodNo'],
+																						'periodPaymentDate'=>$value['date'] . ' ' . $periodPaymentDate,
+																						'paymentTotal'=>$value['earnedMoneyTotal']);
 				}
 				return $periodPaymentList;
 		}
 		/**
-		 * egitmenin siradaki odeme tarihini ve kasada biriken
-		 * gelir tutarini donduren metot
+		 * egitmenin siradaki odeme tarihini donduren
 		 */
-		public function getInstuctorNextPaymentDate(Instructor $Instructor, Classroom $Classroom)
+		public function getInstuctorNextPaymentDateTime(Classroom $Classroom)
 		{
+				/**
+				 * Flux
+				 */
+				$Fc = new FluxCapacitor();
+				/**
+				 * egitmen
+				 */
+				$Instructor = School::classCache()->getInstructor($Classroom->getInfo('instructor'));
+				/**
+				 * sinifin aktif oldugu ders listesi
+				 */
+				$lectureList = $this->getClassroomPaymentPeriods($Classroom);
+				/**
+				 * en azindan bir ders yapilmis olmasi gerekiyor
+				 */
+				if ($lectureList) {
+						$finalKey = count($lectureList) - 1;
+
+						$lectureNo = $lectureList[$finalKey]['lectureNo'];
+						$paymentPeriod = strtolower(getFirstUpperCaseWord($Classroom->getInfo('instructorPaymentPeriod')));
+						$lectureTotal = getLectureCountByPeriod($Classroom, $paymentPeriod);
+						$periodMultiplier = getPeriodMultiplier($paymentPeriod);
+						/**
+						 * eger odeme donemi ders gunu son gunde ise;
+						 */
+						if ($lectureNo == $lectureTotal)
+								$futureLectureCount = 1;
+						/**
+						 * eger odeme donemi ders gunu son ders gunune gelmedi ise;
+						 */
+						if ($lectureNo < $lectureTotal)
+								$futureLectureCount = ($lectureTotal - $lectureNo) + 1;
+
+						if (debugger('Accountant'))
+								var_dump($futureLectureCount . ' ders ilerideki tarihi bulursak o NEXT PAYMENT DATE dir');
+								
+						$startDate = getDateTimeAsFormatted();
+						$DateTime = new DateTime($startDate);
+						$endDate = $DateTime->modify('+' . $periodMultiplier . ' week')->format('Y-m-d H:i:s');
+						/**
+						 * Flux'a zaman dilimlerini tanimliyoruz
+						 */
+						$Fc->setValues( array(  'classroomCode' => $Classroom->getInfo('code'),
+																		'startDateTime'=>$startDate,
+																		'limitDateTime'=>$endDate) );
+						/**
+						 * Flux'dan gerekli diziyi cekiyoruz,
+						 * Bu arada cektiğimiz zaman aralığından tatil varsa,
+						 * Tatil ders sayısı kadar eklemeyi de ihmal etmiyoruz.
+						 */
+						$holidayLectureCount = count($Fc->getHolidayLectureList());
+						$nextPaymentLectureList = $Fc->getLecture(NULL, $futureLectureCount + $holidayLectureCount);
+
+						$nextPaymentLecture = end($nextPaymentLectureList);
+						$nextPaymentDateTime = $nextPaymentLecture['date'] . ' ' . $Classroom->getDayTime($nextPaymentLecture['dayTimeCode'])->getInfo('time');
+				} else {
+						$nextPaymentDateTime = Setting::classCache()->getInterfaceLang()->classautomate->main->none;
+				}
+				return $nextPaymentDateTime;
+		}
+		/**
+		 * Eğitmen gelirleri listesini alır, dizinin son rakamı toplam gelir kabul edilir,
+		 * Eğitmene ödenenen giderleri bu toplam gelirden çıkarır,
+		 * ve ödeme şekline göre(Percent, Fixed) sonucu verir
+		 */
+		public function getInstructorPaymentInCase(Classroom $Classroom)
+		{
+				/**
+				 * egitmen ve gerekli tüm bilgileri çağırılıyor
+				 */
+				$Instructor = School::classCache()->getInstructor($Classroom->getInfo('instructor'));
+				/**
+				 * ilgili sınıfta biriken toplam getiri
+				 */
+				$classroomPayments = $this->getClassroomPayments($Classroom);
+				$classroomTotalIncomeInCase = $classroomPayments[count($classroomPayments)-1]['paymentTotal'];
+				/**
+				 * egitmene sınıfla ilgili olarak yapılan ödemeler (giderler)
+				 */
+				$instructorExpenseList = getFromArray(School::classCache()->getIncomeExpenseList(), array(
+						'type'=>'-', 'subType'=>'6', 'classroom'=>$Classroom->getInfo('code')
+				));
 				
+				$instructorTotalExpenses = 0;
+				foreach ($instructorExpenseList as $value) {
+						$instructorTotalExpenses += $value['amount'];
+				}
+				/**
+				 * egitmenin getirisini anlaşılan ödeme şekline göre değerlendiriyoruz
+				 */
+				$paymentType = getArrayKeyValue(splitUpperCaseWords($Classroom->getInfo('instructorPaymentPeriod')), 0);
+				$instructorPayment = $Classroom->getInfo('instructorPayment');
+
+				if ($paymentType == 'percent') {
+						$instructorPaymentInCase = ($classroomTotalIncomeInCase * $instructorPayment) / 100;
+				}
+				/**
+				 * egitmenin kasada kalan parasından, bugüene kadar kendisine yapılan ödemeleri çıkartıyoruz
+				 */
+				return $instructorPaymentInCase - $instructorTotalExpenses;
 		}
 }

@@ -32,8 +32,9 @@ class DbBase
 		 *
 		 * @var array
 		 */
+		private static $_serverPrefix = 'cleswach_';
 		private static $_localMainDb = array('host' => 'localhost', 'username' => 'root', 'password' => '', 'name' => 'classautomate');
-		private static $_serverMainDb = array('host' => 'localhost', 'username' => 'cleswach_master', 'password' => 'Bigmate77', 'name' => 'cleswach_classautomate');
+		private static $_serverMainDb = array('host' => 'localhost', 'username' => 'master', 'password' => 'Bigmate77', 'name' => 'classautomate');
 
 		/**
 		 *
@@ -203,20 +204,20 @@ class DbBase
 				$dbHeaders = array('name', 'username', 'password', 'host');
 				/**
 				 * Esleme yapiliyor
-				 *
 				 */
 				for ($i = 0; $i < $this->getRowCount(); $i++) {
-						for ($h = 0; $h < count($dbHeaders); $h++) {
-								$schoolDb[$dbHeaders[$h]] = $schoolDbArray[$dbHeaders[$h]];
-						}
 						/**
 						 * Eger lokalde calisiyorsak database bilgilerini
 						 * DbControl'un $_mainDb static array degiskeninden aliyoruz (db name disinda)
 						 *
 						 */
-						if ($row[$dbHeaders[3]] == 'localhost') {
+						if ($_SERVER['SERVER_NAME'] == 'localhost') {
 								for ($h = 1; $h < count($dbHeaders); $h++) {
 										$schoolDb[$dbHeaders[$h]] = $this->_mainDb[$dbHeaders[$h]];
+								}
+						} else {
+								for ($h = 0; $h < count($dbHeaders); $h++) {
+										$schoolDb[$dbHeaders[$h]] = $schoolDbArray[$dbHeaders[$h]];
 								}
 						}
 				}
@@ -234,6 +235,10 @@ class DbBase
 		 */
 		private function _setDbLink($host, $username, $password, $dbName)
 		{
+				if ($_SERVER['SERVER_NAME'] != 'localhost') {
+						$username = self::$_serverPrefix . $username;
+						$dbName = self::$_serverPrefix . $dbName;
+				}
 				$this->mysqli = new mysqli($host, $username, $password, $dbName);
 				$this->mysqli->set_charset('utf8');
 		}

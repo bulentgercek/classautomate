@@ -135,7 +135,7 @@ class School
 						return $this->_incomeExpense[$code];
 				}
 				else
-						trigger_error($code . " numaralı tatil kodu incomeExpense dizisinde bulunamadı.", E_USER_WARNING);
+						trigger_error($code . " numaralı gelir-gider kodu incomeExpense dizisinde bulunamadı.", E_USER_WARNING);
 		}
 		/**
 		 * incomeExpense nesnesi yarat

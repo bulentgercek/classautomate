@@ -4,7 +4,7 @@
 		
 		"classes":{
 			"PageGenerateTimer":true,
-			"Accountant":true,
+			"Accountant":false,
 			"ArrayCache":false,
 			"Asistant":false,
 			"Changes":false,
@@ -29,7 +29,7 @@
 			"School":false,
 			"Session":false,
 			"Setting":false,
-			"Student":true,
+			"Student":false,
 			"Start":false,
 			"Tab":false
 		}

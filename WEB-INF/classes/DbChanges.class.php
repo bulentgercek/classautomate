@@ -102,7 +102,7 @@ class DbChanges
 				}
 
 				// degisikleri bul
-				$this->_findDbChanges();
+				$this->_findNeededDbChanges();
 
 				if (debugger("Changes")) {
 						echo "DEBUG : " . getCallingClass() . "->Changes->setChanges() - neededChangesFound :";
@@ -123,7 +123,7 @@ class DbChanges
 		/**
 		 * degisiklikleri tara ve bul
 		 */
-		private function _findDbChanges()
+		private function _findNeededDbChanges()
 		{
 				foreach ($this->_determinantsList as $determinantsListKey => $determinantsListValue) {
 						if ($this->_dbChanges['table'] == $determinantsListKey) {
@@ -152,31 +152,27 @@ class DbChanges
 				/**
 				 * tarih genel olarak simdiki zamandir
 				 */
-				$changesDateTime = getClientDateTime('%Y-%m-%d %H:%M:%S');
+				$changesDateTime = getDateTime('%Y-%m-%d %H:%M:%S');
 				/**
-				 * MASTERCHANGE verilmis mi? Not:Bkz.setMasterChange() fonsiyonu aciklamasi
+				 * masterChange tanimlanmis mi? Not: Bkz. setMasterChange() fonsiyonu aciklamasi
 				 */
-				if (empty($this->_masterChange)) {
+				if ($this->_masterChange) {
+						if (debugger("Changes")) {
+								echo "DEBUG : " . getCallingClass() . "->Changes->_setDbArrays()->masterChange : ";
+								var_dump($this->_masterChange);
+						}
+						$changesDateTime = $this->_masterChange['dateTime'];
 
+				} else {
 						if ($this->_dbChanges['table'] == 'classroom' && $this->_neededDbChangesFound['status'] == 'active') {
 								/**
 								 * ÖNEMLİ : SINIF AKTIF EDILIYORSA CALISACAKTIR.
 								 * Sinifin aktif edildigi zaman, dersin baslayacagi DAYTIME'dan farkli olmamalidir.
 								 * Dolayisiyla CHANGES'e dersin aslen baslayacagi DAYTIME yazılıyor.
 								 */
-								$ClassroomDayTime = School::classCache()->getClassroom($this->_dbChanges['tableCode'])->getDayTime($this->_dbChanges['values'][2]);
+								$School = School::classCache();
+								$ClassroomDayTime = $School->getClassroom($this->_dbChanges['tableCode'])->getDayTime($this->_dbChanges['values'][2]);
 								$changesDateTime = $this->_dbChanges['values'][1] . ' ' . $ClassroomDayTime->getInfo('time');
-						}
-				} else {
-						if (debugger("Changes")) {
-								echo "DEBUG : " . getCallingClass() . "->Changes->_setDbArrays()->masterChange : ";
-								var_dump($this->_masterChange);
-						}
-						$masterChangeInfo = explode('|', $this->_masterChange['masterChangeInfo']);
-
-						if ($this->_dbChanges['table'] == 'person') {
-								$ClassroomDayTime = School::classCache()->getClassroom($masterChangeInfo[1])->getDayTime($this->_masterChange['startDayTime']);
-								$changesDateTime = $this->_masterChange['startDate'] . ' ' . $ClassroomDayTime->getInfo('time');
 						}
 				}
 
@@ -220,6 +216,12 @@ class DbChanges
 				} else {
 						$Db->insertSql(array('table' => $this->_dbTable, 'columns' => $columns, "values" => $arrayValues));
 				}
+				/**
+				 * masterChange'i tanimlanmis ise sifirla
+				 */
+				if ($this->_masterChange) {
+						$this->removeMasterChange();
+				}
 		}
 		/**
 		 * eger bir degisiklik diger bir degisikligin sebebi ile yapiliyorsa
@@ -230,9 +232,10 @@ class DbChanges
 		 * 
 		 * MASTERCHANGE dizisi sifirlanana kadar kullanilir.
 		 */
-		public function setMasterChange($array)
+		public function setMasterChange($object, $dateTime)
 		{
-				$this->_masterChange = $array;
+				$this->_masterChange['object'] = $object;
+				$this->_masterChange['dateTime'] = $dateTime;
 		}
 		/**
 		 * MASTERCHANGE dizisi sifirlaniyor

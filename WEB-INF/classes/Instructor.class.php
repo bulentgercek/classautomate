@@ -46,13 +46,21 @@ class Instructor extends Person
 				return $result;
 		}
 		/**
-		 * egitmenin odeme listesini periyodlara gore secilen sinifa gore dondurur
-		 * 
-		 * @return Array
+		 * egitmenin siradaki odeme tarihini ve kasada biriken
+		 * gelir tutarini donduren metot
 		 */
-		public function getPaymentsByClassroom(Classroom $Classroom)
+		public function getNextPaymentDateTime(Classroom $Classroom)
 		{
-				return Accountant::classCache()->getInstructorPayments($Classroom);
+				return Accountant::classCache()->getInstuctorNextPaymentDateTime($Classroom);
+		}
+		/**
+		 * Eğitmen gelirleri listesini alır, dizinin son rakamı toplam gelir kabul edilir,
+		 * Eğitmene ödenenen giderleri bu toplam gelirden çıkarır,
+		 * ve ödeme şekline göre(Percent, Fixed) sonucu verir
+		 */
+		public function getPaymentInCase(Classroom $Classroom)
+		{
+				return Accountant::classCache()->getInstructorPaymentInCase($Classroom);
 		}
 		/**
 		 * $_POST formda olup da database'de karsiligi olmayan

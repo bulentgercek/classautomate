@@ -30,6 +30,13 @@ class Execute
 		 * @var string
 		 */
 		private $_action = NULL;
+		
+		/**
+		 * kuyruk dizisi
+		 * 
+		 * @var array
+		 */
+		private $_queue = NULL;
 
 		/**
 		 * construct yapilamaz
@@ -52,6 +59,80 @@ class Execute
 				}
 				return self::$_instance;
 		}
+		/*
+		 * Execute icin bir islem yapilmasi sirasinda "İşin bitince bunları da uygula" dediğimiz
+		 * kuyruğa yapılacak işi yerleştirdiğimiz metot
+		 */
+		public function setQueue($jobObject, array $job, $jobTc=NULL, $jobTt=NULL, $jobFormName=NULL, $masterChange=NULL)
+		{
+				if (debugger("Execute")) {
+						echo 'DEBUG : ' . getCallingClass() . '->Execute->setQueue : ';
+						var_dump($jobObject);
+						var_dump($job);
+				}
+				$this->_queue[] = array(
+						'jobObject'=>$jobObject, 'jobTc'=>$jobTc, 'jobTt'=>$jobTt, 'jobFormName'=>$jobFormName, 'job'=>$job, 'masterChange'=>$masterChange
+				);
+		}
+		/**
+		 * Kuyruğa yerleştirilmiş olan işleri sırasi ile yapan metot
+		 */
+		public function applyQueue()
+		{
+				if ($this->_queue) {
+						foreach ($this->_queue as $queueKey=>$queueJob) {
+								if (debugger("Execute")) {
+										echo 'DEBUG : Execute->applyQueue : Job No = ' . ++$count . ' / ' . count($this->_queue);
+										var_dump($queueJob);
+								}
+								/**
+								 * masterChange verilmiş mi?
+								 */
+								if ($queueJob['masterChange']) {
+										$masterChange['object']	=	$queueJob['masterChange']['object'];
+										$masterChange['dateTime']	= $queueJob['masterChange']['dateTime'];
+										DbChanges::classCache()->setMasterChange($masterChange['object'], $masterChange['dateTime']);
+								}
+								if ($queueJob['jobTc']) {
+										$tcField = 'tc:' . $queueJob['jobTc'];
+										$tFormNameAndType = $queueJob['formName'] . '|' . $queueJob['jobTt'];
+										$jobIntend = merge2Array($queueJob['job'], array($tcField=>$tFormNameAndType));
+								} else {
+										$jobIntend =$queueJob['job'];
+								}
+								/**
+								 * kuyruk islemini uygula
+								 */
+								$queueJob['jobObject']->setInfo($jobIntend);
+								/**
+								 * kuyruktan işlemi yapılanı sil
+								 */
+								unset($this->_queue[$queueKey]);
+								/**
+								 * islemi yapılan nesneye ait dizilerin icerigini tazele
+								 */
+								switch (get_parent_class($queueJob['jobObject'])) {
+										case 'Classroom': $arrayReadCode = 'classrooms'; break;
+										case 'Changes': $arrayReadCode = 'changes'; break;
+										case 'Holiday': $arrayReadCode = 'holidays'; break;
+										case 'Person': $arrayReadCode = 'people'; break;
+										case 'Program': $arrayReadCode = 'programs'; break;
+										case 'Saloon': $arrayReadCode = 'saloons'; break;
+										case 'HolidaySubject': $arrayReadCode = 'holidaySubjects'; break;
+										case 'IncomeExpenseType': $arrayReadCode = 'incomeExpenseTypes'; break;
+								}
+								School::classCache()->readToArrays($arrayReadCode, true);
+								if (debugger("Execute")) {
+										echo 'DEBUG : Execute->applyQueue : ' . get_parent_class($queueJob['jobObject']) . ' listesi yenilendi.<br>';
+								}
+						}
+						/**
+						 * kuyruk uygulanirken yeni veri atilmis olabilir
+						 * denetlemek icin metodu tekrarla
+						 */
+						$this->applyQueue();
+				}
+		}
 		/**
 		 * komutu hazirla
 		 *
@@ -61,7 +142,6 @@ class Execute
 		{
 				$this->_command = explode('->', $command);
 				$School = School::classCache();
-				$Db = Db::classCache();
 
 				/** komut dizisi debug ediliyor */
 				if (debugger("Execute")) {
@@ -77,8 +157,7 @@ class Execute
 				 */
 				if (!debugger("SendToDb")) {
 						if (getTransferInfo('tt', $_POST) == 'direct')
-								;
-						setRefresh('true');
+								setRefresh('true');
 				}
 
 				/** komut degerlendirmeleri */
@@ -93,24 +172,24 @@ class Execute
 												 * sinif kaydini yap
 												 */
 												$Classroom = new Classroom();
-												$Classroom->setInfo($_POST);
+												$this->setQueue($Classroom, $_POST);
 												/**
 												 * ilk kayitta program, salon ve egitmen STATUS'leri
 												 * USED yapiliyor
 												 */
 												$Program = $School->getProgram($_POST["program"]);
 												if ($Program->getInfo("status") == "notUsed") {
-														$Program->setInfo(array("status" => "used", 'tc:update' => 'addClassroomForm|direct'));
+														$this->setQueue($Program, array("status" => "used"), 'update', 'direct', 'addClassroomForm');
 												}
 
 												$Saloon = $School->getSaloon($_POST["saloon"]);
 												if ($Saloon->getInfo("status") == "notUsed") {
-														$Saloon->setInfo(array("status" => "used", 'tc:update' => 'addClassroomForm|direct'));
+														$this->setQueue($Saloon, array("status" => "used"), 'update', 'direct', 'addClassroomForm');
 												}
 
 												$Instructor = $School->getInstructor($_POST["instructor"]);
 												if ($Instructor->getInfo("status") == "notUsed") {
-														$Instructor->setInfo(array("status" => "used", 'tc:update' => 'addClassroomForm|direct'));
+														$this->setQueue($Instructor, array("status" => "used"), 'update', 'direct', 'addClassroomForm');
 												}
 												break;
 
@@ -123,17 +202,17 @@ class Execute
 												 */
 												$Program = $School->getProgram($_POST["program"]);
 												if ($Program->getInfo("status") == "notUsed") {
-														$Program->setInfo(array("status" => "used", 'tc:update' => 'updateClassroomForm|direct'));
+														$this->setQueue($Program, array("status" => "used"), 'update', 'direct', 'updateClassroomForm');
 												}
 
 												$Saloon = $School->getSaloon($_POST["saloon"]);
 												if ($Saloon->getInfo("status") == "notUsed") {
-														$Saloon->setInfo(array("status" => "used", 'tc:update' => 'updateClassroomForm|direct'));
+														$this->setQueue($Saloon, array("status" => "used"), 'update', 'direct', 'updateClassroomForm');
 												}
 
 												$Instructor = $School->getInstructor($_POST["instructor"]);
 												if ($Instructor->getInfo("status") == "notUsed") {
-														$Instructor->setInfo(array("status" => "used", 'tc:update' => 'updateClassroomForm|direct'));
+														$this->setQueue($Instructor, array("status" => "used"), 'update', 'direct', 'updateClassroomForm');
 												}
 												break;
 
@@ -154,7 +233,7 @@ class Execute
 														$School->deleteRecord($Classroom);
 												}
 												else
-														$Classroom->setInfo(array("status" => "deleted", 'tc:delete' => 'deleteClassroomForm|direct'));
+														$this->setQueue($Classroom, array("status" => "deleted"), 'delete', 'direct', 'deleteClassroomForm');
 
 												break;
 
@@ -164,20 +243,20 @@ class Execute
 
 										case "freeze":
 												$Holiday = new Holiday();
-												$date = getClientDateTime('%Y-%m-%d %H:%M:%S');
+												$date = getDateTime('%Y-%m-%d %H:%M:%S');
 												$newHolidayValues['type'] = 'classroom';
 												$newHolidayValues['startDateTime'] = $date;
 												$newHolidayValues['endDateTime'] = date('Y-m-d H:i:s', strtotime("+1 month", strtotime($date)));
 												$newHolidayValues['info'] = $_GET['code'];
 												$newHolidayValues['tc:add'] = 'addHolidayForm|direct';
-												$Holiday->setInfo($newHolidayValues);
+												$this->setQueue($Holiday, $newHolidayValues);
 												break;
 
 										case "unFreeze":
-												$date = getClientDateTime('%Y-%m-%d %H:%M:%S');
+												$date = getDateTime('%Y-%m-%d %H:%M:%S');
 												$newEndDateTime = date('Y-m-d H:i:s', strtotime("-1 seconds", strtotime($date)));
 												$Holiday = $School->getHoliday($_POST['holidayClassroomCode']);
-												$Holiday->setInfo(array('endDateTime' => $newEndDateTime, 'tc:unFreeze' => 'deleteClassroomForm|direct'));
+												$this->setQueue($Holiday, array('endDateTime' => $newEndDateTime), 'unFreeze', 'direct', 'deleteClassroomForm');
 												break;
 								}
 								break;
@@ -187,7 +266,7 @@ class Execute
 
 										case "add" :
 												$Program = new Program();
-												$Program->setInfo($_POST);
+												$this->setQueue($Program, $_POST);
 												break;
 
 										case "update" :
@@ -206,7 +285,7 @@ class Execute
 
 										case "add" :
 												$Saloon = new Saloon();
-												$Saloon->setInfo($_POST);
+												$this->setQueue($Saloon, $_POST);
 												break;
 
 										case "update" :
@@ -225,7 +304,7 @@ class Execute
 
 										case "add" :
 												$Holiday = new Holiday();
-												$Holiday->setInfo($_POST);
+												$this->setQueue($Holiday, $_POST);
 												break;
 
 										case "update" :
@@ -247,23 +326,23 @@ class Execute
 
 														case "student" :
 																$Person = new Student();
-																$Person->setInfo($_POST);
+																$this->setQueue($Person, $_POST);
 																break;
 														case "instructor" :
 																$Person = new Instructor();
-																$Person->setInfo($_POST);
+																$this->setQueue($Person, $_POST);
 																break;
 														case "asistant" :
 																$Person = new Asistant();
-																$Person->setInfo($_POST);
+																$this->setQueue($Person, $_POST);
 																break;
 														case "secretary" :
 																$Person = new Secretary();
-																$Person->setInfo($_POST);
+																$this->setQueue($Person, $_POST);
 																break;
 														case "cleaner" :
 																$Person = new Cleaner();
-																$Person->setInfo($_POST);
+																$this->setQueue($Person, $_POST);
 																break;
 												}
 
@@ -273,19 +352,19 @@ class Execute
 												switch ($_GET["position"]) {
 
 														case "student" :
-																$School->getStudent($_GET["code"])->setInfo($_POST);
+																$this->setQueue($School->getStudent($_GET["code"]), $_POST);
 																break;
 														case "instructor" :
-																$School->getInstructor($_GET["code"])->setInfo($_POST);
+																$this->setQueue($School->getInstructor($_GET["code"]),$_POST);
 																break;
 														case "asistant" :
-																$School->getAsistant($_GET["code"])->setInfo($_POST);
+																$this->setQueue($School->getAsistant($_GET["code"]),$_POST);
 																break;
 														case "secretary" :
-																$School->getSecretary($_GET["code"])->setInfo($_POST);
+																$this->setQueue($School->getSecretary($_GET["code"]),$_POST);
 																break;
 														case "cleaner" :
-																$School->getCleaner($_GET["code"])->setInfo($_POST);
+																$this->setQueue($School->getCleaner($_GET["code"]),$_POST);
 																break;
 												}
 
@@ -313,7 +392,6 @@ class Execute
 												}
 
 												if ($Person->getInfo("status") == "notUsed") {
-
 														/**
 														 * once CHANGES bilgileri siliniyor, sonra da kisi
 														 */
@@ -321,8 +399,7 @@ class Execute
 														$School->deleteRecord($Person);
 												}
 												else
-														$Person->setInfo(array("status" => "deleted", 'tc:update' => 'deletePersonForm|direct'));
-
+														$this->setQueue($Person, array('status'=>'deleted'), 'update', 'direct', 'deletePersonForm');
 												break;
 								}
 								break;
@@ -344,11 +421,7 @@ class Execute
 																$tempPostArray['startDate'] = $_POST['date'];
 																$tempPostArray['startDayTime'] = $_POST['dayTime'];
 																$tempPostArray['tc:update'] = 'activateRollcallForm|direct';
-																$Classroom->setInfo($tempPostArray);
-
-																// DbChange'e MASTERCHANGE verisi gonderiliyor
-																$masterChange = directMerge2Array(array('masterChangeInfo' => 'classroom|' . $Classroom->getInfo('code')), $tempPostArray);
-																DbChanges::classCache()->setMasterChange($masterChange);
+																$this->setQueue($Classroom, $tempPostArray);
 
 																/**
 																 * sinif aktif olduguna gore
@@ -360,18 +433,21 @@ class Execute
 																		$DayTime = $Classroom->getDayTime($value['code']);
 																		$DayTime->setInfo(array('status' => 'used', 'tc:update' => 'activateRollcallForm|direct'));
 																}
-
+																
+																// masterChange tanımla
+																$masterChange['object'] = $Classroom;
+																$classroomDayTimeTime = $Classroom->getDayTime($Classroom->getInfo('startDayTime'))->getInfo('time');
+																$masterChange['dateTime'] = $Classroom->getInfo('startDate') . ' ' . $classroomDayTimeTime;
 																/**
 																 * sinif aktif edildiginde icinde kayitli olan
 																 * ogrencilerin de firstLecture bilgisine 
 																 * aktif edilme tarihini isle
 																 */
 																$studentList = $Classroom->getStudentList();
-
 																$selectedDayTime = getArrayKeyValue(getFromArray($School->getDayTimeList(), array('code' => $_POST['dayTime'])), 0);
 
 																if ($studentList != NULL) {
-																		foreach ($studentList as $studentListKey => $studentListValue) {
+																		foreach ($studentList as $studentListValue) {
 																				$Student = $School->getStudent($studentListValue['code']);
 
 																				$expStudentClassroom = explode(',', $Student->getInfo('classroom'));
@@ -384,16 +460,13 @@ class Execute
 																				}
 																				$newStudentStatus = implode(',', $expStudentStatus);
 																				// lecture ilk kez giriliyorsa update et
-																				if ($Student->getInfo('firstLecture') == '0000-00-00 00:00:00')
-																						$Student->setInfo(array('firstLecture' => $_POST['date'] . ' ' . $selectedDayTime['time'], 'tc:update' => 'activateRollcallForm|direct'));
-
+																				if ($Student->getInfo('firstLecture') == '0000-00-00 00:00:00') {
+																						$this->setQueue($Student, array('firstLecture' => $_POST['date'] . ' ' . $selectedDayTime['time']), 'update', 'direct', 'activateRollcallForm', $masterChange);
+																				}
 																				// status bilgisini guncelle
-																				$Student->setInfo(array('status' => $newStudentStatus, 'tc:update' => 'activateRollcallForm|direct'));
+																				$this->setQueue($Student, array('status' => $newStudentStatus), 'update', 'direct', 'activateRollcallForm', $masterChange);
 																		}
 																}
-
-																// DbChange'e MASTERCHANGE'in islevini bitirdigi haber veriliyor
-																DbChanges::classCache()->removeMasterChange();
 														}
 												}
 												break;
@@ -432,8 +505,9 @@ class Execute
 																				$selectedDayTime = getArrayKeyValue(getFromArray($School->getDayTimeList(), array('code' => $_POST['dayTime'])), 0);
 
 																				$Student = $School->getStudent($tempPostArray['personCode']);
-																				if ($Student->getInfo('firstLecture') == '0000-00-00 00:00:00')
-																						$Student->setInfo(array('firstLecture' => $tempPostArray['date'] . ' ' . $selectedDayTime['time'], 'tc:update' => 'rollcallUpdateForm|direct'));
+																				if ($Student->getInfo('firstLecture') == '0000-00-00 00:00:00') {
+																						$this->setQueue($Student, array('firstLecture' => $tempPostArray['date'] . ' ' . $selectedDayTime['time']), 'update', 'direct', 'rollcallUpdateForm', $masterChange);
+																				}
 																		}
 																}
 																$tempPostArray = array();
@@ -449,7 +523,7 @@ class Execute
 
 										case "addIncomeExpense":
 												$IncomeExpense = new IncomeExpense();
-												$IncomeExpense->setInfo($_POST);
+												$this->setQueue($IncomeExpense, $_POST);
 												break;
 
 										case "deleteIncomeExpense":
@@ -459,5 +533,9 @@ class Execute
 								}
 								break;
 				}
+				/**
+				 * son olarak kuyruğa atılmış olan işlemleri uyguluyoruz
+				 */
+				$this->applyQueue();
 		}
 }

@@ -219,7 +219,7 @@ class Classroom
 		public function getLectureCount($type = NULL)
 		{
 				$Fc = new FluxCapacitor();
-				$dateTime = getClientDateTime('%Y-%m-%d %H:%M:%S');
+				$dateTime = getDateTime('%Y-%m-%d %H:%M:%S');
 
 				$Fc->setValues(array('classroomCode' => $this->_code));
 
@@ -246,7 +246,7 @@ class Classroom
 		public function getHolidayStatus($holidayType)
 		{
 				$Fc = new FluxCapacitor();
-				$dateTime = getClientDateTime('%Y-%m-%d %H:%M:%S');
+				$dateTime = getDateTime('%Y-%m-%d %H:%M:%S');
 
 
 				$Fc->setValues(array('classroomCode' => $this->_code));
@@ -303,6 +303,56 @@ class Classroom
 				}
 
 				return $classroomActiveLectureList;
+		}
+		/**
+		 * Tarihe bakarak sıradaki dersin bilgilerini döndürür
+		 * 
+		 * @return array
+		 */
+		public function getNextLectureDateTime()
+		{
+				/**
+				 * Flux
+				 */
+				$Fc = new FluxCapacitor();
+				
+				$activeLectureList = $this->getActiveLectureList();
+
+				/**
+				 * herhangibir ders bilgisi geldi mi?
+				 */
+				if ($activeLectureList) {
+						$period = strtolower(getFirstUpperCaseWord($this->getInfo('instructorPaymentPeriod')));
+						$periodMultiplier = getPeriodMultiplier($period);
+						$futureLectureCount = 1;
+						
+						$startDate = getDateTimeAsFormatted();
+						$DateTime = new DateTime($startDate);
+						$endDate = $DateTime->modify('+' . $periodMultiplier . ' week')->format('Y-m-d H:i:s');
+
+						/**
+						 * Flux'a zaman dilimlerini tanimliyoruz
+						 */
+						$Fc->setValues( array(  'classroomCode' => $this->getInfo('code'),
+																		'startDateTime'=>$startDate,
+																		'limitDateTime'=>$endDate) );
+						/**
+						 * Flux'dan gerekli diziyi cekiyoruz,
+						 * Bu arada cektiğimiz zaman aralığından tatil varsa,
+						 * Tatil ders sayısı kadar eklemeyi de ihmal etmiyoruz.
+						 */
+						$holidayLectureCount = count($Fc->getHolidayLectureList());
+						$nextLectureList = $Fc->getLecture(NULL, $futureLectureCount + $holidayLectureCount);
+
+						$nextLecture = end($nextLectureList);
+						return $nextLecture['date'] . ' ' . $this->getDayTime($nextLecture['dayTimeCode'])->getInfo('time');					
+				} 
+				/**
+				 * eger hic ders yapilmamis ise;
+				 */
+				else {
+						return $this->getInfo('startDate') . ' ' . $this->getDayTime($this->getInfo('startDayTime'))->getInfo('time');
+				}
 		}
 		/**
 		 * sınıfın limit bilgilerini dizi olarak dondur

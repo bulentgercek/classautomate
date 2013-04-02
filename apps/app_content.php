@@ -18,19 +18,26 @@ if ($_GET['code'] != 'sbyRoom') {
 		$classroomInfo = getArrayKeyValue(getFromArray($MakeList->get(), array('code' => $_GET['code'])), 0);
 
 		if ($classroomInfo['status'] == 'active') {
-				$lectureCount = array('lectureCount' => $Classroom->getLectureCount());
-				$holidayLectureCount = array('holidayLectureCount' => count($Classroom->getLectureCount('holiday')));
-				$holidayClassroomCode = array('holidayClassroomCode' => $Classroom->getHolidayStatus('classroom'));
-
-				$classroomInfo = merge2Array($classroomInfo, $lectureCount);
-				$classroomInfo = merge2Array($classroomInfo, $holidayLectureCount);
-				$classroomInfo = merge2Array($classroomInfo, $holidayClassroomCode);
+				$Instructor = $School->getInstructor($Classroom->getInfo('instructor'));
+				$classroomInfo['lectureCount'] = $Classroom->getLectureCount();
+				$classroomInfo['holidayLectureCount'] = count($Classroom->getLectureCount('holiday'));
+				$classroomInfo['holidayClassroomCode'] = $Classroom->getHolidayStatus('classroom');
+				$classroomInfo['nextLectureDateTime'] =  $Classroom->getNextLectureDateTime();
+				$classroomInfo['instructorNextPaymentDateTime'] =  $Instructor->getNextPaymentDateTime($Classroom);
+				$classroomInfo['instructorPaymentInCase'] =  $Instructor->getPaymentInCase($Classroom);
+				
 		}
 		/**
-		 * Ogrenci son borc durumu cagiriliyor
+		 * Ogrencinin diger bilgileri hazirlaniyor
 		 */
-		foreach ((array) $studentList as $studentValue) {
+		foreach ((array) $studentList as $studentKey=>$studentValue) {
 				$Student = $School->getStudent($studentValue['code']);
+				/**
+				 * Ogrencinin sınıftaki ilk ders gunu bulunuyor
+				 */
+				$studentActiveDateTimesByClassroom = $Student->getActiveDateTimesByClassroom($Classroom);
+				$studentList[$studentKey]['firstLectureDateTime'] = $studentActiveDateTimesByClassroom[0]['endDateTime'];
+
 				$cashStatus = $Student->getCashStatus($Classroom, 'studentDebt');
 				/**
 				 * Diziyi başlatıyoruz, sonrasında öğrencinin borc durumu kontrol ediliyor
@@ -42,25 +49,21 @@ if ($_GET['code'] != 'sbyRoom') {
 						case 'debtInfo_3':
 						case 'debtInfo_5':
 						case 'debtInfo_8':
-								$intend['nextPaymentDate'] = Setting::classCache()->getInterfaceLang()->classautomate->main->none;
+								$intend['nextPaymentDateTime'] = Setting::classCache()->getInterfaceLang()->classautomate->main->none;
 								break;
 						default:
-								$intend['nextPaymentDate'] = $Student->getNextPaymentDateByClassroom($Classroom);
+								$intend['nextPaymentDateTime'] = $Student->getNextPaymentDateTimeByClassroom($Classroom);
 				}
 				$studentDebtList[] = $intend;
 		}
 } else {
 		$classroomInfo = array('code' => 'sbyRoom');
 }
-
 setExtSmartyVars("classroomInfo", $classroomInfo);
+
 $studentList = merge2Array($studentList, (array) $studentDebtList);
 setExtSmartyVars("studentList", $studentList);
 
 $currency = strtoupper(Setting::classCache()->getCurrency());
 setExtSmartyVars("currency", $currency);
-
-$Instructor = $School->getInstructor($Classroom->getInfo('instructor'));
-$instructorPayments = $Instructor->getPaymentsByClassroom($Classroom);
-var_dump($instructorPayments);
 ?>

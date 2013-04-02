@@ -154,7 +154,18 @@
 		        <label class="red bold">{$app_content_holidayLectureCount}</label>
 		        <span id="text">{$classroomInfo.holidayLectureCount}</span>
 		    </div>
-		      
+		    <div id="formLine">
+		        <label class="red bold">{$app_content_nextLectureDateTime}</label>
+		        <span id="text">{$classroomInfo.nextLectureDateTime}</span>
+		    </div>
+				<div id="formLine">
+		        <label class="red bold">{$app_content_instructorNextPaymentDateTime}</label>
+		        <span id="text">{$classroomInfo.instructorNextPaymentDateTime}</span>
+		    </div>
+				<div id="formLine">
+		        <label class="red bold">{$app_content_instructorPaymentInCase}</label>
+		        <span id="text">{$classroomInfo.instructorPaymentInCase} {$currency}</span>
+		    </div>
 		    <div id="clear"></div>
 	    </div>
 	    <div id="list">
@@ -165,25 +176,27 @@
 					<thead>
 						<tr>
 							<th scope="col">{$app_content_nameSurname}</th>
+							<th scope="col">{$app_content_firstLectureDateTime}</th>
 							<th scope="col">{$app_content_remainingDebt}</th>
-							<th scope="col">{$app_content_nextPaymentDate}</th>
+							<th scope="col">{$app_content_nextPaymentDateTime}</th>
 							<th scope="col">{$app_content_listProcess}</th>
 						</tr>
 					</thead>
 					<tfoot>
 						<tr>
-							<td colspan="4"><em><span id="warningTextArea">'{$search}'  {$app_content_searchResults} {count($studentList)}</span></em></td>
+							<td colspan="5"><em><span id="warningTextArea">'{$search}'  {$app_content_searchResults} {count($studentList)}</span></em></td>
 						</tr>
 					</tfoot>
 					<tbody>
 	                    {foreach from=$studentList key=myid item=item}
 	                    <tr>
-	                    	<td>{$item.name} {$item.surname}</td>
-	                        <td>{$item.remainingDebt}  {$currency}{if $item.debtInfo} ({$main_{$item.debtInfo}}){/if}</td>
-	                        <td style="width:150px">{$item.nextPaymentDate}</td>
-	                        <td style="width:30px">
+												<td>{$item.name} {$item.surname}</td>
+												<td>{$item.firstLectureDateTime}</td>
+	                      <td>{$item.remainingDebt}  {$currency}{if $item.debtInfo} ({$main_{$item.debtInfo}}){/if}</td>
+	                      <td style="width:150px">{$item.nextPaymentDateTime}</td>
+	                      <td style="width:30px">
 	                            <div class="buttons"><a id="processEdit_{$item.code}" class="button editLeft alphaQuarter" href="main.php?tab=app_person_update&code={$item.code}&position=student">&nbsp;</a></div>                                      
-	                        </td>
+	                      </td>
 	                    </tr>
 	                    {/foreach}
 	                </tbody>
@@ -244,7 +257,7 @@
 						<tr>
 							<th scope="col">{$app_content_nameSurname}</th>
 							<th scope="col">{$app_content_remainingDebt}</th>
-							<th scope="col">{$app_content_nextPaymentDate}</th>
+							<th scope="col">{$app_content_nextPaymentDateTime}</th>
 							<th scope="col">{$app_content_listProcess}</th>
 						</tr>
 					</thead>
@@ -258,7 +271,7 @@
 	                    <tr>
 	                    	<td>{$item.name} {$item.surname}</td>
 	                        <td>{$item.remainingDebt}  {$currency}{if $item.debtInfo} ({$item.debtInfo}){/if}</td>
-	                        <td style="width:150px">{$item.nextPaymentDate}</td>
+	                        <td style="width:150px">{$item.nextPaymentDateTime}</td>
 	                        <td style="width:30px">
 	                            <div class="buttons"><a id="processEdit_{$item.code}" class="button editLeft alphaQuarter" href="main.php?tab=app_person_update&code={$item.code}&position=student">&nbsp;</a></div>                                      
 	                        </td>

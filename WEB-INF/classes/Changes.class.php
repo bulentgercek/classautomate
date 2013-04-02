@@ -62,15 +62,25 @@ class Changes
 				// Ikinci eleme de changeField'a karsilik gelen degerin
 				// bos olmadigi dizi verilerini ele ve liste haline getir
 				if (isset($array['changeField'])) {
-						foreach ($filteredArrayFirstState as $key => $value) {
+						foreach ((array)$filteredArrayFirstState as $key => $value) {
 								if ($value[$array['changeField']] != '')
 										$filteredArraySecondState[] = $value;
+								else {
+										/**
+										 * eger kisi odeme listesi yapiyor isek degismediği halde;
+										 * listeye STATUS->ACTIVE yapilanlar da eklenmeli,
+										 * cunku ACTIVE status update'lerinin yanına
+										 * odeme periodu ve odemesini de yazdim
+										 */
+										if(isset($array['Person'])) {
+												if ($value['status'] == 'active')
+														$filteredArraySecondState[] = $value;
+										}
+								}
 						}
 
 						$filteredArray = $filteredArraySecondState;
 				}
-				//var_dump($filteredArray);
-				//echo "---------------- BURAYA KADAR DOĞRU ---------------<br>";
 				// Ucuncu asamada da changeField'a changeValue verilmişse onlari liste haline getir
 
 				if (isset($array['changeField'])) {
@@ -92,7 +102,7 @@ class Changes
 						$expCurrents = array();
 
 						// degisiklikler aramasi sonuclarini donguye al
-						foreach ($filteredArray as $key => $value) {
+						foreach ((array)$filteredArray as $key => $value) {
 
 								// eger istenilen bir veri basligi ve veri degeri varsa (orn. : status , active)
 								if ($filterWithValue) {
