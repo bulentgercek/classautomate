@@ -578,7 +578,7 @@ class Accountant
 
 						if (debugger('Accountant'))
 								var_dump($futureLectureCount . ' ders ilerideki tarihi bulursak o NEXT PAYMENT DATE dir');
-
+								
 						$startDate = getDateTimeAsFormatted();
 						$DateTime = new DateTime($startDate);
 						$endDate = $DateTime->modify('+' . $periodMultiplier . ' week')->format('Y-m-d H:i:s');
@@ -593,8 +593,7 @@ class Accountant
 						 * Bu arada cektiğimiz zaman aralığından tatil varsa,
 						 * Tatil ders sayısı kadar eklemeyi de ihmal etmiyoruz.
 						 */
-						$holidayLectureCount = count($Fc->getHolidayLectureList());
-						$nextPaymentLectureList = $Fc->getLecture(NULL, $futureLectureCount + $holidayLectureCount);
+						$nextPaymentLectureList = $Fc->getLecture(NULL, $futureLectureCount);
 
 						$nextPaymentLecture = end($nextPaymentLectureList);
 						$nextPaymentDateTime = $nextPaymentLecture['date'] . ' ' . $Classroom->getDayTime($nextPaymentLecture['dayTimeCode'])->getInfo('time');
@@ -610,7 +609,7 @@ class Accountant
 		 */
 		public function getClassroomPaymentPeriods(Classroom $Classroom)
 		{
-				if (!$this->classroomPaymentPeriods[$Classroom->getInfo('code')]) {
+				if (!$this->_classroomPaymentPeriods[$Classroom->getInfo('code')]) {
 						/**
 						 * genel diziler ve veriler okunuyor, hazirlaniyor
 						 */
@@ -682,9 +681,9 @@ class Accountant
 										}
 								}
 						}
-						$this->classroomPaymentPeriods[$Classroom->getInfo('code')] = $lectureList;
+						$this->_classroomPaymentPeriods[$Classroom->getInfo('code')] = $lectureList;
 				}
-				return $this->classroomPaymentPeriods[$Classroom->getInfo('code')];
+				return $this->_classroomPaymentPeriods[$Classroom->getInfo('code')];
 		}
 		/**
 		 * getClassroomPaymentPeriods metodundan gelen diziyi kullanarak
@@ -772,8 +771,7 @@ class Accountant
 						 * Bu arada cektiğimiz zaman aralığından tatil varsa,
 						 * Tatil ders sayısı kadar eklemeyi de ihmal etmiyoruz.
 						 */
-						$holidayLectureCount = count($Fc->getHolidayLectureList());
-						$nextPaymentLectureList = $Fc->getLecture(NULL, $futureLectureCount + $holidayLectureCount);
+						$nextPaymentLectureList = $Fc->getLecture(NULL, $futureLectureCount);
 
 						$nextPaymentLecture = end($nextPaymentLectureList);
 						$nextPaymentDateTime = $nextPaymentLecture['date'] . ' ' . $Classroom->getDayTime($nextPaymentLecture['dayTimeCode'])->getInfo('time');

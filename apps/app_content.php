@@ -35,11 +35,7 @@ if ($_GET['code'] != 'sbyRoom') {
 				
 				$Student = $School->getStudent($studentValue['code']);
 				$totalLecturePrice = 0;
-				
-				if (debugger('General')) {
-						//s($Student->getInfo('name'));
-						//s($studentCashFlow);
-				}
+
 				/**
 				 * Ogrencinin sınıftaki ilk ders gunu bulunuyor
 				 */

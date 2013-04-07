@@ -211,15 +211,14 @@ class FluxCapacitor
 						// diziler hazirlaniyor
 						$lectureList = array();
 						$lectureListSorter = array();
+						$weekDayList = array();
 						$weekDayListSorter = array();
 						$maxCount = false;
 						$isListIncludesStartDayTime = false;
 
 						foreach ((array)$ClassroomDayTimeList as $ClassroomDayTimeListValue) {
-
-								$weekDayList = getWeekDays($ClassroomDayTimeListValue['day'], $this->_startDateTime, $this->_limitDateTime);
+								$weekDayListSorter = $weekDayList = getWeekDays($ClassroomDayTimeListValue['day'], $this->_startDateTime, $this->_limitDateTime);
 								$isTimeOk = true;
-
 								foreach ($weekDayList as $weekDayListKey => $weekDayListValue) {
 										/**
 										 * sinif bir limit berlirlenmis mi?
@@ -247,12 +246,12 @@ class FluxCapacitor
 
 										if ($isTimeOk) {
 												$weekDayList[$weekDayListKey] = $weekDayListValue . '<+>' . $ClassroomDayTimeListValue['code'];
-												$weekDayListSorter[$weekDayListKey] = $weekDayListValue . '<+>' . $ClassroomDayTimeListValue['time'] . '-' . $ClassroomDayTimeListValue['endTime'];
+												$weekDayListSorter[$weekDayListKey] = $weekDayListValue . ' ' . $ClassroomDayTimeListValue['time'] . '-' . $ClassroomDayTimeListValue['endTime'];
 										} else {
 												unset($weekDayList[$weekDayListKey]);
+												unset($weekDayListSorter[$weekDayListKey]);
 										}
 								}
-
 								// $lectureList : ders gunlerini ve saatlerini tek bir array içerisine birleştir			
 								$lectureList = directMerge2Array($lectureList, $weekDayList);
 								$lectureListSorter = directMerge2Array($lectureListSorter, $weekDayListSorter);
@@ -261,8 +260,8 @@ class FluxCapacitor
 						/**
 						 * siraya diziciyi duzenli (saate gore) siraya diz
 						 */
-						asort($lectureListSorter);
 
+						asort($lectureListSorter);
 						/**
 						 * siraya dizici ile ders sirasini sirala
 						 */
@@ -422,8 +421,14 @@ class FluxCapacitor
 		 * 
 		 * @return Array
 		 */
-		public function getIntersectedHolidayList()
+		public function getIntersectedHolidayList($startDate = NULL, $endDate = NULL)
 		{
+				/**
+				 * eger veri gonderilmemiş ise guncel nesnenin degerlerini al
+				 */
+				if (!$startDate) $startDate = $this->_startDateTime;
+				if (!$endDate) $startDate = $this->_limitDateTime;
+				
 				$holidayList = School::classCache()->getHolidayList();
 
 				if ($holidayList != null) {

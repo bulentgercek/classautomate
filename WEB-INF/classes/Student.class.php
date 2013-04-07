@@ -303,6 +303,7 @@ class Student extends Person
 						 * tum odeme ve odeme periyodu degisimlerini cagir (Sınıfa gore)
 						 */
 						$paymenAndPeriodChangesByClassroom = $this->getPaymentAndPeriodChangesByClassroom($Classroom);
+
 						/**
 						 * hazirlanacak arrayi hazirla
 						 */
@@ -368,9 +369,8 @@ class Student extends Person
 						/**
 						 * degiskene yedekle
 						 */
-						$this->_lectureDetailsByClassroom[$Classroom->getInfo('code')] = $lectureDetailsByClassroom;
+						$this->_lectureDetailsByClassroom[$Classroom->getInfo('code')] = SortArrayWithKey::get($lectureDetailsByClassroom, "date", 'ASC');;
 				}
-				
 				return $this->_lectureDetailsByClassroom[$Classroom->getInfo('code')];
 		}
 		/**
