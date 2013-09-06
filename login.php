@@ -7,7 +7,7 @@
  * @package ClassAutoMate
  */
 /**
- * sorgu alanini goster
+ * sorgu alanini gosterir
  */
 setExtSmartyVars('login_ask', 'inline');
 /**
