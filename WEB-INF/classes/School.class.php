@@ -32,6 +32,11 @@ class School
 		private $_holidayList, $_holidaySubjectList = array();
 		private $_rollcallListByDate, $_incomeExpenseList, $_incomeExpenseTypeList = array();
 		private $_personChangesList, $_classroomChangesList;
+		
+		/**
+		 * change determinant dizisi
+		 */
+		private $_determinantsList = array();
 
 		/**
 		 * array yuklemesi kontrol dizisi
@@ -452,6 +457,14 @@ class School
 						trigger_error($type . " türünde bir pozisyon bilgisi bulunmamaktadır.", E_USER_WARNING);
 		}
 		/**
+		 * degisisikler listesini dondur
+		 */
+		public function getDeterminantsList()
+		{
+				if (!$this->_determinantsList) $this->readDeterminantsList();
+				return $this->_determinantsList;
+		}
+		/**
 		 * dizi okuyucusu
 		 *
 		 * @return void
@@ -714,6 +727,27 @@ class School
 				$Db = Db::classCache();
 				$this->_saloonList = $Db->readTableFromDb($criteria, 'noBase');
 				$this->_isArrayRead['saloons'] = true;
+		}
+		/**
+		 * takip edilecekler listesini dondur
+		 *
+		 * @return array
+		 */
+		public function readDeterminantsList()
+		{
+				/**
+				 * dil icin browser ayari uygulaniyor
+				 * gerekli JSON verisi okunuyor
+				 *
+				 * @var array $languageJSON
+				 */
+				$Setting = Setting::classCache();
+				$determinantsListJSON = $Setting->getDeterminantsList();
+				$tables = $determinantsListJSON->classautomate->tables;
+
+				foreach ($tables as $key => $value) {
+						$this->_determinantsList[$key] = $value;
+				}
 		}
 		/**
 		 * kayıt sil

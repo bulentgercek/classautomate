@@ -23,7 +23,6 @@ class SendToDb
 				 */
 				$Db = Db::classCache();
 				$DbChanges = DbChanges::classCache();
-
 				/**
 				 * tableName ve dizi bilgisini implement metodu ile tamamla
 				 */
@@ -31,7 +30,6 @@ class SendToDb
 				$dbTableColumns = $Db->readTableColumns($tableName);
 				$valuesArray = self::arrayImplement($object, $nonPOST, $process);
 				$currentsArray = array('tableName' => $tableName, 'valuesArray' => $valuesArray);
-
 				/**
 				 * tableCode, subCode, columns ve values degiskenlerini hazirla
 				 */
@@ -44,7 +42,6 @@ class SendToDb
 				$valuesBackup = $valuesArray;
 				$values = "'" . implode("','", $valuesArray) . "'";
 				unset($valuesBackup["code"]);
-
 				/**
 				 * eklenecek tum bilgileri criteria dizisine aktar
 				 */
@@ -67,20 +64,17 @@ class SendToDb
 				 */
 				$phase = $phaseInfo ? '1' : '0';
 				/**
-				 * degisiklikleri tespit etmek ve uygulamak uzere DBCHANGES'e gonder
+				 * degisiklikleri tespit etmek ve uygulamak uzere CHANGES'e gonder
 				 */
-				$DbChanges->setDbChanges(array('table' => $tableName, 'tableCode' => $tableCode, 'dbProcess' => $process, 'currents' => $currents, 'phase' => $phase, 'tableFields' => $columnsBackup, 'values' => $valuesBackup));
-
+				$object->Changes->add(array('table' => $tableName, 'tableCode' => $tableCode, 'dbProcess' => $process, 'currents' => $currents, 'phase' => $phase, 'tableFields' => $columnsBackup, 'values' => $valuesBackup));
 				/**
 				 * veritabanina ekle, debugger aciksa kayit yapmayacak
 				 */
 				if (!debugger("SendToDb")) {
-
 						/**
 						 * ana islemi yap
 						 */
 						$Db->addToDb($addCriteria);
-
 						/**
 						 * tazeleme aktif
 						 */
@@ -109,7 +103,6 @@ class SendToDb
 				$tableName = $object->getDbTableName();
 				$updateNewValues = self::arrayImplement($object, $nonPOST, $process);
 				$currentsArray = array('tableName' => $tableName, 'valuesArray' => $updateNewValues);
-
 				/**
 				 * ilgili code ile veritabanı bilgileri array'den alınıyor
 				 */
@@ -145,7 +138,6 @@ class SendToDb
 						echo "DEBUG : " . getCallingClass() . "->SendToDb->update() - commonDbValues : ";
 						d($commonDbValues);
 				}
-
 				/**
 				 * update formundan gelen veriler ile
 				 * veritabanı kaynaklı veriler karşılaştırılıyor
@@ -156,7 +148,6 @@ class SendToDb
 						echo "DEBUG : " . getCallingClass() . "->SendToDb->update() - arrayDifference : ";
 						d($arrayDifference);
 				}
-
 				if ($arrayDifference != NULL) {
 						/**
 						 * set ve where degiskenlerine degisiklikleri isle
@@ -189,18 +180,15 @@ class SendToDb
 								echo "DEBUG : " . getCallingClass() . "->SendToDb->update() - updateCriteria : ";
 								d($updateCriteria);
 						}
-
 						/**
 						 * current verisini hazirla
 						 * sadece update kismi icin gecerli olan arrayDifference'i arrayin icine ekle
 						 */
 						$currents = self::getCurrents(array_merge($currentsArray, array('arrayDifference' => $arrayDifference)));
-
 						/**
 						 * degisiklikleri tespit etmek uzere ve uygulamak üzere DBCHANGES'e gonder
 						 */
-						$DbChanges->setDbChanges(array('table' => $tableName, 'tableCode' => $tableCode, 'dbProcess' => $process, 'currents' => $currents, 'tableFields' => $columnsBackup, 'values' => $valuesBackup));
-
+						$object->Changes->add(array('table' => $tableName, 'tableCode' => $tableCode, 'dbProcess' => $process, 'currents' => $currents, 'tableFields' => $columnsBackup, 'values' => $valuesBackup));
 						/**
 						 * veritabanini guncelle, debugger aciksa guncelleme yapmayacak
 						 */
@@ -209,7 +197,6 @@ class SendToDb
 								 * ana islemi yap
 								 */
 								$Db->updateToDb($updateCriteria);
-
 								/**
 								 * tazeleme $_POST verisi geldi ise aktif
 								 */
@@ -229,15 +216,12 @@ class SendToDb
 		{
 				/** islemi belirle */
 				$process = 'delete';
-
 				/**
 				 * singleton class'lar
 				 */
 				$Db = Db::classCache();
 				$DbChanges = DbChanges::classCache();
-
 				$tableName = $object->getDbTableName();
-
 				/**
 				 * ilgili code ile veritabanı bilgileri array'den alınıyor
 				 */
@@ -278,7 +262,6 @@ class SendToDb
 						echo "DEBUG : " . getCallingClass() . "->SendToDb->delete() - commonDbValues : ";
 						d($commonDbValues);
 				}
-
 				/**
 				 * tableCode, columns ve values degiskenlerini hazirla
 				 */
@@ -292,7 +275,6 @@ class SendToDb
 
 				$valuesBackup = $commonDbValues[0];
 				unset($valuesBackup['code']);
-
 				/**
 				 * eklenecek tum bilgileri criteria dizisine aktar
 				 */
@@ -305,13 +287,12 @@ class SendToDb
 				 * current verisini hazirla
 				 */
 				$currents = self::getCurrents($currentsArray);
-
 				/**
 				 * UYARI : Silme islemi bir kaydi hic yokmus gibi ortadan kaldiriyor
 				 *         dolayisiyla CHANGES kaydi tutmanin da bir anlami olmadigina karar verdim. (02.2013)
 				 *         Bu islem DISABLE edildi.
 				 */
-				//$DbChanges->setDbChanges(array('table'=>$tableName, 'tableCode'=>$tableCode, 'dbProcess'=>$process, 'currents'=>$currents, 'tableFields'=>$columnsBackup, 'values'=>$valuesBackup));
+				//$object->Changes->add(array('table'=>$tableName, 'tableCode'=>$tableCode, 'dbProcess'=>$process, 'currents'=>$currents, 'tableFields'=>$columnsBackup, 'values'=>$valuesBackup));
 
 				/**
 				 * veritabanindan sil, debugger aciksa silme islemi yapmayacak

@@ -63,8 +63,12 @@ class Execute
 		 * Execute icin bir islem yapilmasi sirasinda "İşin bitince bunları da uygula" dediğimiz
 		 * kuyruğa yapılacak işi yerleştirdiğimiz metot
 		 */
-		public function setQueue($jobObject, array $job, $jobTc=NULL, $jobTt=NULL, $jobFormName=NULL, $masterChange=NULL)
+		public function setQueue($jobObject, array $job, $jobTc=NULL, $jobFormName=NULL, $masterChange=NULL)
 		{
+				/**
+				 * TransferType varsayılan olarak 'direct' kabul ediliyor
+				 */
+				$jobTt = 'direct';
 				/**
 				 * jobTc parametre olarak gonderilmiş mi? (Gönderilmişse POST değildir)
 				 * jobTc, jobTt ve jobFormName POST verisinden hazırlanıyor
@@ -167,7 +171,7 @@ class Execute
 				}
 
 				/**
-				 * transfer tipi DIRECT ise sayfa tazelemesi aktif hale getiriliyor
+				 * transfer tipi ne olursa olsun sayfa tazelemesi aktif hale getiriliyor
 				 */
 				if (!debugger("SendToDb")) {
 						if (getTransferInfo('tt', $_POST) == 'direct' || getTransferInfo('tt', $_POST) == 'post')
@@ -193,17 +197,17 @@ class Execute
 												 */
 												$Program = $School->getProgram($_POST["program"]);
 												if ($Program->getInfo("status") == "notUsed") {
-														$this->setQueue($Program, array("status" => "used"), 'update', 'direct', 'addClassroomForm');
+														$this->setQueue($Program, array("status" => "used"), 'update', 'addClassroomForm');
 												}
 
 												$Saloon = $School->getSaloon($_POST["saloon"]);
 												if ($Saloon->getInfo("status") == "notUsed") {
-														$this->setQueue($Saloon, array("status" => "used"), 'update', 'direct', 'addClassroomForm');
+														$this->setQueue($Saloon, array("status" => "used"), 'update', 'addClassroomForm');
 												}
 
 												$Instructor = $School->getInstructor($_POST["instructor"]);
 												if ($Instructor->getInfo("status") == "notUsed") {
-														$this->setQueue($Instructor, array("status" => "used"), 'update', 'direct', 'addClassroomForm');
+														$this->setQueue($Instructor, array("status" => "used"), 'update', 'addClassroomForm');
 												}
 												break;
 
@@ -216,17 +220,17 @@ class Execute
 												 */
 												$Program = $School->getProgram($_POST["program"]);
 												if ($Program->getInfo("status") == "notUsed") {
-														$this->setQueue($Program, array("status" => "used"), 'update', 'direct', 'updateClassroomForm');
+														$this->setQueue($Program, array("status" => "used"), 'update', 'updateClassroomForm');
 												}
 
 												$Saloon = $School->getSaloon($_POST["saloon"]);
 												if ($Saloon->getInfo("status") == "notUsed") {
-														$this->setQueue($Saloon, array("status" => "used"), 'update', 'direct', 'updateClassroomForm');
+														$this->setQueue($Saloon, array("status" => "used"), 'update', 'updateClassroomForm');
 												}
 
 												$Instructor = $School->getInstructor($_POST["instructor"]);
 												if ($Instructor->getInfo("status") == "notUsed") {
-														$this->setQueue($Instructor, array("status" => "used"), 'update', 'direct', 'updateClassroomForm');
+														$this->setQueue($Instructor, array("status" => "used"), 'update', 'updateClassroomForm');
 												}
 												break;
 
@@ -247,7 +251,7 @@ class Execute
 														$School->deleteRecord($Classroom);
 												}
 												else
-														$this->setQueue($Classroom, array("status" => "deleted"), 'delete', 'direct', 'deleteClassroomForm');
+														$this->setQueue($Classroom, array("status" => "deleted"), 'delete', 'deleteClassroomForm');
 
 												break;
 
@@ -270,7 +274,7 @@ class Execute
 												$date = getDateTime('%Y-%m-%d %H:%M:%S');
 												$newEndDateTime = date('Y-m-d H:i:s', strtotime("-1 seconds", strtotime($date)));
 												$Holiday = $School->getHoliday($_POST['holidayClassroomCode']);
-												$this->setQueue($Holiday, array('endDateTime' => $newEndDateTime), 'unFreeze', 'direct', 'deleteClassroomForm');
+												$this->setQueue($Holiday, array('endDateTime' => $newEndDateTime), 'unFreeze', 'deleteClassroomForm');
 												break;
 								}
 								break;
@@ -432,7 +436,7 @@ class Execute
 														$School->deleteRecord($Person);
 												}
 												else
-														$this->setQueue($Person, array('status'=>'deleted'), 'update', 'direct', 'deletePersonForm');
+														$this->setQueue($Person, array('status'=>'deleted'), 'update', 'deletePersonForm');
 												break;
 								}
 								break;
@@ -492,10 +496,10 @@ class Execute
 																				$newStudentStatus = implode(',', $expStudentStatus);
 																				// lecture ilk kez giriliyorsa update et
 																				if ($Student->getInfo('firstLecture') == '0000-00-00 00:00:00') {
-																						$this->setQueue($Student, array('firstLecture' => $masterChange['dateTime']), 'update', 'direct', 'activateRollcallForm', $masterChange);
+																						$this->setQueue($Student, array('firstLecture' => $masterChange['dateTime']), 'update', 'activateRollcallForm', $masterChange);
 																				}
 																				// status bilgisini guncelle
-																				$this->setQueue($Student, array('status' => $newStudentStatus), 'update', 'direct', 'activateRollcallForm', $masterChange);
+																				$this->setQueue($Student, array('status' => $newStudentStatus), 'update', 'activateRollcallForm', $masterChange);
 																		}
 																}
 														}
@@ -539,7 +543,7 @@ class Execute
 
 																				$Student = $School->getStudent($tempPostArray['personCode']);
 																				if ($Student->getInfo('firstLecture') == '0000-00-00 00:00:00') {
-																						$this->setQueue($Student, array('firstLecture' => $masterChange['dateTime']), 'update', 'direct', 'rollcallUpdateForm', $masterChange);
+																						$this->setQueue($Student, array('firstLecture' => $masterChange['dateTime']), 'update', 'rollcallUpdateForm', $masterChange);
 																				}
 																		}
 																}

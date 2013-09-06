@@ -2,7 +2,7 @@
 
 /**
  * classautomate - login tablosu
- * 
+ *
  * @author Bulent Gercek <bulentgercek@gmail.com>
  * @package ClassAutoMate
  */
@@ -11,7 +11,7 @@
  */
 setExtSmartyVars('login_ask', 'inline');
 /**
- * giris yazisi
+ * giris yazisi test
  */
 $resultText = $languageJSON->classautomate->login->makeLogin;
 /**

@@ -24,7 +24,7 @@ class Student extends Person
 		 * 
 		 * @var Object
 		 */
-		protected $Changes;
+		public $Changes;
 		
 		/**
 		 * lectureDetails yedegi
@@ -537,7 +537,7 @@ class Student extends Person
 																/**
 																 * o zaman used yap cunku ogrenci kayit oluyor
 																 */
-																Execute::classCache()->setQueue($Classroom, array('status' => 'used'), 'update', 'direct', 'updateClassroomForm');
+																Execute::classCache()->setQueue($Classroom, array('status' => 'used'), 'update', 'updateClassroomForm');
 																/**
 																 * sınıfın durumu degistiğinden ogrencinin status'une used yazıyoruz
 																 */
@@ -626,7 +626,7 @@ class Student extends Person
 												 */
 												$queueStatus = implode(',', $statusResult);
 												Execute::classCache()->setQueue(
-														$this, array('status'=> $queueStatus), 'update', 'direct', 'updateClassroomForm', $masterChange
+														$this, array('status'=> $queueStatus), 'update', 'updateClassroomForm', $masterChange
 												);
 										/**
 										 * eger post icinde ogrencinin dahil edildiği sınıflardan
