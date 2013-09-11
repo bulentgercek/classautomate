@@ -32,7 +32,7 @@ class DbBase
 		 *
 		 * @var array
 		 */
-		private static $_serverPrefix = 'cleswach_';
+		private static $_serverPrefix = 'bulent_';
 		private static $_mainDbName = 'classautomate';
 		private static $_intraIp = '192.168.1.2';
 		private static $_localMysql = array('host' => 'localhost', 'username' => 'root', 'password' => '');
